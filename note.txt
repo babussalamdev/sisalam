@@ -1,0 +1,31 @@
+Request
+5. FAQ
+
+Cek Saldo
+1. Input PIN
+2. Nomer Kartu
+
+Next..
+Kode Kartu
+Nama Pengguna
+Saldo
+
+Tabel Hostori
+
+-------------------
+
+Ganti PIN
+1. Pin Lama
+2. Nomer kartu
+
+Verifikasi
+1. Pin lama 
+2. Pin Baru
+
+-------------------
+
+tukar Kartu
+1. Kartu lama
+2. Pin Lama
+
+Mirip Aktivasi
