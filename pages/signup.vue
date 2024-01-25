@@ -12,7 +12,7 @@
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
               <input
-                name="number"
+                name="cnc"
                 type="number"
                 class="form-control"
                 placeholder="12 Digit Angka"
@@ -25,7 +25,7 @@
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">NISS</span>
               <input
-                name="nis"
+                name="niss"
                 type="text"
                 class="form-control"
                 placeholder="10 Digit Angka"
@@ -57,7 +57,7 @@
             <div class="mb-4">
               <div class="input-group">
                 <input
-                  name="pinCheck"
+                  name="confirm"
                   :type="type"
                   class="form-control"
                   placeholder="Konfirmasi Password"
@@ -106,6 +106,7 @@
 import Swal from "sweetalert2";
 
 export default {
+  layout: "verification",
   data() {
     return {
       type: "password",
@@ -117,17 +118,15 @@ export default {
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
       try {
-        const result = await this.$axios.$post(`card/aktivasi`, data);
-
+        const result = await this.$axios.$post(`card`, data);
         this.btn = true;
         this.$router.push("/success_active");
       } catch (error) {
         console.log(error.response);
         this.btn = true;
         Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: error.response.data.message,
+          icon: "warning",
+          text: error.response.data.message,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -143,7 +142,7 @@ export default {
 
 <style scoped>
 .main {
-  background-image: url(~/assets/image/bg-fiveth.jpg);
+  background-image: url(~/assets/image/bg-main.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

@@ -20,7 +20,7 @@
           </p>
         </div>
 
-        <form @submit.prevent="coba">
+        <form @submit.prevent="submit">
           <!-- Pin Lama -->
           <label for="pin" class="mb-2">Masukkan PIN Lama</label><br />
           <div class="input-group mb-3">
@@ -109,35 +109,38 @@ export default {
     };
   },
   methods: {
-    coba() {
-      this.$router.push("success_pin");
-    },
     async submit(event) {
       //manggil API
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
-      console.log(data);
+      if (data.newPin !== data.pinCheck) {
+        this.btn = true;
+        return Swal.fire({
+          icon: "warning",
+          text: "Konfirmasi PIN salah",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+      data["cnc"] = this.$store.state.card.number;
       try {
-        const result = await this.$axios.$post(`card/changepin`, data);
+        const result = await this.$axios.$put(`card/changePin`, data);
         if (result && result.token) {
           this.btn = true;
           Swal.fire({
-            position: "top-end",
             icon: "success",
-            title: "Berhasil Masuk",
+            text: "Berhasil Masuk",
             showConfirmButton: false,
             timer: 1500,
           });
         }
         // lempar ke laman berikutnya yang di request
-        this.$router.push("cardInfo");
+        this.$router.push("/success_pin");
       } catch (error) {
-        console.log(error.response);
         this.btn = true;
         Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: error.response.data.message,
+          icon: "warning",
+          text: error.response.data.message,
           showConfirmButton: false,
           timer: 1500,
         });

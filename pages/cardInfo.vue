@@ -2,11 +2,17 @@
   <div class="all">
     <div class="container">
       <div class="media mx-auto">
-        <Header />
-        <Card />
-        <Balance />
-        <Menu />
-        <History />
+        <div class="row">
+          <div class="col-12 col-xl-5">
+            <Header />
+            <Card />
+            <Balance />
+            <Menu />
+          </div>
+          <div class="col-12 col-xl-7">
+            <History />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -26,9 +32,6 @@ export default {
 .all {
   padding-bottom: 100px;
   padding-top: 20px;
-}
-.media {
-  width: 40%;
 }
 
 @media screen and (max-width: 576px) {

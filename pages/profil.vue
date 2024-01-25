@@ -14,8 +14,8 @@
         <!-- Profil -->
         <div class="text-center mt-5">
           <img src="~/assets/image/profil.png" alt="" />
-          <h1 class="mx-auto mt-3">Muhammad Fauzan Gunawan</h1>
-          <h6 class="fw-light">001.0920.001</h6>
+          <h1 class="mx-auto mt-3">{{ $store.state.card.name }}</h1>
+          <h6 class="fw-light">{{ $store.state.card.nis }}</h6>
         </div>
 
         <!-- menu -->
@@ -30,7 +30,13 @@
               </div>
               <div class="d-flex flex-column justify-content-center">
                 <p class="text-secondary">Card Number</p>
-                <h5>7276061739</h5>
+                <h5>
+                  {{
+                    $store.state.card.number
+                      ? $store.state.card.number.split("-")[1]
+                      : ""
+                  }}
+                </h5>
               </div>
             </div>
           </div>
@@ -40,7 +46,7 @@
               <div
                 class="historylist d-flex align-items-center justify-content-center me-3"
               >
-                <i class="bi bi-person mt-1 text-primary h3"></i>
+                <i class="bi bi-info-circle mt-1 text-primary h4"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
                 <p class="text-secondary">Status</p>
@@ -54,7 +60,7 @@
               <div
                 class="historylist d-flex align-items-center justify-content-center me-3"
               >
-                <i class="bi bi-person mt-1 text-primary h3"></i>
+                <i class="bi bi-book-half mt-1 text-primary h4"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
                 <p class="text-secondary">Pondok</p>
@@ -109,7 +115,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    number(data) {
+      data.split("-")[1];
+    },
+  },
+};
 </script>
 
 <style scoped>

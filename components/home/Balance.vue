@@ -8,14 +8,25 @@
       </div>
       <div>
         <p class="text-white">Total Balance</p>
-        <h6 class="text-white fw-semibold">Rp 480.000</h6>
+        <h6 class="text-white fw-semibold">
+          Rp {{ nominal($store.state.card.balance) }}
+        </h6>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    nominal(a) {
+      return new Intl.NumberFormat("id-ID", {
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(a);
+    },
+  },
+};
 </script>
 
 <style scoped>

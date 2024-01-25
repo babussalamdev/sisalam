@@ -4,7 +4,7 @@
       <div class="container">
         <!-- Judul -->
         <div class="d-flex justify-content-between">
-          <nuxt-link to="/cardinfo">
+          <nuxt-link to="/cardInfo">
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Top Up</h4>
@@ -19,7 +19,7 @@
           </p>
         </div>
 
-        <form @submit.prevent="coba">
+        <form @submit.prevent="submit">
           <!-- voucher -->
           <div class="mb-3">
             <label for="code" class="mb-2">Kode Voucher</label><br />
@@ -88,31 +88,26 @@ export default {
     };
   },
   methods: {
-    coba() {
-      this.$router.push("success_topup");
-    },
     async submit(event) {
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
+      data["cnc"] = this.$store.state.card.number;
       try {
-        const result = await this.$axios.$post(`card/topup`, data);
+        const result = await this.$axios.$put(`card/topup`, data);
         if (result) {
           Swal.fire({
-            position: "top-end",
             icon: "success",
-            title: "Horee, Top Up Berhasil!",
+            text: result.message,
             showConfirmButton: false,
             timer: 1500,
           });
         }
         this.btn = true;
-        this.$router.push("success_active");
+        this.$router.push("success_topup");
       } catch (error) {
-        console.log(error.response);
         Swal.fire({
-          position: "top-end",
           icon: "error",
-          title: error.response.data.message,
+          text: error.response.data.message,
           showConfirmButton: false,
           timer: 1500,
         });

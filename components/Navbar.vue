@@ -4,7 +4,7 @@
       <div class="menu d-flex justify-content-evenly">
         <!-- menu -->
         <nuxt-link
-          to="/cardinfo"
+          to="/cardInfo"
           exact
           active-class="linkActive"
           class="text-decoration-none"

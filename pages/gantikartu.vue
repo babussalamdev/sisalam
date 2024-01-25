@@ -20,13 +20,26 @@
           </p>
         </div>
 
-        <form @submit.prevent="coba">
+        <form @submit.prevent="submit">
           <div class="mb-4">
-            <label for="number" class="mb-2">Kode Kartu Anda</label>
+            <label for="number" class="mb-2">Kode Kartu Lama</label>
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
               <input
-                name="number"
+                name="oldNumber"
+                type="number"
+                class="form-control"
+                placeholder="12 Digit Angka"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="number" class="mb-2">Kode Kartu Baru</label>
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">CNC</span>
+              <input
+                name="newNumber"
                 type="number"
                 class="form-control"
                 placeholder="12 Digit Angka"
@@ -38,6 +51,7 @@
             <label for="pin" class="mb-2">PIN Anda</label>
             <div class="input-group mb-3">
               <input
+                id="pin"
                 name="pin"
                 :type="type"
                 class="form-control"
@@ -57,7 +71,7 @@
           <div class="mb-3">
             <!-- Route dynamic -->
             <button v-if="btn" class="btn btn-primary" type="submit">
-              Nonaktifkan
+              Ganti Kartu
             </button>
             <button v-else class="btn btn-secondary" type="button" disabled>
               <span
@@ -84,35 +98,29 @@ export default {
     };
   },
   methods: {
-    coba() {
-      this.$router.push("success_card");
-    },
     async submit(event) {
       //manggil API
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
-      console.log(data);
       try {
-        const result = await this.$axios.$post(`card/changecard`, data);
+        const result = await this.$axios.$put(`card/changecard`, data);
         if (result && result.token) {
           this.btn = true;
           Swal.fire({
-            position: "top-end",
             icon: "success",
-            title: "Berhasil Masuk",
+            text: "Berhasil Masuk",
             showConfirmButton: false,
             timer: 1500,
           });
         }
+        localStorage.setItem("card", result.card);
         // lempar ke laman berikutnya yang di request
-        this.$router.push("cardInfo");
+        this.$router.push("/success_card");
       } catch (error) {
-        console.log(error.response);
         this.btn = true;
         Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: error.response.data.message,
+          icon: "warning",
+          text: error.response.data.message,
           showConfirmButton: false,
           timer: 1500,
         });

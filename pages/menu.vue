@@ -4,7 +4,7 @@
       <div class="container">
         <!-- Judul -->
         <div class="d-flex justify-content-between">
-          <nuxt-link to="/cardinfo">
+          <nuxt-link to="/cardInfo">
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Menu</h4>
@@ -50,7 +50,7 @@
             </div>
           </div>
           <!-- list menu -->
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
               <div
                 class="historylist d-flex align-items-center justify-content-center me-3"
@@ -63,6 +63,24 @@
             </div>
             <div class="d-flex align-items-center">
               <nuxt-link to="/gantikartu">
+                <img src="~/assets/image/icon/Right.png" alt="" />
+              </nuxt-link>
+            </div>
+          </div>
+          <!-- blokir Kartu -->
+          <div class="d-flex justify-content-between">
+            <div class="d-flex">
+              <div
+                class="historylist d-flex align-items-center justify-content-center me-3"
+              >
+                <i class="bi bi-credit-card-2-front mt-1 text-primary h4"></i>
+              </div>
+              <div class="d-flex flex-column justify-content-center">
+                <h5>Blokir Kartu</h5>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <nuxt-link to="/blokirkartu">
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </nuxt-link>
             </div>
@@ -101,9 +119,9 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <nuxt-link to="/">
+              <a href="javascript;" @click="logout">
                 <img src="~/assets/image/icon/Right.png" alt="" />
-              </nuxt-link>
+              </a>
             </div>
           </div>
         </div>
@@ -115,6 +133,12 @@
 <script>
 export default {
   layout: "utama",
+  methods: {
+    logout() {
+      localStorage.removeItem("card");
+      // this.$router.push("/");
+    },
+  },
 };
 </script>
 

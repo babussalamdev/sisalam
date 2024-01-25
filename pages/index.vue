@@ -15,7 +15,7 @@
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
               <input
-                name="number"
+                name="cnc"
                 type="number"
                 class="form-control"
                 placeholder="12 Digit Angka"
@@ -59,7 +59,7 @@
           <p class="text-center text-white mx-auto">
             Belum punya kartu?
             <nuxt-link to="/signup" class="text-decoration-none text-warning"
-              >Daftar</nuxt-link
+              >Aktivasi</nuxt-link
             >
           </p>
         </form>
@@ -73,6 +73,7 @@
 import Swal from "sweetalert2";
 
 export default {
+  layout: "verification",
   data() {
     return {
       type: "password",
@@ -85,27 +86,24 @@ export default {
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
       try {
-        const result = await this.$axios.$post(`card/userlogin`, data);
+        const result = await this.$axios.$post(`card/login`, data);
         if (result && result.token) {
           this.btn = true;
           Swal.fire({
-            position: "top-end",
             icon: "success",
-            title: "Berhasil Masuk",
+            text: "Berhasil Masuk",
             showConfirmButton: false,
             timer: 1500,
           });
         }
-        localStorage.setItem("cnc", result.cnc);
+        localStorage.setItem("card", result.data);
         // lempar ke laman berikutnya yang di request
         this.$router.push("cardInfo");
       } catch (error) {
-        console.log(error.response);
         this.btn = true;
         Swal.fire({
-          position: "top-end",
-          icon: "error",
-          title: error.response.data.message,
+          icon: "warning",
+          text: error.response.data.message,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -121,7 +119,7 @@ export default {
 
 <style scoped>
 .main {
-  background-image: url(~/assets/image/bg-fiveth.jpg);
+  background-image: url(~/assets/image/bg-main.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

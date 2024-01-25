@@ -7,7 +7,13 @@
     </div>
     <div>
       <h6 class="text-secondary">Welcome back</h6>
-      <h5 class="fw-semibold">Fauzan Gunawan</h5>
+      <h5 class="fw-semibold">
+        {{
+          $store.state.card.name
+            ? $store.state.card.name.split(" ").slice(0, 2).join(" ")
+            : ""
+        }}
+      </h5>
     </div>
   </div>
 </template>

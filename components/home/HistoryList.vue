@@ -1,112 +1,67 @@
 <template>
   <div class="list">
     <!-- List -->
-    <div class="d-flex justify-content-between mb-3">
+    <div
+      v-for="(data, i) in filterData"
+      :key="i"
+      class="d-flex justify-content-between mb-3"
+    >
       <div class="d-flex">
         <div
-          class="historylist bg-danger d-flex align-items-center justify-content-center me-3"
+          :class="`historylist ${
+            data.location ? 'bg-danger' : 'bg-success'
+          } d-flex align-items-center justify-content-center me-3`"
         >
-          <i class="bi bi-shop mt-1 text-white h3"></i>
+          <i
+            :class="`bi ${
+              data.location ? 'bi-shop' : 'bi-coin'
+            } mt-1 text-white h3`"
+          ></i>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <h5>Invoice Transaksi</h5>
-          <p>January, 22 Jan 2024</p>
+          <h5>{{ data.location ? "Invoice Transaksi" : "Top Up" }}</h5>
+          <p>{{ formDate(data.createdAt) }}</p>
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <h5 class="text-danger">Rp 50.000</h5>
-      </div>
-    </div>
-    <!-- List -->
-    <div class="d-flex justify-content-between mb-3">
-      <div class="d-flex">
-        <div
-          class="historylist bg-success d-flex align-items-center justify-content-center me-3"
-        >
-          <i class="bi bi-coin mt-1 text-white h3"></i>
-        </div>
-        <div class="d-flex flex-column justify-content-center">
-          <h5>Top Up Berhasil</h5>
-          <p>January, 22 Jan 2024</p>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <h5 class="text-success">Rp 20.000</h5>
-      </div>
-    </div>
-    <!-- List -->
-    <div class="d-flex justify-content-between mb-3">
-      <div class="d-flex">
-        <div
-          class="historylist bg-danger d-flex align-items-center justify-content-center me-3"
-        >
-          <i class="bi bi-shop mt-1 text-white h3"></i>
-        </div>
-        <div class="d-flex flex-column justify-content-center">
-          <h5>Invoice Transaksi</h5>
-          <p>January, 22 Jan 2024</p>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <h5 class="text-danger">Rp 50.000</h5>
-      </div>
-    </div>
-    <!-- List -->
-    <div class="d-flex justify-content-between mb-3">
-      <div class="d-flex">
-        <div
-          class="historylist bg-danger d-flex align-items-center justify-content-center me-3"
-        >
-          <i class="bi bi-shop mt-1 text-white h3"></i>
-        </div>
-        <div class="d-flex flex-column justify-content-center">
-          <h5>Invoice Transaksi</h5>
-          <p>January, 22 Jan 2024</p>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <h5 class="text-danger">Rp 30.000</h5>
-      </div>
-    </div>
-    <!-- List -->
-    <div class="d-flex justify-content-between mb-3">
-      <div class="d-flex">
-        <div
-          class="historylist bg-danger d-flex align-items-center justify-content-center me-3"
-        >
-          <i class="bi bi-shop mt-1 text-white h3"></i>
-        </div>
-        <div class="d-flex flex-column justify-content-center">
-          <h5>Invoice Transaksi</h5>
-          <p>January, 22 Jan 2024</p>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <h5 class="text-danger">Rp 30.000</h5>
-      </div>
-    </div>
-    <!-- List -->
-    <div class="d-flex justify-content-between mb-3">
-      <div class="d-flex">
-        <div
-          class="historylist bg-success d-flex align-items-center justify-content-center me-3"
-        >
-          <i class="bi bi-coin mt-1 text-white h3"></i>
-        </div>
-        <div class="d-flex flex-column justify-content-center">
-          <h5>Top Up Berhasil</h5>
-          <p>January, 22 Jan 2024</p>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <h5 class="text-success">Rp 200.000</h5>
+        <h5 :class="` ${data.location ? 'text-danger' : 'text-success'}`">
+          Rp {{ nominal(data.amount) }}
+        </h5>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    filterData() {
+      const data = this.$store.state.history;
+
+      const limit = this.$route.path === "/cardInfo" ? 5 : data.length;
+
+      // potong
+      return data.slice(0, limit);
+    },
+  },
+
+  methods: {
+    formDate(daTe) {
+      const inputDate = daTe;
+      const dateObject = new Date(inputDate);
+      const options = { day: "numeric", month: "long", year: "numeric" };
+      const formattedDate = dateObject.toLocaleDateString("id-ID", options);
+
+      return formattedDate;
+    },
+    nominal(a) {
+      return new Intl.NumberFormat("id-ID", {
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(a);
+    },
+  },
+};
 </script>
 
 <style scoped>

@@ -18,7 +18,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  layout: "verification",
+};
 </script>
 
 <style scoped>

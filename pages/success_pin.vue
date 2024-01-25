@@ -9,7 +9,7 @@
         Kembali ke beranda untuk mengakses fitur kembali
       </p>
       <nuxt-link
-        to="/cardinfo"
+        to="/cardInfo"
         class="btn btn-primary text-decoration-none py-2 px-5 mt-3"
         >Kembali ke Beranda</nuxt-link
       >

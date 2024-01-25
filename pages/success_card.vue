@@ -4,14 +4,16 @@
       class="all d-flex flex-column align-items-center justify-content-center"
     >
       <img src="~/assets/image/success.png" alt="" width="200" />
-      <h1 class="text-primary fw-bold mt-5 text-center">Proses Berhasil!</h1>
+      <h1 class="text-primary fw-bold mt-5 text-center">
+        Kartu telah diganti!
+      </h1>
       <p class="w-75 text-center mb-5">
-        Aktivasi untuk mengakses kembali fitur dari aplikasi ini
+        Balik ke Beranda untuk mengakses kembali fitur dari aplikasi ini
       </p>
       <nuxt-link
-        to="/signup"
+        to="/cardInfo"
         class="btn btn-primary text-decoration-none py-2 px-5 mt-3"
-        >Aktivasi Kartu Baru</nuxt-link
+        >Beranda</nuxt-link
       >
     </div>
   </div>

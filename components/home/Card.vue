@@ -11,11 +11,11 @@
         />
       </div>
       <div class="mb-4">
-        <h2 class="fw-semibold text-white">CNC-8635258717</h2>
+        <h2 class="fw-semibold text-white">{{ $store.state.card.number }}</h2>
       </div>
       <div>
-        <p class="text-white">001.0920.009</p>
-        <h6 class="text-white">Muhammad Fauzan Gunawan</h6>
+        <p class="text-white">{{ $store.state.card.nis }}</p>
+        <h6 class="text-white">{{ $store.state.card.name }}</h6>
       </div>
     </div>
     <div class="fake-card border-none rounded-4 bg-warning"></div>

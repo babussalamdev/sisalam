@@ -129,9 +129,10 @@
               data-bs-parent="#accordionExample"
             >
               <div class="accordion-body">
-                Jika kartu hilang atau dicuri, segera hubungi pihak kantin
-                Pondok Babussalam untuk melaporkan kejadian tersebut. Kartu
-                dapat dinonaktifkan sementara dan digantikan dengan yang baru.
+                Jika kartu hilang atau dicuri, segera Blokir kartu Anda di laman
+                blokir kartu untuk menonaktifkan fungsi kartu. Segera hubungi
+                Bagian terkait untuk mendapatkan kartu baru dan lakukan
+                pertukaran kartu di laman tukar kartu
               </div>
             </div>
           </div>
