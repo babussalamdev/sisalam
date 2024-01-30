@@ -1,7 +1,7 @@
 <template>
   <section id="menu">
     <div class="media mx-auto">
-      <div class="container">
+      <div class="container pb-5">
         <!-- Judul -->
         <div class="d-flex justify-content-between">
           <nuxt-link to="/cardInfo">
@@ -87,7 +87,7 @@
           </div>
         </div>
         <!-- menu -->
-        <div class="p-4 rounded-4 shadow-sm">
+        <div class="p-4 rounded-4 shadow-sm mb-5">
           <!-- list menu -->
           <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
@@ -119,7 +119,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <a href="javascript;" @click="logout">
+              <a @click="logout">
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </a>
             </div>
@@ -136,7 +136,7 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem("card");
-      // this.$router.push("/");
+      this.$router.push("/");
     },
   },
 };

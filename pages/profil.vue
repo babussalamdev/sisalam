@@ -103,9 +103,9 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <nuxt-link to="/">
+              <a @click="logout">
                 <img src="~/assets/image/icon/Right.png" alt="" />
-              </nuxt-link>
+              </a>
             </div>
           </div>
         </div>
@@ -119,6 +119,10 @@ export default {
   methods: {
     number(data) {
       data.split("-")[1];
+    },
+    logout() {
+      localStorage.removeItem("card");
+      this.$router.push("/");
     },
   },
 };
