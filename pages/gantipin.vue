@@ -24,19 +24,8 @@
           <!-- Pin Lama -->
           <label for="pin" class="mb-2">Masukkan PIN Lama</label><br />
           <div class="input-group mb-3">
-            <input
-              id="pin"
-              name="pin"
-              :type="type"
-              class="form-control"
-              placeholder="6 Digit Angka"
-              required
-            />
-            <span
-              @click="showpassword"
-              class="input-group-text"
-              id="basic-addon1"
-            >
+            <input id="pin" name="pin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
+            <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
             </span>
@@ -44,19 +33,8 @@
           <!-- Pin Baru -->
           <label for="pinCheck" class="mb-2">Masukkan PIN Baru</label><br />
           <div class="input-group mb-3">
-            <input
-              id="newPin"
-              name="newPin"
-              :type="type"
-              class="form-control"
-              placeholder="6 Digit Angka"
-              required
-            />
-            <span
-              @click="showpassword"
-              class="input-group-text"
-              id="basic-addon1"
-            >
+            <input id="newPin" name="newPin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
+            <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
             </span>
@@ -64,19 +42,8 @@
           <!-- konfirmasi Pin -->
           <label for="pinCheck" class="mb-2">Ulangi PIN</label><br />
           <div class="input-group mb-4">
-            <input
-              id="pinCheck"
-              name="pinCheck"
-              :type="type"
-              class="form-control"
-              placeholder="Konfirmasi"
-              required
-            />
-            <span
-              @click="showpassword"
-              class="input-group-text"
-              id="basic-addon1"
-            >
+            <input id="pinCheck" name="pinCheck" :type="type" class="form-control" placeholder="Konfirmasi" required />
+            <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
             </span>
@@ -86,10 +53,7 @@
             Simpan PIN
           </button>
           <button v-else class="btn btn-secondary" type="button" disabled>
-            <span
-              class="spinner-border spinner-border-sm"
-              aria-hidden="true"
-            ></span>
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             <span role="status">Loading...</span>
           </button>
         </form>
@@ -159,6 +123,7 @@ export default {
 #gantipin {
   padding-top: 20px;
 }
+
 .fake-image {
   opacity: 0;
 }
@@ -167,6 +132,7 @@ export default {
 h1 {
   font-size: 24px;
 }
+
 p {
   font-size: 14px;
 }
@@ -175,6 +141,7 @@ p {
 input {
   height: 50px;
 }
+
 button {
   width: 100%;
   height: 50px;
@@ -189,6 +156,7 @@ button {
     width: 100% !important;
   }
 }
+
 /* tablet */
 @media screen and (max-width: 991px) {
   .media {

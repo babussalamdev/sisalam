@@ -23,32 +23,14 @@
           <!-- voucher -->
           <div class="mb-3">
             <label for="code" class="mb-2">Kode Voucher</label><br />
-            <input
-              id="code"
-              name="code"
-              type="text"
-              class="form-control"
-              placeholder="10 Digit Angka"
-              required
-            />
+            <input id="code" name="code" type="text" class="form-control" placeholder="10 Digit Angka" required />
           </div>
           <!-- PIN -->
           <div class="mb-5">
             <label for="pin" class="mb-2">Masukkan PIN</label><br />
             <div class="input-group">
-              <input
-                id="pin"
-                name="pin"
-                :type="type"
-                class="form-control"
-                placeholder="6 Digit Angka"
-                required
-              />
-              <span
-                @click="showpassword"
-                class="input-group-text"
-                id="basic-addon1"
-              >
+              <input id="pin" name="pin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
+              <span @click="showpassword" class="input-group-text" id="basic-addon1">
                 <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
                 <i v-else class="bi bi-eye"></i>
               </span>
@@ -56,18 +38,11 @@
           </div>
           <!-- submit -->
           <div class="">
-            <button
-              v-if="btn"
-              type="submit"
-              class="btn btn-primary fw-semibold"
-            >
+            <button v-if="btn" type="submit" class="btn btn-primary fw-semibold">
               Top Up Sekarang
             </button>
             <button v-else class="btn btn-secondary" type="button" disabled>
-              <span
-                class="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              ></span>
+              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
               <span role="status">Loading...</span>
             </button>
           </div>
@@ -127,6 +102,7 @@ export default {
 #topup {
   padding-top: 20px;
 }
+
 .fake-image {
   opacity: 0;
 }
@@ -135,6 +111,7 @@ export default {
 h1 {
   font-size: 24px;
 }
+
 p {
   font-size: 14px;
 }
@@ -143,6 +120,7 @@ p {
 input {
   height: 50px;
 }
+
 button {
   width: 100%;
   height: 50px;
@@ -157,6 +135,7 @@ button {
     width: 100% !important;
   }
 }
+
 /* tablet */
 @media screen and (max-width: 991px) {
   .media {

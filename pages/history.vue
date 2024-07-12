@@ -10,11 +10,7 @@
                 <img src="~/assets/image/icon/Left.png" alt="" />
               </nuxt-link>
               <h4>History</h4>
-              <img
-                class="fake-image"
-                src="~/assets/image/icon/Left.png"
-                alt=""
-              />
+              <img class="fake-image" src="~/assets/image/icon/Left.png" alt="" />
             </div>
 
             <!-- Info balance -->
@@ -32,8 +28,7 @@
               <div class="d-flex justify-content-evenly shadow py-3 rounded-4">
                 <div class="d-flex gap-2">
                   <div
-                    class="userprofile bg-success d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto"
-                  >
+                    class="userprofile bg-success d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto">
                     <i class="bi bi-arrow-down h6 pt-1 text-white fw-bold"></i>
                   </div>
                   <div>
@@ -42,9 +37,7 @@
                   </div>
                 </div>
                 <div class="d-flex gap-2">
-                  <div
-                    class="userprofile bg-danger d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto"
-                  >
+                  <div class="userprofile bg-danger d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto">
                     <i class="bi bi-arrow-up h6 pt-1 text-white fw-bold"></i>
                   </div>
                   <div>
@@ -58,9 +51,7 @@
           <div class="col-12 col-xl-7">
             <div>
               <!-- list history -->
-              <div
-                class="d-flex justify-content-between align-items-center my-4"
-              >
+              <div class="d-flex justify-content-between align-items-center my-4">
                 <h5>Last Transaction</h5>
               </div>
               <HistoryList />
@@ -119,18 +110,22 @@ export default {
   padding-top: 20px;
   margin-bottom: 100px;
 }
+
 .col-xl-7 {
   height: 90vh;
   overflow-y: scroll;
 }
+
 /* balance */
 .info-balance h6 {
   font-size: 14px;
   opacity: 0.7;
 }
+
 .info-balance h1 {
   font-size: 36px;
 }
+
 .info-balance p {
   font-size: 14px;
   color: #046edb;
@@ -143,6 +138,7 @@ export default {
   border-radius: 30px;
   padding-top: 5px;
 }
+
 .userprofile-p {
   margin-bottom: 0 !important;
   font-size: 12px;
@@ -153,9 +149,11 @@ h5 {
   font-size: 18px;
   margin-bottom: 0 !important;
 }
+
 h4 {
   margin-bottom: 0 !important;
 }
+
 .fake-image {
   opacity: 0;
 }
@@ -165,11 +163,13 @@ h4 {
     width: 100% !important;
   }
 }
+
 /* tablet */
 @media screen and (max-width: 991px) {
   .media {
     width: 70%;
   }
+
   .col-xl-7 {
     height: max-content;
     overflow-y: visible;

@@ -2,7 +2,7 @@ let development = process.env.NODE_ENV !== 'production'
 export default {
   server: {
     host: "0.0.0.0",
-    port: 1234
+    port: 7020
   },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -41,6 +41,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/bootstrap.js', mode: 'client' },
+    { src: '~/plugins/axios-instances.js' },
+    { src: '~/plugins/cookies.client.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -64,12 +66,50 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: development ? 'http://192.168.10.2:5000/market' : 'https://apidauroh.babussalam.sch.id/market',
+    baseURL: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
+  },
+  publicRuntimeConfig: {
+    axios: {
+      baseURL: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
+    },
+    base: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
+    card: development ? process.env.API_CARD_DEV : process.env.API_CARD_PRO,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
+  router: {
+    middleware: ['auth']
+  },
+  auth: {
+    strategies: {
+      local: {
+        scheme: 'refresh',
+        token: {
+          property: 'IdToken',
+          maxAge: 15,
+          global: true,
+        },
+        refreshToken: {
+          property: 'RefreshToken',
+          data: 'RefreshToken',
+          maxAge: false
+        },
+        endpoints: {
+          login: { url: '/signin-account', method: 'post' },
+          refresh: { url: '/refresh-token', method: 'post' },
+          user: { url: '/get-account', method: 'get' },
+          logout: { url: '/signout-account', method: 'post' }
+        },
+      }
+    },
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
+      home: '/'
+    }
+  }
 
 }

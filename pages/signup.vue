@@ -1,9 +1,7 @@
 <template>
   <div class="main">
     <div class="container">
-      <div
-        class="login d-block d-md-flex justify-content-center align-items-center"
-      >
+      <div class="login d-block d-md-flex justify-content-center align-items-center">
         <div class="login-card">
           <form @submit.prevent="submit" class="mx-auto">
             <div class="d-flex justify-content-center mb-5">
@@ -17,43 +15,21 @@
             <div class="mb-4">
               <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">CNC</span>
-                <input
-                  name="cnc"
-                  type="number"
-                  class="form-control"
-                  placeholder="12 Digit Angka"
-                  required
-                />
+                <input name="cnc" type="number" class="form-control" placeholder="12 Digit Angka" required />
               </div>
             </div>
             <!-- NISS -->
             <div class="mb-4">
               <div class="input-group">
                 <span class="input-group-text" id="basic-addon1">NISS</span>
-                <input
-                  name="niss"
-                  type="text"
-                  class="form-control"
-                  placeholder="10 Digit Angka"
-                  required
-                />
+                <input name="niss" type="text" class="form-control" placeholder="10 Digit Angka" required />
               </div>
             </div>
             <div class="mb-4">
               <!-- pass -->
               <div class="input-group mb-4">
-                <input
-                  name="pin"
-                  :type="type"
-                  class="form-control"
-                  placeholder="Password Baru"
-                  required
-                />
-                <span
-                  @click="showpassword"
-                  class="input-group-text"
-                  id="basic-addon1"
-                >
+                <input name="pin" :type="type" class="form-control" placeholder="Password Baru" required />
+                <span @click="showpassword" class="input-group-text" id="basic-addon1">
                   <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
                   <i v-else class="bi bi-eye"></i>
                 </span>
@@ -62,18 +38,8 @@
               <!-- konfirmasi password -->
               <div class="mb-4">
                 <div class="input-group">
-                  <input
-                    name="confirm"
-                    :type="type"
-                    class="form-control"
-                    placeholder="Konfirmasi Password"
-                    required
-                  />
-                  <span
-                    @click="showpassword"
-                    class="input-group-text"
-                    id="basic-addon1"
-                  >
+                  <input name="confirm" :type="type" class="form-control" placeholder="Konfirmasi Password" required />
+                  <span @click="showpassword" class="input-group-text" id="basic-addon1">
                     <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
                     <i v-else class="bi bi-eye"></i>
                   </span>
@@ -87,10 +53,7 @@
                 Aktivasi
               </button>
               <button v-else class="btn btn-secondary" type="button" disabled>
-                <span
-                  class="spinner-border spinner-border-sm"
-                  aria-hidden="true"
-                ></span>
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status">Loading...</span>
               </button>
             </div>

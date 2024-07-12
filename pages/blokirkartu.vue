@@ -20,14 +20,8 @@
             </h4>
           </div>
           <div>
-            <input
-              v-model="blok"
-              class="form-check-input mb-4"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckChecked"
-              checked
-            />
+            <input v-model="blok" class="form-check-input mb-4" type="checkbox" role="switch"
+              id="flexSwitchCheckChecked" checked />
           </div>
         </div>
         <div class="card bg-gradient shadow">
@@ -70,19 +64,24 @@ export default {
 #blokir {
   padding-top: 20px;
 }
+
 .fake-image {
   opacity: 0;
 }
+
 input {
   height: 25px;
   width: 50px !important;
 }
+
 h4 {
   margin-left: -40px;
 }
+
 .block {
   color: grey;
 }
+
 p {
   font-size: 16px;
   margin-bottom: 0 !important;

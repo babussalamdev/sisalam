@@ -23,9 +23,7 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
-              <div
-                class="historylist d-flex align-items-center justify-content-center me-3"
-              >
+              <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-person mt-1 text-primary h3"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
@@ -43,9 +41,7 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
-              <div
-                class="historylist d-flex align-items-center justify-content-center me-3"
-              >
+              <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-info-circle mt-1 text-primary h4"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
@@ -57,9 +53,7 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between">
             <div class="d-flex">
-              <div
-                class="historylist d-flex align-items-center justify-content-center me-3"
-              >
+              <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-book-half mt-1 text-primary h4"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
@@ -75,9 +69,7 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
-              <div
-                class="historylist d-flex align-items-center justify-content-center me-3"
-              >
+              <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-question-circle mt-1 text-primary h4"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
@@ -93,9 +85,7 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between">
             <div class="d-flex">
-              <div
-                class="historylist d-flex align-items-center justify-content-center me-3"
-              >
+              <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-box-arrow-left mt-1 text-primary h4"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
@@ -134,6 +124,7 @@ export default {
   padding-bottom: 100px;
   padding-top: 20px;
 }
+
 .fake-image {
   opacity: 0;
 }
@@ -146,18 +137,22 @@ export default {
   border-radius: 30px;
   padding-top: 5px;
 }
+
 h5 {
   margin-bottom: 0 !important;
   margin-top: 4px;
   font-size: 16px;
 }
+
 h1 {
   font-size: 18px;
   width: 70%;
 }
+
 h6 {
   font-size: 12px;
 }
+
 p {
   margin-bottom: 0 !important;
   font-size: 12px;
@@ -172,6 +167,7 @@ p {
     width: 100% !important;
   }
 }
+
 /* tablet */
 @media screen and (max-width: 991px) {
   .media {

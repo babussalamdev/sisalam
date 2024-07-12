@@ -13,22 +13,12 @@
         <div class="accordion mt-4" id="accordionExample">
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
                 Apa itu Card Babussalam?
               </button>
             </h2>
-            <div
-              id="collapseOne"
-              class="accordion-collapse collapse show"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Card Babussalam adalah sistem cashless yang memudahkan transaksi
                 di kantin Pondok Babussalam. Dengan menggunakan kartu ini,
@@ -39,22 +29,12 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo"
-              >
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 Bagaimana cara melakukan aktivasi kartu?
               </button>
             </h2>
-            <div
-              id="collapseTwo"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Aktivasi kartu dapat dilakukan melalui web Card Babussalam
                 dengan menggunakan fitur yang disediakan.
@@ -63,22 +43,12 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 Bagaimana cara top up voucher ke kartu?
               </button>
             </h2>
-            <div
-              id="collapseThree"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Pengguna dapat melakukan top up voucher melalui web Card
                 Babussalam. Caranya adalah dengan mengakses fitur top up dan
@@ -88,22 +58,12 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseFour"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
                 Bagaimana cara melihat saldo kartu?
               </button>
             </h2>
-            <div
-              id="collapseFour"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Saldo kartu dapat dilihat melalui web Card Babussalam dengan
                 masuk ke akun pengguna.
@@ -112,22 +72,12 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseFive"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseThree">
                 Apa yang harus dilakukan jika kartu hilang atau dicuri?
               </button>
             </h2>
-            <div
-              id="collapseFive"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Jika kartu hilang atau dicuri, segera Blokir kartu Anda di laman
                 blokir kartu untuk menonaktifkan fungsi kartu. Segera hubungi
@@ -138,23 +88,13 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseSix"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseThree">
                 Apakah Card Babussalam dapat digunakan di semua outlet di Pondok
                 Babussalam?
               </button>
             </h2>
-            <div
-              id="collapseSix"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Kartu dapat digunakan di semua outlet yang telah bekerja sama
                 dengan sistem Card Babussalam di Pondok Babussalam.
@@ -163,22 +103,12 @@
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseSeven"
-                aria-expanded="false"
-                aria-controls="collapseSeven"
-              >
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
                 Bagaimana cara menghubungi dukungan pelanggan Card Babussalam?
               </button>
             </h2>
-            <div
-              id="collapseSeven"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
               <div class="accordion-body">
                 Untuk bantuan dan pertanyaan lebih lanjut, Anda dapat
                 menghubungi dukungan pelanggan Card Babussalam melalui kontak
@@ -201,6 +131,7 @@ export default {};
 #faq {
   padding-top: 20px;
 }
+
 .fake-image {
   opacity: 0;
 }
@@ -214,6 +145,7 @@ export default {};
     width: 100% !important;
   }
 }
+
 /* tablet */
 @media screen and (max-width: 991px) {
   .media {
