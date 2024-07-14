@@ -1,5 +1,5 @@
 <template>
-  <div class="balance py-3 px-4 rounded-4 mt-3 shadow">
+  <div class="balance py-3 px-4 rounded-4 mt-3 shadow" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
     <div class="d-flex">
       <div
         class="logobalance d-flex align-items-center justify-content-center me-3"
@@ -9,7 +9,7 @@
       <div>
         <p class="text-white">Total Balance</p>
         <h6 class="text-white fw-semibold">
-          Rp {{ nominal($store.state.card.balance) }}
+          Rp {{ $auth.user.cnc !== '-' ? nominal(card.Balance) : '-'}}
         </h6>
       </div>
     </div>
@@ -17,7 +17,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState('index', ['card'])
+  },
   methods: {
     nominal(a) {
       return new Intl.NumberFormat("id-ID", {
@@ -30,6 +34,9 @@ export default {
 </script>
 
 <style scoped>
+.greyscale {
+  filter: grayscale(100%);
+}
 .balance {
   background-image: url(~/assets/image/balance.png);
   background-size: cover;

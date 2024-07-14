@@ -14,8 +14,8 @@
         <!-- Profil -->
         <div class="text-center mt-5">
           <img src="~/assets/image/profil.png" alt="" />
-          <h1 class="mx-auto mt-3">{{ $store.state.card.name }}</h1>
-          <h6 class="fw-light">{{ $store.state.card.nis }}</h6>
+          <h1 class="mx-auto mt-3">{{ $auth.user.name }}</h1>
+          <h6 class="fw-light">{{ $auth.user.Nis }}</h6>
         </div>
 
         <!-- menu -->
@@ -23,16 +23,16 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
-              <div class="historylist d-flex align-items-center justify-content-center me-3">
-                <i class="bi bi-person mt-1 text-primary h3"></i>
+              <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
+                <i class="bi bi-credit-card-2-back-fill mt-1 text-white h5"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
                 <p class="text-secondary">Card Number</p>
                 <h5>
                   {{
-                    $store.state.card.number
-                      ? $store.state.card.number.split("-")[1]
-                      : ""
+                    $auth.user['cnc']
+                      ? $auth.user.cnc.split("-")[1]
+                      : '-'
                   }}
                 </h5>
               </div>
@@ -41,24 +41,24 @@
           <!-- list menu -->
           <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
-              <div class="historylist d-flex align-items-center justify-content-center me-3">
-                <i class="bi bi-info-circle mt-1 text-primary h4"></i>
+              <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
+                <i class="bi bi-book-half mt-1 text-white h5"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
-                <p class="text-secondary">Status</p>
-                <h5>Santri Aktif</h5>
+                <p class="text-secondary">Jenjang</p>
+                <h5>{{ $auth.user.Program }}</h5>
               </div>
             </div>
           </div>
           <!-- list menu -->
           <div class="d-flex justify-content-between">
             <div class="d-flex">
-              <div class="historylist d-flex align-items-center justify-content-center me-3">
-                <i class="bi bi-book-half mt-1 text-primary h4"></i>
+              <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
+                <i class="bi bi-info-circle mt-1 text-white h5"></i>
               </div>
               <div class="d-flex flex-column justify-content-center">
-                <p class="text-secondary">Pondok</p>
-                <h5>Babussalam Pondok</h5>
+                <p class="text-secondary">Status</p>
+                <h5>Santri Aktif</h5>
               </div>
             </div>
           </div>
@@ -67,7 +67,24 @@
         <!-- menu -->
         <div class="p-4 rounded-4 shadow-sm">
           <!-- list menu -->
-          <div class="d-flex justify-content-between mb-4">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex">
+              <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
+                <i class="bi bi-lock-fill mt-1 text-white h5"></i>
+              </div>
+              <div class="d-flex flex-column justify-content-center">
+                <h5>Ganti Password</h5>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <nuxt-link to="/menukartu/gantipassword">
+                <img src="~/assets/image/icon/Right.png" alt="" />
+              </nuxt-link>
+            </div>
+          </div>
+
+          <!-- list menu -->
+          <!-- <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
               <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-question-circle mt-1 text-primary h4"></i>
@@ -81,9 +98,9 @@
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </nuxt-link>
             </div>
-          </div>
+          </div> -->
           <!-- list menu -->
-          <div class="d-flex justify-content-between">
+          <!-- <div class="d-flex justify-content-between">
             <div class="d-flex">
               <div class="historylist d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-box-arrow-left mt-1 text-primary h4"></i>
@@ -97,7 +114,7 @@
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </a>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -122,7 +139,7 @@ export default {
 /* all */
 #menu {
   padding-bottom: 100px;
-  padding-top: 20px;
+  /* padding-top: 20px; */
 }
 
 .fake-image {
@@ -133,7 +150,6 @@ export default {
 .historylist {
   width: 40px;
   height: 40px;
-  background-color: rgb(216, 236, 255);
   border-radius: 30px;
   padding-top: 5px;
 }

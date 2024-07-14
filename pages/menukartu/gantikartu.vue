@@ -1,10 +1,22 @@
 <template>
   <section id="gantikartu">
-    <div class="media mx-auto">
+    <div v-if="confirmation" class="container">
+      <div class="all d-flex flex-column align-items-center justify-content-center">
+        <img src="~/assets/image/success.png" alt="" width="200" />
+        <h1 class="text-primary fw-bold mt-5 text-center">
+          Kartu telah diganti!
+        </h1>
+        <p class="w-75 text-center mb-5">
+          Balik ke laman Card untuk mengakses kembali fitur dari aplikasi ini
+        </p>
+        <nuxt-link to="/card" class="btn btn-primary text-decoration-none py-2 px-5 mt-3">Card</nuxt-link>
+      </div>
+    </div>
+    <div v-else class="media mx-auto">
       <div class="container">
         <!-- Judul -->
         <div class="d-flex justify-content-between">
-          <nuxt-link to="/menu">
+          <nuxt-link to="/menukartu">
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Tukar Kartu</h4>
@@ -25,14 +37,14 @@
             <label for="number" class="mb-2">Kode Kartu Lama</label>
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
-              <input name="oldNumber" type="number" class="form-control" placeholder="12 Digit Angka" required />
+              <input name="oldcnc" type="number" class="form-control" placeholder="10 Digit Angka" required />
             </div>
           </div>
           <div class="mb-4">
             <label for="number" class="mb-2">Kode Kartu Baru</label>
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
-              <input name="newNumber" type="number" class="form-control" placeholder="12 Digit Angka" required />
+              <input name="newcnc" type="number" class="form-control" placeholder="10 Digit Angka" required />
             </div>
           </div>
           <div class="mb-5">
@@ -69,6 +81,7 @@ export default {
     return {
       type: "password",
       btn: true,
+      confirmation: false
     };
   },
   methods: {
@@ -76,25 +89,22 @@ export default {
       //manggil API
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
+      const ocnc = data.oldcnc
+      const ncnc = data.newcnc
+      delete data.newcnc
+      delete data.oldcnc
+      console.log(data, ocnc, ncnc)
       try {
-        const result = await this.$axios.$put(`card/changecard`, data);
-        if (result && result.token) {
+        const result = await this.$apiCard.$put(`put-card?method=changecard&oldcnc=CNC-${ocnc}&newcnc=CNC-${ncnc}`, data);
+        if (result) {
           this.btn = true;
-          Swal.fire({
-            icon: "success",
-            text: "Berhasil Masuk",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          this.confirmation = true
         }
-        localStorage.setItem("card", result.card);
-        // lempar ke laman berikutnya yang di request
-        this.$router.push("/success_card");
       } catch (error) {
         this.btn = true;
         Swal.fire({
           icon: "warning",
-          text: error.response.data.message,
+          text: error,
           showConfirmButton: false,
           timer: 1500,
         });
@@ -109,11 +119,15 @@ export default {
 </script>
 
 <style scoped>
-/* all */
-#gantikartu {
-  padding-top: 20px;
-}
+@media screen and (max-width: 576px) {
+  .container {
+    height: 100vh;
+  }
 
+  .all {
+    height: 100%;
+  }
+}
 .fake-image {
   opacity: 0;
 }

@@ -4,7 +4,7 @@
       <div class="container">
         <!-- Judul -->
         <div class="d-flex justify-content-between">
-          <nuxt-link to="/cardInfo">
+          <nuxt-link to="/card">
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Top Up</h4>
@@ -19,11 +19,11 @@
           </p>
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" ref="formData">
           <!-- voucher -->
           <div class="mb-3">
             <label for="code" class="mb-2">Kode Voucher</label><br />
-            <input id="code" name="code" type="text" class="form-control" placeholder="10 Digit Angka" required />
+            <input id="code" name="code" type="number" class="form-control" placeholder="10 Digit Angka" required />
           </div>
           <!-- PIN -->
           <div class="mb-5">
@@ -66,27 +66,26 @@ export default {
     async submit(event) {
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
-      data["cnc"] = this.$store.state.card.number;
       try {
-        const result = await this.$axios.$put(`card/topup`, data);
+        const result = await this.$apiCard.$put(`put-card?method=topup`, data);
         if (result) {
+          this.btn = true;
           Swal.fire({
             icon: "success",
             text: result.message,
             showConfirmButton: false,
             timer: 1500,
           });
+          this.$refs.formData.reset()
         }
-        this.btn = true;
-        this.$router.push("success_topup");
       } catch (error) {
+        this.btn = true;
         Swal.fire({
           icon: "error",
-          text: error.response.data.message,
+          text: error,
           showConfirmButton: false,
           timer: 1500,
         });
-        this.btn = true;
       }
     },
     showpassword() {
@@ -100,7 +99,7 @@ export default {
 <style scoped>
 /* all */
 #topup {
-  padding-top: 20px;
+  /* padding-top: 20px; */
 }
 
 .fake-image {

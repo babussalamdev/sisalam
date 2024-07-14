@@ -1,6 +1,7 @@
 export default {
     async renderPage({ commit }, data) {
-      const result = await this.$apiBase.$get('get-card?method=single&cnc=CNC-5499431604')
+      const cnc = this.$auth.user.cnc
+      const result = await this.$apiCard.$get(`get-card?method=&cnc=${cnc}`)
       commit('setRender', result)
     },
 }

@@ -4,7 +4,7 @@
       <div class="container">
         <!-- Judul -->
         <div class="d-flex justify-content-between mb-4">
-          <nuxt-link to="/menu">
+          <nuxt-link to="/menukartu">
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Blokir Kartu</h4>
@@ -41,19 +41,22 @@
 
 <script>
 import Swal from "sweetalert2";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
+  async asyncData({ store }) {
+    store.dispatch('blokir/renderPage')
+  },
   computed: {
-    ...mapGetters(["getStatus"]),
+    ...mapGetters('blokir', ['getStatus']),
     blok: {
       get() {
         const condition = this.getStatus === "active" ? true : false;
         return condition;
       },
       set(value) {
-        const condition = value ? "active" : "block";
-        this.$store.dispatch("setStatus", condition);
+        const condition = value ? "active" : "blokir";
+        this.$store.dispatch('blokir/setStatus', condition);
       },
     },
   },
@@ -61,10 +64,6 @@ export default {
 </script>
 
 <style scoped>
-#blokir {
-  padding-top: 20px;
-}
-
 .fake-image {
   opacity: 0;
 }

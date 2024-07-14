@@ -50,7 +50,8 @@ export default {
     dirs: [
       '~/components',
       '~/components/utama',
-      '~/components/home'
+      '~/components/home',
+      '~/components/history',
     ]
   },
 
@@ -108,7 +109,7 @@ export default {
       login: '/login',
       logout: '/login',
       callback: '/login',
-      home: '/'
+      home: false
     }
   }
 

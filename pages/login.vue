@@ -36,10 +36,10 @@
               </button>
             </div>
             <!-- have account -->
-            <h6 class="text-center mx-auto fw-normal">
+            <!-- <h6 class="text-center mx-auto fw-normal">
               Belum punya kartu?
               <nuxt-link to="/signup" class="text-decoration-none">Aktivasi</nuxt-link>
-            </h6>
+            </h6> -->
           </form>
         </div>
       </div>

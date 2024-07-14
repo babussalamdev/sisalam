@@ -1,11 +1,20 @@
 <template>
   <div class="menu d-flex justify-content-evenly mt-4">
     <!-- menu -->
-    <nuxt-link to="/topup" class="text-decoration-none">
+    <nuxt-link v-if="$auth.user.cnc === '-'" to="/card/aktivasikartu" class="text-decoration-none">
       <div class="d-flex flex-column text-center bg-primaryr">
-        <div
-          class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto"
-        >
+        <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
+          <i class="bi bi-postcard-fill h4 pt-1 text-white fw-bold"></i>
+        </div>
+        <div>
+          <p class="fw-semibold">Aktivasi</p>
+        </div>
+      </div>
+    </nuxt-link>
+    <!-- menu -->
+    <nuxt-link to="/topup" class="text-decoration-none" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
+      <div class="d-flex flex-column text-center bg-primaryr">
+        <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
           <i class="bi bi-wallet-fill h4 pt-1 text-white fw-bold"></i>
         </div>
         <div>
@@ -14,7 +23,7 @@
       </div>
     </nuxt-link>
     <!-- menu -->
-    <nuxt-link to="/profil" class="text-decoration-none">
+    <!-- <nuxt-link to="/profil" class="text-decoration-none">
       <div class="d-flex flex-column text-center bg-primaryr">
         <div
           class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto"
@@ -25,13 +34,11 @@
           <p class="fw-semibold">Profil</p>
         </div>
       </div>
-    </nuxt-link>
+    </nuxt-link> -->
     <!-- menu -->
-    <nuxt-link to="/history" class="text-decoration-none">
+    <nuxt-link to="/history" class="text-decoration-none" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
       <div class="d-flex flex-column text-center bg-primaryr">
-        <div
-          class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto"
-        >
+        <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
           <i class="bi bi-hourglass-split h4 pt-1 text-white fw-bold"></i>
         </div>
         <div>
@@ -40,7 +47,7 @@
       </div>
     </nuxt-link>
     <!-- menu -->
-    <nuxt-link to="/menu" class="text-decoration-none">
+    <!-- <nuxt-link to="/menu" class="text-decoration-none">
       <div class="d-flex flex-column text-center bg-primaryr">
         <div
           class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto"
@@ -51,7 +58,7 @@
           <p class="fw-semibold">Menu</p>
         </div>
       </div>
-    </nuxt-link>
+    </nuxt-link> -->
   </div>
 </template>
 
@@ -60,6 +67,11 @@ export default {};
 </script>
 
 <style scoped>
+.greyscale {
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
 .userprofile {
   width: 48px;
   height: 48px;
@@ -67,6 +79,7 @@ export default {};
   border-radius: 30px;
   padding-top: 5px;
 }
+
 p {
   margin-bottom: 0 !important;
   font-size: 12px;

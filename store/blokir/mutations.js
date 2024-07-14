@@ -1,6 +1,8 @@
 export default {
   setRender(state, value) {
     state.card = value.database[0]
-    state.cardLog = value.logs
   },
+  setStatus(state, value) {
+    state.card.Status = value.Status
+  }
 }

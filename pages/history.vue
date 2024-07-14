@@ -6,7 +6,7 @@
           <div class="col-12 col-xl-5">
             <!-- Judul -->
             <div class="d-flex justify-content-between">
-              <nuxt-link to="/cardInfo">
+              <nuxt-link to="/card">
                 <img src="~/assets/image/icon/Left.png" alt="" />
               </nuxt-link>
               <h4>History</h4>
@@ -17,35 +17,15 @@
             <div class="info-balance text-center mt-5">
               <h6 class="fw-light">Your Balance</h6>
               <h1 class="fw-semibold">
-                Rp {{ nominal($store.state.card.balance) }}
+                Rp {{ nominal(card.Balance) }}
               </h1>
-              <p class="fw-light">{{ $store.state.card.number }}</p>
+              <p class="fw-light">{{ card.SK }}</p>
             </div>
 
             <!-- history -->
             <div class="history mt-4">
               <!-- summary account -->
-              <div class="d-flex justify-content-evenly shadow py-3 rounded-4">
-                <div class="d-flex gap-2">
-                  <div
-                    class="userprofile bg-success d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto">
-                    <i class="bi bi-arrow-down h6 pt-1 text-white fw-bold"></i>
-                  </div>
-                  <div>
-                    <p class="userprofile-p fw-semibold">Income</p>
-                    <h6 class="text-success">{{ nominal(topup) }}</h6>
-                  </div>
-                </div>
-                <div class="d-flex gap-2">
-                  <div class="userprofile bg-danger d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto">
-                    <i class="bi bi-arrow-up h6 pt-1 text-white fw-bold"></i>
-                  </div>
-                  <div>
-                    <p class="userprofile-p fw-semibold">Expense</p>
-                    <h6 class="text-danger">{{ nominal(invoice) }}</h6>
-                  </div>
-                </div>
-              </div>
+              <BlokHistory />
             </div>
           </div>
           <div class="col-12 col-xl-7">
@@ -64,36 +44,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   layout: "utama",
-
-  computed: {
-    invoice() {
-      let inv = 0;
-
-      this.$store.state.history.forEach((item) => {
-        // Memeriksa kondisi dan menambahkan nilai sesuai ke kategori yang benar
-        if (item.location) {
-          inv += parseInt(item.amount);
-        }
-      });
-
-      return inv;
-    },
-    topup() {
-      let top = 0;
-
-      this.$store.state.history.forEach((item) => {
-        // Memeriksa kondisi dan menambahkan nilai sesuai ke kategori yang benar
-        if (!item.location) {
-          top += parseInt(item.amount);
-        }
-      });
-
-      return top;
-    },
+  async asyncData({ store }) {
+    store.dispatch('index/renderPage')
   },
-
+  computed: {
+    ...mapState('index', ['card', 'cardLog']),
+  },
   methods: {
     nominal(a) {
       return new Intl.NumberFormat("id-ID", {
@@ -107,7 +66,7 @@ export default {
 
 <style scoped>
 #history {
-  padding-top: 20px;
+  /* padding-top: 20px; */
   margin-bottom: 100px;
 }
 

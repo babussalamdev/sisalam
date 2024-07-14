@@ -5,12 +5,12 @@
     >
       <i class="bi bi-person-fill pt-1 h1 text-white fw-bold"></i>
     </div>
-    <div>
-      <h6 class="text-secondary">Welcome back</h6>
-      <h5 class="fw-semibold">
+    <div class="d-flex flex-column justify-content-center gap-1">
+      <h6 class="text-secondary mb-0">Welcome back</h6>
+      <h5 class="fw-semibold mb-0 text-capitalize">
         {{
-          $store.state.card.name
-            ? $store.state.card.name.split(" ").slice(0, 2).join(" ")
+          card.Name
+            ? card.Name.split(" ").slice(0, 2).join(" ")
             : ""
         }}
       </h5>
@@ -19,7 +19,12 @@
 </template>
 
 <script>
-export default {};
+import { mapState } from 'vuex'
+export default {
+  computed: {
+    ...mapState('index', ['card'])
+  },
+};
 </script>
 
 <style scoped>

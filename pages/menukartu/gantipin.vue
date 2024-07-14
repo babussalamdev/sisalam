@@ -1,10 +1,21 @@
 <template>
   <section id="gantipin">
-    <div class="media mx-auto">
+    <div v-if="confirmation" class="container">
+      <div class="all d-flex flex-column align-items-center justify-content-center">
+        <img src="~/assets/image/success.png" alt="" width="200" />
+        <h1 class="text-primary fw-bold mt-5">Perubahan Berhasil!</h1>
+        <p class="w-75 text-center mb-5">
+          Kembali ke Card untuk mengakses fitur kembali
+        </p>
+        <nuxt-link to="/card" class="btn btn-primary text-decoration-none py-2 px-5 mt-3">Kembali ke
+          Card</nuxt-link>
+      </div>
+    </div>
+    <div v-else class="media mx-auto">
       <div class="container">
         <!-- Judul -->
         <div class="d-flex justify-content-between">
-          <nuxt-link to="/menu">
+          <nuxt-link to="/menukartu">
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Ganti PIN</h4>
@@ -16,7 +27,7 @@
           <h1 class="fw-semibold">Buat PIN Baru</h1>
           <p class="fw-light text-secondary">
             untuk mengamankan akunmu, ganti <br />
-            dengan password yang lebih kuat
+            dengan pin yang lebih kuat
           </p>
         </div>
 
@@ -33,7 +44,7 @@
           <!-- Pin Baru -->
           <label for="pinCheck" class="mb-2">Masukkan PIN Baru</label><br />
           <div class="input-group mb-3">
-            <input id="newPin" name="newPin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
+            <input id="newPin" name="newpin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
             <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
@@ -42,7 +53,7 @@
           <!-- konfirmasi Pin -->
           <label for="pinCheck" class="mb-2">Ulangi PIN</label><br />
           <div class="input-group mb-4">
-            <input id="pinCheck" name="pinCheck" :type="type" class="form-control" placeholder="Konfirmasi" required />
+            <input id="pinCheck" name="pincheck" :type="type" class="form-control" placeholder="Konfirmasi" required />
             <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
@@ -70,6 +81,7 @@ export default {
     return {
       type: "password",
       btn: true,
+      confirmation: false
     };
   },
   methods: {
@@ -77,7 +89,7 @@ export default {
       //manggil API
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
-      if (data.newPin !== data.pinCheck) {
+      if (data.newpin !== data.pincheck) {
         this.btn = true;
         return Swal.fire({
           icon: "warning",
@@ -86,20 +98,15 @@ export default {
           timer: 1500,
         });
       }
-      data["cnc"] = this.$store.state.card.number;
+      console.log(data)
+      delete data.pincheck
       try {
-        const result = await this.$axios.$put(`card/changePin`, data);
-        if (result && result.token) {
+        const cnc = this.$auth.user.cnc
+        const result = await this.$apiCard.$put(`put-card?method=changepin&cnc=${cnc}`, data);
+        if (result) {
           this.btn = true;
-          Swal.fire({
-            icon: "success",
-            text: "Berhasil Masuk",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          this.confirmation = true
         }
-        // lempar ke laman berikutnya yang di request
-        this.$router.push("/success_pin");
       } catch (error) {
         this.btn = true;
         Swal.fire({
@@ -119,11 +126,15 @@ export default {
 </script>
 
 <style scoped>
-/* all */
-#gantipin {
-  padding-top: 20px;
-}
+@media screen and (max-width: 576px) {
+  .container {
+    height: 100vh;
+  }
 
+  .all {
+    height: 100%;
+  }
+}
 .fake-image {
   opacity: 0;
 }

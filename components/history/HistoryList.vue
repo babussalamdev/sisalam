@@ -1,31 +1,21 @@
 <template>
   <div class="list">
     <!-- List -->
-    <div
-      v-for="(data, i) in filterData"
-      :key="i"
-      class="d-flex justify-content-between mb-3"
-    >
+    <div v-for="(data, i) in filterData" :key="i" class="d-flex justify-content-between mb-3">
       <div class="d-flex">
-        <div
-          :class="`historylist ${
-            data.location ? 'bg-danger' : 'bg-success'
-          } d-flex align-items-center justify-content-center me-3`"
-        >
-          <i
-            :class="`bi ${
-              data.location ? 'bi-shop' : 'bi-coin'
-            } mt-1 text-white h3`"
-          ></i>
+        <div :class="`historylist ${data.SK.split('#')[0] === 'inv' ? 'bg-danger' : 'bg-success'
+          } d-flex align-items-center justify-content-center me-3`">
+          <i :class="`bi ${data.Location ? 'bi-shop' : 'bi-coin'
+            } mt-1 text-white h3`"></i>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <h5>{{ data.location ? "Invoice Transaksi" : "Top Up" }}</h5>
-          <p>{{ formDate(data.createdAt) }}</p>
+          <h5>{{ data.SK.split('#')[0] === 'inv' ? "Invoice Transaksi" : "Top Up" }}</h5>
+          <p>{{ formDate(data.CreatedAt) }}</p>
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <h5 :class="` ${data.location ? 'text-danger' : 'text-success'}`">
-          Rp {{ nominal(data.amount) }}
+        <h5 :class="` ${data.SK.split('#')[0] === 'inv' ? 'text-danger' : 'text-success'}`">
+          Rp {{ nominal(data.Amount) }}
         </h5>
       </div>
     </div>
@@ -33,14 +23,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   computed: {
+    ...mapState('index', ['cardLog']),
     filterData() {
-      const data = this.$store.state.history;
-
-      const limit = this.$route.path === "/cardInfo" ? 5 : data.length;
-
-      // potong
+      const data = this.cardLog;
+      const limit = this.$route.path === "/card" ? 5 : data.length;
       return data.slice(0, limit);
     },
   },
@@ -72,10 +61,12 @@ export default {
   border-radius: 30px;
   padding-top: 5px;
 }
+
 h5 {
   margin-bottom: 0 !important;
   font-size: 16px;
 }
+
 p {
   margin-bottom: 0 !important;
   font-size: 12px;
