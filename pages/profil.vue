@@ -30,9 +30,7 @@
                 <p class="text-secondary">Card Number</p>
                 <h5>
                   {{
-                    $auth.user['cnc']
-                      ? $auth.user.cnc.split("-")[1]
-                      : '-'
+                    $auth.user.cnc !== '-' ? $auth.user.cnc.split('-')[1] : '-'
                   }}
                 </h5>
               </div>

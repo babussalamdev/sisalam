@@ -56,6 +56,11 @@
 import Swal from "sweetalert2";
 
 export default {
+  middleware({ $auth, redirect }) {
+    if ( $auth.user.cnc === '-') {
+      return redirect('/card')
+    }
+  },
   data() {
     return {
       type: "password",

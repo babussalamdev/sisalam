@@ -46,6 +46,11 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  middleware({ $auth, redirect }) {
+    if ( $auth.user.cnc === '-') {
+      return redirect('/card')
+    }
+  },
   layout: "utama",
   async asyncData({ store }) {
     store.dispatch('index/renderPage')

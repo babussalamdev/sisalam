@@ -34,13 +34,6 @@
 
         <form @submit.prevent="submit">
           <div class="mb-4">
-            <label for="number" class="mb-2">Kode Kartu Lama</label>
-            <div class="input-group">
-              <span class="input-group-text" id="basic-addon1">CNC</span>
-              <input name="oldcnc" type="number" class="form-control" placeholder="10 Digit Angka" required />
-            </div>
-          </div>
-          <div class="mb-4">
             <label for="number" class="mb-2">Kode Kartu Baru</label>
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
@@ -77,6 +70,7 @@
 import Swal from "sweetalert2";
 
 export default {
+  // middleware
   data() {
     return {
       type: "password",
@@ -84,18 +78,26 @@ export default {
       confirmation: false
     };
   },
+  // middleware({ $auth, redirect }) {
+  //   if ($auth.user.type === 'member') {
+  //     return redirect('/formulir')
+  //   }
+  // },
+  middleware({ $auth, redirect }) {
+    if ( $auth.user.cnc === '-') {
+      return redirect('/card')
+    }
+  },
   methods: {
     async submit(event) {
       //manggil API
       this.btn = false;
       const data = Object.fromEntries(new FormData(event.target));
-      const ocnc = data.oldcnc
+      const ocnc = this.$auth.user.cnc
       const ncnc = data.newcnc
       delete data.newcnc
-      delete data.oldcnc
-      console.log(data, ocnc, ncnc)
       try {
-        const result = await this.$apiCard.$put(`put-card?method=changecard&oldcnc=CNC-${ocnc}&newcnc=CNC-${ncnc}`, data);
+        const result = await this.$apiCard.$put(`put-card?method=changecard&oldcnc=${ocnc}&newcnc=CNC-${ncnc}`, data);
         if (result) {
           this.btn = true;
           this.confirmation = true

@@ -71,6 +71,11 @@
 <script>
 export default {
   layout: "utama",
+  middleware({ $auth, redirect }) {
+    if ( $auth.user.cnc === '-') {
+      return redirect('/card')
+    }
+  },
   methods: {
     logout() {
       this.$cookies.remove("AccessToken");
