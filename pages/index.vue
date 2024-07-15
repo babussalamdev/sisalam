@@ -4,7 +4,8 @@
       <h3>
         Selamat Datang <b class="text-capitalize">{{ $auth.user.name }}</b> di Aplikasi Santri Babussalam
       </h3>
-      <p>Halaman saat ini sedang dalam pengembangan, silahkan pergi ke halaman <b>Kartu</b> melalui navigasi di bawah</p>
+      <p class="mb-4">Halaman saat ini sedang dalam pengembangan, silahkan pergi ke halaman <b>Kartu</b> melalui navigasi di bawah</p>
+      <p>ver {{ version}}</p>
     </div>
   </div>
 </template>
@@ -12,6 +13,14 @@
 <script>
 export default {
   layout: "utama",
+  data() {
+    return {
+      version: 0
+    }
+  },
+  created () {
+    this.version = process.env.version;
+  },
 };
 </script>
 

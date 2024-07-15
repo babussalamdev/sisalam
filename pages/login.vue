@@ -25,7 +25,7 @@
                 </span>
               </div>
             </div>
-            <div class="mb-5">
+            <div class="mb-4">
               <!-- Route dynamic -->
               <button v-if="btn" class="btn btn-primary" type="submit">
                 Login to continue
@@ -35,6 +35,7 @@
                 <span role="status">Loading...</span>
               </button>
             </div>
+            <p class="text-center">ver {{ version }}</p>
             <!-- have account -->
             <!-- <h6 class="text-center mx-auto fw-normal">
               Belum punya kartu?
@@ -56,7 +57,11 @@ export default {
     return {
       type: "password",
       btn: true,
+      version: 0
     };
+  },
+  created () {
+    this.version = process.env.version;
   },
   methods: {
     async submit(event) {
