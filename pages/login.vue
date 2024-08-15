@@ -5,7 +5,7 @@
         <div class="login-card">
           <form @submit.prevent="submit" class="mx-auto" ref="login">
             <div class="d-flex justify-content-center mb-5">
-              <img src="~/assets/image/logo.png" alt="" width="80" />
+              <img src="~/assets/image/logo.webp" alt="" width="80" />
             </div>
             <h3 class="fw-bold text-center mt-4">Ahlan Wa Sahlan</h3>
             <p class="text-center mb-5 mx-auto">
