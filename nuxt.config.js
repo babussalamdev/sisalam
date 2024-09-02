@@ -15,7 +15,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Card Babussalam',
+    title: 'Aplikasi Santri',
     htmlAttrs: {
       lang: 'en'
     },
@@ -26,7 +26,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'logo.png' },
+      { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' },
       { href: "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css", rel: "stylesheet" },
       { href: "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap", rel: "stylesheet" }
     ],
@@ -47,6 +47,8 @@ export default {
     { src: '~/plugins/axios-instances.js' },
     { src: '~/plugins/cookies.client.js', mode: 'client' }
   ],
+
+  loading: '~/components/Loader.vue',
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: {

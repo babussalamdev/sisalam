@@ -60,7 +60,7 @@
           </div>
           <!-- Submit -->
           <button v-if="btn" type="submit" class="btn btn-primary">
-            Simpan PIN
+            Aktivasi
           </button>
           <button v-else class="btn btn-secondary" type="button" disabled>
             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>

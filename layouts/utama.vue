@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="position-relative">
     <nuxt />
     <Navbar />
   </div>
@@ -19,4 +19,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

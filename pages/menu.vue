@@ -68,64 +68,12 @@
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <a @click="logout">
+              <a href="javascript:;" @click="logout">
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </a>
             </div>
           </div>
-          <!-- list menu -->
-          <!-- <div class="d-flex justify-content-between mb-4">
-            <div class="d-flex">
-              <div class="historylist d-flex align-items-center justify-content-center me-3">
-                <i class="bi bi-unlock mt-1 text-primary h4"></i>
-              </div>
-              <div class="d-flex flex-column justify-content-center">
-                <h5>Ganti PIN</h5>
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <nuxt-link to="/gantipin">
-                <img src="~/assets/image/icon/Right.png" alt="" />
-              </nuxt-link>
-            </div>
-          </div> -->
-          <!-- list menu -->
-          <!-- <div class="d-flex justify-content-between mb-4">
-            <div class="d-flex">
-              <div class="historylist d-flex align-items-center justify-content-center me-3">
-                <i class="bi bi-credit-card-2-front mt-1 text-primary h4"></i>
-              </div>
-              <div class="d-flex flex-column justify-content-center">
-                <h5>Tukar Kartu</h5>
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <nuxt-link to="/gantikartu">
-                <img src="~/assets/image/icon/Right.png" alt="" />
-              </nuxt-link>
-            </div>
-          </div> -->
-          <!-- blokir Kartu -->
-          <!-- <div class="d-flex justify-content-between">
-            <div class="d-flex">
-              <div class="historylist d-flex align-items-center justify-content-center me-3">
-                <i class="bi bi-credit-card-2-front mt-1 text-primary h4"></i>
-              </div>
-              <div class="d-flex flex-column justify-content-center">
-                <h5>Blokir Kartu</h5>
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <nuxt-link to="/blokirkartu">
-                <img src="~/assets/image/icon/Right.png" alt="" />
-              </nuxt-link>
-            </div>
-          </div> -->
         </div>
-        <!-- menu -->
-        <!-- <div class="p-4 rounded-4 shadow-sm mb-5">
-
-        </div> -->
       </div>
     </div>
   </section>
