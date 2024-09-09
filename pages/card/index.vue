@@ -3,13 +3,13 @@
     <div class="container pt-0">
       <div class="media mx-auto">
         <div class="row">
-          <div class="col-12 col-xl-5">
+          <div class="col-12">
             <!-- <Header /> -->
             <Card />
             <Balance />
             <Menu />
           </div>
-          <div class="col-12 col-xl-7">
+          <div class="col-12">
             <History />
           </div>
         </div>

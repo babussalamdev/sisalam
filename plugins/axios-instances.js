@@ -29,8 +29,22 @@ export default function ({ $axios, $config, $auth }, inject) {
     return Promise.reject(error);
   });
 
+  // Instance axios untuk API Sisalam
+  const apiOffice = $axios.create({
+    baseURL: $config.office
+  })
+  apiOffice.interceptors.request.use(config => {
+    const token = localStorage.getItem('auth._token.local')
+    if (token) {
+      config.headers['Authorization'] = `${token}`;
+    }
+    return config;
+  }, error => {
+    return Promise.reject(error);
+  });
 
   // Inject instance ke dalam konteks Nuxt
   inject('apiBase', apiBase)
   inject('apiCard', apiCard)
+  inject('apiOffice', apiOffice)
 }

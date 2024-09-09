@@ -3,7 +3,7 @@
     <div class="card border-none rounded-4 p-4 mt-4" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
       <div class="d-flex justify-content-between">
         <i class="bi bi-credit-card-2-back-fill h2 text-white"></i>
-        <img src="~/assets/image/logo.png" width="30px" height="30px" class="img-card" />
+        <img src="~/assets/image/logo.webp" width="30px" height="30px" class="img-card" />
       </div>
       <div class="mb-5">
         <h2 class="fw-semibold text-white">{{ card?.SK ? card?.SK : '-' }}</h2>

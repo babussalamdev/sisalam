@@ -24,7 +24,18 @@
             </div>
           </div>
         </nuxt-link>
-        <!-- menu -->
+        <!-- mutabaah -->
+        <nuxt-link to="/mutabaah" active-class="linkActive" class="text-decoration-none">
+          <div class="d-flex flex-column text-center">
+            <div class="userprofile d-flex align-items-center justify-content-center mx-auto">
+              <i class="bi bi-journal-text h4 fw-bold text-secondary"></i>
+            </div>
+            <div>
+              <p class="fw-semibold text-secondary">Mutabaah</p>
+            </div>
+          </div>
+        </nuxt-link>
+        <!-- pengaturan -->
         <nuxt-link to="/menu" active-class="linkActive" class="text-decoration-none">
           <div class="d-flex flex-column text-center">
             <div class="userprofile d-flex align-items-center justify-content-center mx-auto">
@@ -45,6 +56,19 @@ export default {};
 </script>
 
 <style scoped>
+.linkActive {
+  position: relative;
+}
+
+.linkActive::after {
+  position: absolute;
+  content: "";
+  top: -8px;
+  height: 2px;
+  width: 100%;
+  background: grey;
+}
+
 .linkActive i {
   color: black !important;
 }
@@ -54,10 +78,9 @@ export default {};
 }
 
 .navbar {
-  border-radius: 25px;
+  border-radius: 10px;
   bottom: 10px;
   width: 40%;
-
   box-shadow: 1px 1px 20px #7575758f;
 }
 

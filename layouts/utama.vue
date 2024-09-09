@@ -1,8 +1,8 @@
 <template>
-  <div class="position-relative">
+  <main class="position-relative">
     <nuxt />
     <Navbar />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -20,4 +20,10 @@ export default {
 </script>
 
 <style scoped>
+main {
+  height: 100vh;
+  /* border: 1px solid black; */
+  max-width: 576px;
+  margin-inline: auto;
+}
 </style>

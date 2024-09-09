@@ -114,20 +114,4 @@ h5 {
   font-size: 16px;
 }
 
-.media {
-  width: 40%;
-}
-
-@media screen and (max-width: 576px) {
-  .media {
-    width: 100% !important;
-  }
-}
-
-/* tablet */
-@media screen and (max-width: 991px) {
-  .media {
-    width: 70%;
-  }
-}
 </style>

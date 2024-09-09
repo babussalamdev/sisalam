@@ -27,6 +27,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
       { href: "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css", rel: "stylesheet" },
       { href: "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600&display=swap", rel: "stylesheet" }
     ],
@@ -80,6 +81,7 @@ export default {
     },
     base: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
     card: development ? process.env.API_CARD_DEV : process.env.API_CARD_PRO,
+    office: development ? process.env.API_OFFICE_DEV : process.env.API_OFFICE_PRO,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
