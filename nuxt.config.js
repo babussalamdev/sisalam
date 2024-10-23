@@ -73,15 +73,15 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
+    baseURL:  process.env.API_BASE,
   },
   publicRuntimeConfig: {
     axios: {
-      baseURL: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
+      baseURL: process.env.API_BASE,
     },
-    base: development ? process.env.API_BASE_DEV : process.env.API_BASE_PRO,
-    card: development ? process.env.API_CARD_DEV : process.env.API_CARD_PRO,
-    office: development ? process.env.API_OFFICE_DEV : process.env.API_OFFICE_PRO,
+    base: process.env.API_BASE,
+    card: process.env.API_CARD,
+    office: process.env.API_OFFICE,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
