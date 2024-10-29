@@ -58,6 +58,8 @@ export default {
       '~/components/utama',
       '~/components/home',
       '~/components/history',
+      '~/components/dashboard',
+      '~/components/mutabaah',
     ]
   },
 
