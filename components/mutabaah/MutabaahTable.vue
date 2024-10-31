@@ -58,24 +58,6 @@
             </div>
           </div>
         </div>
-        <div v-for="(data, index) in datas?.hafalan" :key="index" class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat {{ data.From.ayat.number }} - {{ data.To.ayat.number }}</p>
-                <p class="mb-0">{{ data.Page }} Halaman</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">{{ data.From.name }} - {{ data.To.name }}</h1>
-              </div>
-            </div>
-          </div>
-        </div>
         <!-- <div class="card mb-2 bg-light p-2 border-0 rounded-4">
           <div class="list-history p-1 d-flex justify-content-between">
             <div class="info d-flex gap-2">
