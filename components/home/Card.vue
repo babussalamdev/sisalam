@@ -10,7 +10,7 @@
       </div>
       <div>
         <!-- <p class="text-white">{{ $store.state.card.nis }}</p> -->
-        <h6 class="text-white">{{ $auth.user.cnc !== '-' ? $auth.user.name : '-' }}</h6>
+        <h6 class="text-white text-capitalize">{{ $auth.user.cnc !== '-' ? $auth.user.name : '-' }}</h6>
       </div>
     </div>
     <div class="fake-card border-none rounded-4 bg-warning"></div>

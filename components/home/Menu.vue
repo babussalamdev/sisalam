@@ -12,7 +12,8 @@
       </div>
     </nuxt-link>
     <!-- menu -->
-    <nuxt-link to="/topup" class="text-decoration-none" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
+    <a @click="toTopup()" href="javascript:;" class="text-decoration-none cursor-pointer"
+      :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
       <div class="d-flex flex-column text-center bg-primaryr">
         <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
           <i class="bi bi-wallet-fill h4 pt-1 text-white fw-bold"></i>
@@ -21,7 +22,7 @@
           <p class="fw-semibold">Top Up</p>
         </div>
       </div>
-    </nuxt-link>
+    </a>
     <!-- menu -->
     <!-- <nuxt-link to="/profil" class="text-decoration-none">
       <div class="d-flex flex-column text-center bg-primaryr">
@@ -63,7 +64,30 @@
 </template>
 
 <script>
-export default {};
+import Swal from 'sweetalert2';
+
+export default {
+  methods: {
+    toTopup() {
+      const email = this.$auth.user.email
+      if (email) {
+        this.$router.push('/topup')
+      } else {
+        Swal.fire({
+          text: "Anda belum memiliki email yang valid!",
+          icon: "warning",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Tambahkan Email!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push('/menukartu/gantiemail')
+          }
+        });
+      }
+    }
+  },
+
+};
 </script>
 
 <style scoped>

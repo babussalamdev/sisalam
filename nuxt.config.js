@@ -60,6 +60,7 @@ export default {
       '~/components/history',
       '~/components/dashboard',
       '~/components/mutabaah',
+      '~/components/topup',
     ]
   },
 
@@ -84,6 +85,8 @@ export default {
     base: process.env.API_BASE,
     card: process.env.API_CARD,
     office: process.env.API_OFFICE,
+    flip: process.env.API_FLIP,
+    websocket: process.env.API_WEBSOCKET
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

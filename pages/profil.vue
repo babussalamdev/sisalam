@@ -12,9 +12,9 @@
         </div>
 
         <!-- Profil -->
-        <div class="text-center mt-5">
-          <img src="~/assets/image/profil.png" alt="" />
-          <h1 class="mx-auto mt-3">{{ $auth.user.name }}</h1>
+        <div class="text-center mt-2">
+          <img style="width: 150px; height: auto;" src="~/assets/image/main_profile.png" alt="" />
+          <h1 class="mx-auto text-capitalize">{{ $auth.user.name }}</h1>
           <h6 class="fw-light">{{ $auth.user.Nis }}</h6>
         </div>
 
@@ -65,7 +65,7 @@
         <!-- menu -->
         <div class="p-4 rounded-4 shadow-sm">
           <!-- list menu -->
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
               <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-lock-fill mt-1 text-white h5"></i>
@@ -76,6 +76,22 @@
             </div>
             <div class="d-flex align-items-center">
               <nuxt-link to="/menukartu/gantipassword">
+                <img src="~/assets/image/icon/Right.png" alt="" />
+              </nuxt-link>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <div class="d-flex">
+              <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
+                <i class="bi bi-envelope-at-fill text-white h5"></i>
+              </div>
+              <div class="d-flex flex-column justify-content-center">
+                <h5>Update Email</h5>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <nuxt-link to="/menukartu/gantiemail">
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </nuxt-link>
             </div>

@@ -9,7 +9,7 @@
       <div>
         <p class="text-white">Total Balance</p>
         <h6 class="text-white fw-semibold">
-          Rp {{ $auth.user.cnc !== '-' ? nominal(card.Balance) : '-'}}
+          Rp {{ $auth.user.cnc !== '-' ? nominal(card?.Balance) : '-'}}
         </h6>
       </div>
     </div>

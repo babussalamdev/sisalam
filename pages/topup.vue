@@ -2,7 +2,6 @@
   <section id="topup">
     <div class="media mx-auto">
       <div class="container">
-        <!-- Judul -->
         <div class="d-flex justify-content-between">
           <nuxt-link to="/card">
             <img src="~/assets/image/icon/Left.png" alt="" />
@@ -10,9 +9,9 @@
           <h4>Top Up</h4>
           <img class="fake-image" src="~/assets/image/icon/Left.png" alt="" />
         </div>
+        <Pay class="mt-2"/>
 
-        <!-- Content -->
-        <div class="mt-5 mb-4">
+        <!-- <div class="mt-5 mb-4">
           <h1 class="fw-semibold">Masukkan Kode Voucher</h1>
           <p class="fw-light text-secondary">
             untuk menambah saldo di kartu anda <br />masukkan voucher sekarang
@@ -20,12 +19,10 @@
         </div>
 
         <form @submit.prevent="submit" ref="formData">
-          <!-- voucher -->
           <div class="mb-3">
             <label for="code" class="mb-2">Kode Voucher</label><br />
             <input id="code" name="code" type="number" class="form-control" placeholder="10 Digit Angka" required />
           </div>
-          <!-- PIN -->
           <div class="mb-5">
             <label for="pin" class="mb-2">Masukkan PIN</label><br />
             <div class="input-group">
@@ -36,7 +33,6 @@
               </span>
             </div>
           </div>
-          <!-- submit -->
           <div class="">
             <button v-if="btn" type="submit" class="btn btn-primary fw-semibold">
               Top Up Sekarang
@@ -46,7 +42,7 @@
               <span role="status">Loading...</span>
             </button>
           </div>
-        </form>
+        </form> -->
       </div>
     </div>
   </section>
@@ -60,6 +56,9 @@ export default {
     if ( $auth.user.cnc === '-') {
       return redirect('/card')
     }
+  },
+  async asyncData({ store }) {
+    store.dispatch("topup/loadForm");
   },
   data() {
     return {

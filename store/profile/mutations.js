@@ -1,5 +1,5 @@
 export default {
-  setChart(state, value) {
-
-  },
+  btn(state) {
+    state.btn = !state.btn
+  }
 }
