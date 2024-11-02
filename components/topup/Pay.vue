@@ -7,9 +7,7 @@
           <div class="col-12">
             <div class="input-group mb-3">
               <span class="input-group-text">Rp</span>
-              <input class="form-control" type="number" name="Amount" v-model="amountTopup">
-              {{ amountTopup }}
-              <small>{{ batasTopup }}</small>
+              <input class="form-control" type="number" name="Amount" min="10000" max="500000">
             </div>
           </div>
           <small>Silahkan pilih metode pembayaran berikut :</small>
@@ -197,7 +195,8 @@ export default {
   data() {
     return {
       amountTopup: 0,
-      batasTopup: ''
+      batasTopup: '',
+      warningMessage: '',
     }
   },
   computed: {
