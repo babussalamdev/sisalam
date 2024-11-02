@@ -4,20 +4,20 @@
       payment.receiver_bank_account.account_number : type === 'other' ? ' 4519006059' +
         payment.receiver_bank_account.account_number : payment.receiver_bank_account.account_number }}</span>
     <a @click="copyToClipboard(type === 'atm' ? '6059' + payment.receiver_bank_account.account_number : type === 'ebanking' ? '9006059' + payment.receiver_bank_account.account_number : type === 'other' ? ' 4519006059' + payment.receiver_bank_account.account_number : payment.receiver_bank_account.account_number)"
-      v-if="this.buttonText === 'Copy'" class="material-symbols-outlined copy-code">
+      v-if="this.buttonText === 'Copy'" class="material-icons copy-code">
       content_copy
     </a>
-    <a v-else class="material-symbols-outlined copy-code">
+    <a v-else class="material-symbols-icons copy-code">
       check
     </a>
   </span>
   <span v-else>
     <span>{{ payment.receiver_bank_account.account_number }}</span>
     <a @click="copyToClipboard(payment.receiver_bank_account.account_number)" v-if="this.buttonText === 'Copy'"
-      class="material-symbols-outlined copy-code">
+      class="material-icons copy-code">
       content_copy
     </a>
-    <a v-else class="material-symbols-outlined copy-code">
+    <a v-else class="material-icons copy-code">
       check
     </a>
   </span>
@@ -33,7 +33,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('formulir', ['payment'])
+    ...mapState('topup', ['payment'])
   },
   methods: {
     async copyToClipboard(number) {

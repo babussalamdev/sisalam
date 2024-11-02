@@ -104,14 +104,15 @@ export default {
 
   async requestFlip({ commit, state }) {
     commit('changeLoad')
-    const Amount = state.layout.Cost - (!state.user.Diskon ? 0 : state.user.Diskon)
-    const Name = state.user.Nama
+    const Amount = state.amount + state.fee
+    const Name = this.$auth.user.Nama
     const Bank = state.bank
+    const CNC = this.$auth.user.cnc
     const body = {
-      Amount, Name, Bank
+      Amount, Name, Bank, CNC
     }
     try {
-      const value = await this.$apiFlip.$post('/flip-registrasi', body)
+      const value = await this.$apiFlip.$post('/flip-topup', body)
       commit('setPayment', value)
       commit('changeLoad')
     } catch (error) {

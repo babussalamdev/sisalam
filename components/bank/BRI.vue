@@ -32,7 +32,9 @@
       <li>Login aplikasi BRI Mobile.</li>
       <li>Pilih menu <strong>BRIVA</strong>.</li>
       <li>Pilih <strong>Pembayaran Baru</strong>.</li>
-      <li>Masukkan kode pembayaran / virtual account number Anda: <strong><CopyButton /></strong>.</li>
+      <li>Masukkan kode pembayaran / virtual account number Anda: <strong>
+          <CopyButton />
+        </strong>.</li>
       <li>Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti Nomor BRIVA, Nama Pelanggan, dan Total
         Pembayaran.</li>
       <li>Masukkan PIN.</li>
@@ -44,7 +46,9 @@
       <li>Pilih menu <strong>Transaksi Lain</strong> > <strong>Pembayaran</strong> > <strong>Lainnya</strong> >
         <strong>BRIVA</strong>.
       </li>
-      <li>Masukkan kode pembayaran / virtual account number Anda: <strong><CopyButton /></strong>.</li>
+      <li>Masukkan kode pembayaran / virtual account number Anda: <strong>
+          <CopyButton />
+        </strong>.</li>
       <li>Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti Nomor BRIVA, Nama Pelanggan, dan Jumlah
         Pembayaran.</li>
       <li>Ikuti instruksi untuk menyelesaikan transaksi.</li>
@@ -55,7 +59,9 @@
       <li>Login pada alamat <a href="https://ib.bri.co.id/ib-bri/Login.html" target="_blank">Internet Banking BRI</a>.
       </li>
       <li>Pilih menu <strong>Pembayaran Tagihan</strong> > <strong>Pembayaran</strong> > <strong>BRIVA</strong>.</li>
-      <li>Masukkan kode pembayaran / virtual account number Anda: <strong><CopyButton /></strong>.</li>
+      <li>Masukkan kode pembayaran / virtual account number Anda: <strong>
+          <CopyButton />
+        </strong>.</li>
       <li>Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti Nomor BRIVA, Nama Pelanggan, dan Jumlah
         Pembayaran.</li>
       <li>Masukkan password dan mToken.</li>
@@ -65,7 +71,9 @@
     <ol v-if="type === 'teller'">
       <li>Pilih menu <strong>Mini ATM</strong> > <strong>Pembayaran</strong> > <strong>BRIVA</strong>.</li>
       <li>Swipe Kartu Debit BRI Anda.</li>
-      <li>Masukkan kode pembayaran / virtual account number Anda: <strong><CopyButton /></strong>.</li>
+      <li>Masukkan kode pembayaran / virtual account number Anda: <strong>
+          <CopyButton />
+        </strong>.</li>
       <li>Masukkan PIN.</li>
       <li>Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti Nomor BRIVA, Nama Pelanggan, dan Jumlah
         Pembayaran.</li>
@@ -77,7 +85,9 @@
       <li>Pilih menu <strong>Transaksi Lainnya</strong> > <strong>Transfer</strong> > <strong>Ke Rek Bank Lain</strong>.
       </li>
       <li>Masukkan kode bank BRI kemudian diikuti kode pembayaran / virtual account number Anda:
-        <strong><CopyButton /></strong>.
+        <strong>
+          <CopyButton />
+        </strong>.
       </li>
       <li>Ikuti instruksi untuk menyelesaikan transaksi.</li>
       <li>Simpan struk transaksi sebagai bukti pembayaran.</li>
@@ -91,7 +101,7 @@ import formatSet from '~/mixins/formatSet';
 export default {
   mixins: [formatSet],
   computed: {
-    ...mapState('formulir', ['payment'])
+    ...mapState('topup', ['payment'])
   },
   data() {
     return {

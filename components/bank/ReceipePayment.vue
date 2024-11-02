@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <section>
     <div class="invoice-page mx-auto">
       <div class="container px-5 py-3">
@@ -55,14 +55,14 @@ import formatSet from '~/mixins/formatSet';
 export default {
   mixins: [formatSet],
   computed: {
-    ...mapState('formulir', ['load', 'payment']),
+    ...mapState('topup', ['load', 'payment']),
   },
   async mounted() {
     await this.downloadCertificate();
     await this.setReceipePayment(false)
   },
   methods: {
-    ...mapMutations('formulir', ['setReceipePayment']),
+    ...mapMutations('topup', ['setReceipePayment']),
     downloadCertificate() {
       const certificateElement = this.$el.querySelector('.invoice-page')
 
@@ -89,7 +89,7 @@ export default {
   width: 210mm;
   height: 345mm;
   margin: 0;
-  background-image: url(~/assets/images/Bg-Receipt.png);
+  background-image: url(~/assets/image/Bg-Receipt.png);
   background-size: cover;
 }
 
@@ -221,4 +221,4 @@ footer p {
   width: 125px;
   height: auto;
 }
-</style> -->
+</style>

@@ -31,7 +31,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('formulir', ['payment']),
+    ...mapState('topup', ['payment']),
     days() {
       return Math.floor(this.remainingTime / (1000 * 60 * 60 * 24));
     },
@@ -46,20 +46,23 @@ export default {
     }
   },
   mounted() {
-    this.$connectSocket(`${this.$config.websocket}?sk=${this.$auth.user.given_name}&program=${this.$auth.user.profile}`);
+    this.$connectSocket(`${this.$config.websocket}?sk=${this.$auth.user.SK.replace(/#/g, '%23')}&program=${this.$auth.user.profile}`);
     this.startTimer();
   },
   methods: {
-    ...mapMutations('formulir', ['changeExpired', 'statusPayment']),
+    ...mapMutations('topup', ['changeExpired', 'statusPayment']),
     startTimer() {
+      console.log(this.payment)
       const targetDateTime = this.payment.expired_date;
+      console.log(targetDateTime)
       this.countDownDate = new Date(targetDateTime).getTime();
 
       this.intervalId = setInterval(() => {
         const now = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
         const nowTime = new Date(now).getTime();
         this.remainingTime = this.countDownDate - nowTime;
-
+        console.log(nowTime)
+        console.log(this.countDownDate)
         if (this.remainingTime < 0) {
           this.stopTimer();
           this.changeExpired();

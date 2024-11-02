@@ -46,7 +46,8 @@ export default {
   plugins: [
     { src: '~/plugins/bootstrap.js', mode: 'client' },
     { src: '~/plugins/axios-instances.js' },
-    { src: '~/plugins/cookies.client.js', mode: 'client' }
+    { src: '~/plugins/cookies.client.js', mode: 'client' },
+    '~/plugins/websocket.client.js'
   ],
 
   loading: '~/components/Loader.vue',
@@ -61,6 +62,7 @@ export default {
       '~/components/dashboard',
       '~/components/mutabaah',
       '~/components/topup',
+      '~/components/bank',
     ]
   },
 
