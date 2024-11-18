@@ -1,4 +1,6 @@
 export default () => ({
   card: '',
-  cardLog: ''
+  cardLog: '',
+  topup: 0,
+  invoice: 0
 })

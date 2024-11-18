@@ -145,5 +145,10 @@ export default {
 
   stopCountdown({ commit }) {
     commit('CLEAR_INTERVAL');
+  },
+
+  resetTopup({ commit }, { page, router }) {
+    commit('resetTopup');
+    router.push(page);
   }
 }

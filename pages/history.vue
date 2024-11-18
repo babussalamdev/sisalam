@@ -3,7 +3,7 @@
     <div class="media mx-auto">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-xl-5">
+          <div class="col-12">
             <!-- Judul -->
             <div class="d-flex justify-content-between">
               <nuxt-link to="/card">
@@ -13,22 +13,13 @@
               <img class="fake-image" src="~/assets/image/icon/Left.png" alt="" />
             </div>
 
-            <!-- Info balance -->
-            <div class="info-balance text-center mt-5">
-              <h6 class="fw-light">Your Balance</h6>
-              <h1 class="fw-semibold">
-                Rp {{ nominal(card.Balance) }}
-              </h1>
-              <p class="fw-light">{{ card.SK }}</p>
-            </div>
-
             <!-- history -->
             <div class="history mt-4">
               <!-- summary account -->
               <BlokHistory />
             </div>
           </div>
-          <div class="col-12 col-xl-7">
+          <div class="col-12">
             <div>
               <!-- list history -->
               <div class="d-flex justify-content-between align-items-center my-4">
@@ -47,7 +38,7 @@
 import { mapState } from 'vuex'
 export default {
   middleware({ $auth, redirect }) {
-    if ( $auth.user.cnc === '-') {
+    if ($auth.user.cnc === '-') {
       return redirect('/card')
     }
   },

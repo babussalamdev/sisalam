@@ -23,9 +23,6 @@ export default {
     const { Bank, Payment } = data
     state.payment = Payment
     state.arrayBank = Bank
-    if ( Payment.status === 'PENDING') {
-      state.slip = ''
-    }
     // state.user = User
     // state.layout = Layout
     // state.forms = Form
@@ -36,7 +33,6 @@ export default {
 
   loadStatus(state, data) {
     state.user = { ...state.user, ...data }
-    console.log(state.user)
   },
 
   setSelect(state, data) {
@@ -66,6 +62,11 @@ export default {
   changeExpired(state) {
     state.bank = ''
     state.payment = ''
+  },
+
+  resetTopup(state) {
+    state.slip = 'no'
+    state.bank = ''
   }
 }
 

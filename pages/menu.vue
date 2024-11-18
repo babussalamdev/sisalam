@@ -42,7 +42,7 @@
             </div>
           </div>
           <!-- list menu -->
-          <div class="d-flex justify-content-between mb-4">
+          <!-- <div class="d-flex justify-content-between mb-4">
             <div class="d-flex">
               <div class="historylist bg-primary d-flex align-items-center justify-content-center me-3">
                 <i class="bi bi-question-circle mt-1 text-white h4"></i>
@@ -56,7 +56,7 @@
                 <img src="~/assets/image/icon/Right.png" alt="" />
               </nuxt-link>
             </div>
-          </div>
+          </div> -->
           <!-- list menu -->
           <div class="d-flex justify-content-between">
             <div class="d-flex">
@@ -113,5 +113,4 @@ h5 {
   margin-bottom: 0 !important;
   font-size: 16px;
 }
-
 </style>

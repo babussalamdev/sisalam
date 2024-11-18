@@ -5,7 +5,7 @@
         <i class="bi bi-arrow-down h6 pt-1 text-white fw-bold"></i>
       </div>
       <div>
-        <p class="userprofile-p fw-semibold">Income</p>
+        <p class="userprofile-p fw-semibold">Top Up</p>
         <h6 class="text-success">{{ nominal(topup) }}</h6>
       </div>
     </div>
@@ -14,7 +14,7 @@
         <i class="bi bi-arrow-up h6 pt-1 text-white fw-bold"></i>
       </div>
       <div>
-        <p class="userprofile-p fw-semibold">Expense</p>
+        <p class="userprofile-p fw-semibold">Transactions</p>
         <h6 class="text-danger">{{ nominal(invoice) }}</h6>
       </div>
     </div>
@@ -25,34 +25,7 @@
 import { mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState('index', ['card', 'cardLog']),
-    invoice() {
-      let inv = 0;
-      if (this.cardLog && Array.isArray(this.cardLog)) {
-        this.cardLog.forEach((item) => {
-          // Memeriksa kondisi dan menambahkan nilai sesuai ke kategori yang benar
-          if (item.SK && item.SK.split('#')[0] === 'inv' && item.Amount) {
-            inv += parseInt(item.Amount);
-          }
-        });
-      }
-
-
-      return inv;
-    },
-    topup() {
-      let top = 0;
-      if (this.cardLog && Array.isArray(this.cardLog)) {
-        this.cardLog.forEach((item) => {
-          // Memeriksa kondisi dan menambahkan nilai sesuai ke kategori yang benar
-          if (item.SK && item.SK.split('#')[0] === 'vcr' && item.Amount) {
-            top += parseInt(item.Amount);
-          }
-        });
-      }
-
-      return top;
-    },
+    ...mapState('index', ['card', 'cardLog', 'topup', 'invoice']),
   },
   methods: {
     nominal(a) {

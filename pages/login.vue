@@ -28,7 +28,7 @@
             <div class="mb-4">
               <!-- Route dynamic -->
               <button v-if="btn" class="btn btn-primary" type="submit">
-                Login to continue
+                Login
               </button>
               <button v-else class="btn btn-secondary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
@@ -60,7 +60,7 @@ export default {
       version: 0
     };
   },
-  created () {
+  created() {
     this.version = process.env.version;
   },
   methods: {

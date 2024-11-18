@@ -12,14 +12,15 @@
         <p class="mb-2"><i class="bi bi-book me-1"></i>Hafalan Terakhir</p>
         <h1 class="mb-1" style="font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600">{{ ziyadah?.name }}</h1>
         <h6 class="text-secondary mb-3">Ayat {{ ziyadah?.number }}</h6>
-        <p class="mb-0">{{ changeDate(ziyadah?.time?.split(' ')[0]) }}</p>
-        <!-- <div class="line-bottom bg-success rounded-5"></div> -->
+        <p class="mb-0">{{ ziyadah.time !== "-" ? changeDate(ziyadah?.time?.split(' ')[0]) : '-' }}</p>
       </div>
       <div class="card p-3 bg-danger-subtle border-0 shadow-sm rounded-4">
         <p class="mb-2"><i class="bi bi-exclamation-triangle me-1"></i>Riwayat Pelanggaran</p>
         <h1 class="mb-1">{{ pelanggaran?.Poin ? pelanggaran?.Poin : 0 }} Poin</h1>
-        <h6 class="text-secondary mb-3">Total {{ pelanggaran?.Pelanggaran ? pelanggaran?.Pelanggaran : 0 }} Pelanggaran</h6>
-        <p class="mb-0">{{ changeDate(pelanggaran?.time?.split(' ')[0]) }}</p>
+        <h6 class="text-secondary mb-3">Total {{ pelanggaran?.Pelanggaran ? pelanggaran?.Pelanggaran : 0 }} Pelanggaran
+        </h6>
+        <p class="mb-0">{{ pelanggaran.time !== "-" ? changeDate(pelanggaran?.time?.split(' ')[0]) : '-' }}
+        </p>
       </div>
     </div>
   </div>
@@ -39,7 +40,7 @@ export default {
       return moment(dateString).format('DD MMMM YYYY');
     },
     changeDate(dateString) {
-      if ( dateString ) {
+      if (dateString) {
         const date = new Date(dateString);
 
         const options = { day: 'numeric', month: 'long', year: 'numeric' };

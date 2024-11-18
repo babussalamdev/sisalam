@@ -35,7 +35,8 @@
           <!-- Pin Lama -->
           <label for="pin" class="mb-2">Masukkan PIN Lama</label><br />
           <div class="input-group mb-3">
-            <input id="pin" name="pin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
+            <input maxlength="6" minlength="6" pattern="\d{1,6}" id="pin" name="pin" :type="type" class="form-control"
+              placeholder="6 Digit Angka" required />
             <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
@@ -44,7 +45,8 @@
           <!-- Pin Baru -->
           <label for="pinCheck" class="mb-2">Masukkan PIN Baru</label><br />
           <div class="input-group mb-3">
-            <input id="newPin" name="newpin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
+            <input maxlength="6" minlength="6" pattern="\d{1,6}" id="newPin" name="newpin" :type="type"
+              class="form-control" max-length="6" placeholder="6 Digit Angka" required />
             <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
@@ -53,7 +55,8 @@
           <!-- konfirmasi Pin -->
           <label for="pinCheck" class="mb-2">Ulangi PIN</label><br />
           <div class="input-group mb-4">
-            <input id="pinCheck" name="pincheck" :type="type" class="form-control" placeholder="Konfirmasi" required />
+            <input maxlength="6" minlength="6" pattern="\d{1,6}" id="pinCheck" name="pincheck" :type="type"
+              max-length="6" class="form-control" placeholder="Konfirmasi" required />
             <span @click="showpassword" class="input-group-text" id="basic-addon1">
               <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
               <i v-else class="bi bi-eye"></i>
@@ -98,7 +101,6 @@ export default {
           timer: 1500,
         });
       }
-      console.log(data)
       delete data.pincheck
       try {
         const cnc = this.$auth.user.cnc
@@ -135,6 +137,7 @@ export default {
     height: 100%;
   }
 }
+
 .fake-image {
   opacity: 0;
 }

@@ -3,18 +3,19 @@
     <!-- List -->
     <div v-for="(data, i) in filterData" :key="i" class="d-flex justify-content-between mb-3">
       <div class="d-flex">
-        <div :class="`historylist ${data.SK.split('#')[0] === 'inv' ? 'bg-danger' : 'bg-success'
+        <div :class="`historylist ${data.GSIPK1 !== 'debit' ? 'bg-danger' : 'bg-success'
           } d-flex align-items-center justify-content-center me-3`">
           <i :class="`bi ${data.Location ? 'bi-shop' : 'bi-coin'
             } mt-1 text-white h3`"></i>
         </div>
         <div class="d-flex flex-column justify-content-center">
-          <h5>{{ data.SK.split('#')[0] === 'inv' ? "Invoice Transaksi" : "Top Up" }}</h5>
-          <p>{{ formDate(data.CreatedAt) }}</p>
+          <h5>{{ data.GSIPK1 !== 'debit' ? "Invoice Transaksi" : "Top Up" }}</h5>
+          <p>{{ formDate(data.SK) }}</p>
+          <p>{{ data.SK.split(' ')[1] }}</p>
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <h5 :class="` ${data.SK.split('#')[0] === 'inv' ? 'text-danger' : 'text-success'}`">
+        <h5 :class="` ${data.GSIPK1 !== 'debit' ? 'text-danger' : 'text-success'}`">
           Rp {{ nominal(data.Amount) }}
         </h5>
       </div>

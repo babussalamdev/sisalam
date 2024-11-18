@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!payment || payment.status === 'PENDING' || slip === 'no'" class="px-1 pt-1 pb-3 p-md-4">
-    <div v-if="!payment">
+  <div v-if="!payment || slip === 'no'" class="px-1 pt-1 pb-3 p-md-4">
+    <div v-if="!payment || payment.status !== 'PENDING'">
       <form v-if="!bank" @submit.prevent="getInvoice" id="formSelectBank">
         <div class="row">
           <!-- <div class="col-12 mb-3">
@@ -96,8 +96,8 @@
       <div v-if="payment.sender_bank_type === 'wallet_account'">
         <div class="card-body">
           <div class="d-flex flex-column justify-content-center align-items-center mb-0">
-            <!-- <img :src="require(`@/assets/images/bank/qris.png`)" class="card-img-top"
-              style="width: 150px; height: auto;"> -->
+            <img :src="require(`~/assets/image/bank/qris.png`)" class="card-img-top"
+              style="width: 150px; height: auto;">
             <Countdown class="pb-3" />
             <qrcode-vue style="border: 7px solid #5CBAFF;" :value="payment.receiver_bank_account.qr_code_data"
               :size="250" level="H" render-as="svg"></qrcode-vue>
@@ -167,8 +167,9 @@
       <span class="material-icons">
         download
       </span>
-      Download PDF Pembayaran
+      Bukti Pembayaran
     </a>
+    <a href="javascript:;" @click="goToPage" class="btn btn-dark">Kembali Top Up</a>
     <ReceipePayment v-if="receipePayment" />
   </div>
 </template>
@@ -207,7 +208,10 @@ export default {
   },
   methods: {
     ...mapMutations('topup', ['setValue', 'getInvoice', 'removeBank', 'setReceipePayment']),
-    ...mapActions('topup', ['matchVoucher', 'nextStep', 'requestFlip']),
+    ...mapActions('topup', ['matchVoucher', 'nextStep', 'requestFlip', 'resetTopup']),
+    goToPage() {
+      this.resetTopup({ page: '/card', router: this.$router });
+    },
     rupiah(a) {
       return new Intl.NumberFormat('id-ID', {
         style: 'currency',

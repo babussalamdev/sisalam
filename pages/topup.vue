@@ -9,40 +9,7 @@
           <h4>Top Up</h4>
           <img class="fake-image" src="~/assets/image/icon/Left.png" alt="" />
         </div>
-        <Pay class="mt-2"/>
-
-        <!-- <div class="mt-5 mb-4">
-          <h1 class="fw-semibold">Masukkan Kode Voucher</h1>
-          <p class="fw-light text-secondary">
-            untuk menambah saldo di kartu anda <br />masukkan voucher sekarang
-          </p>
-        </div>
-
-        <form @submit.prevent="submit" ref="formData">
-          <div class="mb-3">
-            <label for="code" class="mb-2">Kode Voucher</label><br />
-            <input id="code" name="code" type="number" class="form-control" placeholder="10 Digit Angka" required />
-          </div>
-          <div class="mb-5">
-            <label for="pin" class="mb-2">Masukkan PIN</label><br />
-            <div class="input-group">
-              <input id="pin" name="pin" :type="type" class="form-control" placeholder="6 Digit Angka" required />
-              <span @click="showpassword" class="input-group-text" id="basic-addon1">
-                <i v-if="type === 'password'" class="bi bi-eye-slash"></i>
-                <i v-else class="bi bi-eye"></i>
-              </span>
-            </div>
-          </div>
-          <div class="">
-            <button v-if="btn" type="submit" class="btn btn-primary fw-semibold">
-              Top Up Sekarang
-            </button>
-            <button v-else class="btn btn-secondary" type="button" disabled>
-              <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              <span role="status">Loading...</span>
-            </button>
-          </div>
-        </form> -->
+        <Pay class="mt-2" />
       </div>
     </div>
   </section>
@@ -53,7 +20,7 @@ import Swal from "sweetalert2";
 
 export default {
   middleware({ $auth, redirect }) {
-    if ( $auth.user.cnc === '-') {
+    if ($auth.user.cnc === '-') {
       return redirect('/card')
     }
   },

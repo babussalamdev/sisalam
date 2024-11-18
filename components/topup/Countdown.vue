@@ -52,17 +52,13 @@ export default {
   methods: {
     ...mapMutations('topup', ['changeExpired', 'statusPayment']),
     startTimer() {
-      console.log(this.payment)
       const targetDateTime = this.payment.expired_date;
-      console.log(targetDateTime)
       this.countDownDate = new Date(targetDateTime).getTime();
 
       this.intervalId = setInterval(() => {
         const now = new Date().toLocaleString("en-US", { timeZone: "Asia/Jakarta" });
         const nowTime = new Date(now).getTime();
         this.remainingTime = this.countDownDate - nowTime;
-        console.log(nowTime)
-        console.log(this.countDownDate)
         if (this.remainingTime < 0) {
           this.stopTimer();
           this.changeExpired();
