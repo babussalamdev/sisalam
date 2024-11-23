@@ -19,12 +19,18 @@
     </div>
 
     <Widgets />
+    <section id="kaldik">
+      <div class="kaldik px-3 pt-1 pb-5">
+        <Calendar :transformedData="transformedData" />
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
 import moment from 'moment';
 import 'moment/locale/id'; // Import locale for Indonesian
+import { mapGetters } from 'vuex'
 export default {
   layout: "utama",
   data() {
@@ -38,7 +44,18 @@ export default {
   created() {
     this.version = process.env.version;
   },
+  computed: {
+    ...mapGetters("dashboard", ["getKaldik"]),
+    transformedData: {
+      get() {
+        return this.getKaldik;
+      },
+    },
+  },
   methods: {
+    handleDateClick: function (arg) {
+      alert("date click! " + arg.dateStr);
+    },
     formatDate(dateString) {
       moment.locale('id');
       return moment(dateString).format('DD MMMM YYYY');
@@ -51,7 +68,8 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .home {
-  font-family: 'Poppins', sans-serif
+  font-family: 'Poppins', sans-serif;
+  padding-bottom: 30px;
 }
 
 .profile-image {
@@ -99,4 +117,17 @@ export default {
   height: 5px;
   width: 60px;
 }
+
+#kaldik {
+  height: -moz-min-content;
+  height: min-content;
+}
+#kaldik .calendar {
+  font-size: 14px !important;
+}
+@media screen and (max-width: 576px) {
+  #kaldik .calendar {
+    font-size: 12px !important;
+  }
+}/*# sourceMappingURL=kladik.css.map */
 </style>
