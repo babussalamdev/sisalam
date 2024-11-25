@@ -34,14 +34,23 @@
 
         <form @submit.prevent="submit">
           <div class="mb-4">
-            <label for="number" class="mb-2">Kode Kartu Baru</label>
+            <label for="number" class="mb-2 form-label">Kode Kartu Baru</label>
             <div class="input-group">
               <span class="input-group-text" id="basic-addon1">CNC</span>
               <input name="newcnc" type="number" class="form-control" placeholder="10 Digit Angka" required />
             </div>
           </div>
+          <div class="mb-4">
+            <label for="status" class="mb-2 form-label">Alasan Ganti Kartu</label>
+            <select class="form-select" name="status" id="status">
+              <option style="font-size: 12px !important;" value="lost">Hilang</option>
+              <option style="font-size: 12px !important;" value="damaged">Rusak</option>
+              <option style="font-size: 12px !important;" value="stole">Dicuri</option>
+              <option style="font-size: 12px !important;" value="more">Lainnya</option>
+            </select>
+          </div>
           <div class="mb-5">
-            <label for="pin" class="mb-2">PIN Anda</label>
+            <label for="pin" class="mb-2 form-label">PIN Anda</label>
             <div class="input-group mb-3">
               <input id="pin" name="pin" :type="type" class="form-control" placeholder="Masukkan PIN" required />
               <span @click="showpassword" class="input-group-text" id="basic-addon1">
@@ -70,7 +79,6 @@
 import Swal from "sweetalert2";
 
 export default {
-  // middleware
   data() {
     return {
       type: "password",
@@ -78,13 +86,8 @@ export default {
       confirmation: false
     };
   },
-  // middleware({ $auth, redirect }) {
-  //   if ($auth.user.type === 'member') {
-  //     return redirect('/formulir')
-  //   }
-  // },
   middleware({ $auth, redirect }) {
-    if ( $auth.user.cnc === '-') {
+    if ($auth.user.cnc === '-') {
       return redirect('/card')
     }
   },
@@ -99,17 +102,32 @@ export default {
       try {
         const result = await this.$apiCard.$put(`put-card?method=changecard&oldcnc=${ocnc}&newcnc=CNC-${ncnc}`, data);
         if (result) {
+          const userToUpdate = { ...this.$auth.user };
+          userToUpdate.cnc = result["PK"];
+          this.$auth.setUser(userToUpdate);
           this.btn = true;
           this.confirmation = true
         }
       } catch (error) {
+        if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400) {
+            Swal.fire({
+              icon: "warning",
+              text: data.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        } else {
+          Swal.fire({
+            icon: "warning",
+            text: error,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         this.btn = true;
-        Swal.fire({
-          icon: "warning",
-          text: error,
-          showConfirmButton: false,
-          timer: 1500,
-        });
       }
     },
     showpassword() {
@@ -130,6 +148,7 @@ export default {
     height: 100%;
   }
 }
+
 .fake-image {
   opacity: 0;
 }
