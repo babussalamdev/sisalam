@@ -108,8 +108,9 @@ export default {
     const Name = this.$auth.user.Nama
     const Bank = state.bank
     const CNC = this.$auth.user.cnc
+    const Email = this.$auth.user.email
     const body = {
-      Amount, Name, Bank, CNC
+      Amount, Name, Bank, CNC, Email
     }
     try {
       const value = await this.$apiFlip.$post('/flip-topup', body)
