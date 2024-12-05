@@ -104,7 +104,7 @@ export default {
 
   async requestFlip({ commit, state }) {
     commit('changeLoad')
-    const Amount = state.amount + state.fee
+    const Amount = state.bank === 'qris' ? state.amount + state.feeQris : state.amount + state.feeBank
     const Name = this.$auth.user.Nama
     const Bank = state.bank
     const CNC = this.$auth.user.cnc

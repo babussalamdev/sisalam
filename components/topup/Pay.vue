@@ -10,7 +10,7 @@
           <div class="col-12">
             <div class="input-group mb-3">
               <span class="input-group-text">Rp</span>
-              <input class="form-control" type="number" name="Amount" min="10000" max="500000">
+              <input class="form-control" type="number" name="Amount" min="10000" max="500000" v-model="amountLimit" @input="handleInputChange">
             </div>
           </div>
           <small>Silahkan pilih metode pembayaran berikut :</small>
@@ -66,13 +66,13 @@
                   </tr>
                   <tr>
                     <td colspan="2" class="text-end text-capitalize">biaya admin</td>
-                    <td colspan="2" class="text-end">{{ nominal(fee) }}</td>
+                    <td colspan="2" class="text-end">{{ bank === 'qris' ? nominal(feeQris) : nominal(feeBank) }}</td>
                     <!-- <td :class="`text-end ${user.Diskon ? 'text-danger' : ''}`">{{ user.Diskon ? `-
                       ${nominal(user.Diskon)}` : 0 }}</td> -->
                   </tr>
                   <tr>
                     <th scope="row" colspan="2" class="text-uppercase text-end">Total</th>
-                    <td class="text-end">{{ nominal(amount + fee) }}</td>
+                    <td class="text-end">{{ bank === 'qris' ? nominal(amount + feeQris) : nominal(amount + feeBank) }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -185,13 +185,13 @@ export default {
   },
   data() {
     return {
-      amountTopup: 0,
+      amountLimit: 0,
       batasTopup: '',
       warningMessage: '',
     }
   },
   computed: {
-    ...mapState('topup', ['load', 'user', 'arrayBank', 'payment', 'bank', 'receipePayment', 'amount', 'fee', 'slip']),
+    ...mapState('topup', ['load', 'user', 'arrayBank', 'payment', 'bank', 'receipePayment', 'amount', 'feeQris', 'feeBank', 'slip']),
     ...mapGetters('topup', ['getCode']),
     code: {
       get() {
@@ -226,6 +226,15 @@ export default {
     },
     numVa(a) {
       return a.toString().padStart(3, '0');
+    },
+    handleInputChange() {
+      if (this.amountLimit === '') {
+        this.amountLimit = 0;
+      } else {
+        if (this.amountLimit !== 0) {
+          this.amountLimit = parseInt(this.amountLimit);
+        }
+      }
     },
   },
 }
