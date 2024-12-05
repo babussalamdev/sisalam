@@ -76,7 +76,7 @@ import formatSet from '~/mixins/formatSet';
 export default {
   mixins: [formatSet],
   computed: {
-    ...mapState('formulir', ['payment'])
+    ...mapState('topup', ['payment'])
   },
   data() {
     return {
