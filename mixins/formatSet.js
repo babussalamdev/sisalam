@@ -35,6 +35,13 @@ export default {
 
       return data
     },
+    rupiah(a) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+      }).format(a);
+    },
     async copyToClipboard(text) {
       try {
         await navigator.clipboard.writeText(text);

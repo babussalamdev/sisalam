@@ -22,6 +22,14 @@
         <p class="mb-0">{{ pelanggaran.time !== "-" ? changeDate(pelanggaran?.time?.split(' ')[0]) : '-' }}
         </p>
       </div>
+      <div class="card p-3 bg-success-subtle border-0 shadow-sm rounded-4">
+        <p class="mb-2"><i class="bi bi-droplet-fill me-1"></i>Tagihan Laundry</p>
+        <h1 class="mb-1">{{ rupiah(50000) }}</h1>
+        <h6 class="text-secondary mb-3">Total 25 Pakaian
+        </h6>
+        <p class="mb-0">{{ pelanggaran.time !== "-" ? changeDate(pelanggaran?.time?.split(' ')[0]) : '-' }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -29,8 +37,10 @@
 <script>
 import moment from 'moment';
 import 'moment/locale/id';
+import formatSet from '~/mixins/formatSet';
 import { mapState } from 'vuex'
 export default {
+  mixins: [formatSet],
   computed: {
     ...mapState('dashboard', ['pelanggaran', 'absensi', 'ziyadah'])
   },
