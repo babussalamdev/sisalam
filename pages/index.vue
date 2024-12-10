@@ -10,12 +10,9 @@
           <h6 class="mb-0 fw-bold text-capitalize">{{ this.$auth.user.name }}</h6>
         </div>
       </div>
-      <!-- <div class="notification">
-        <a href="javascript:;" class="text-dark">
-          <i class="bi bi-bell-fill fs-5"></i>
-        </a>
-        <div class="notifications-circle"></div>
-      </div> -->
+      <div class="notification">
+        <small class="fw-bold">{{ version }}</small>
+      </div>
     </div>
 
     <Widgets />
@@ -122,12 +119,16 @@ export default {
   height: -moz-min-content;
   height: min-content;
 }
+
 #kaldik .calendar {
   font-size: 14px !important;
 }
+
 @media screen and (max-width: 576px) {
   #kaldik .calendar {
     font-size: 12px !important;
   }
-}/*# sourceMappingURL=kladik.css.map */
+}
+
+/*# sourceMappingURL=kladik.css.map */
 </style>
