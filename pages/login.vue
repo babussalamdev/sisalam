@@ -8,9 +8,7 @@
               <img src="~/assets/image/logo.webp" alt="" width="80" />
             </div>
             <h3 class="fw-bold text-center mt-4">Ahlan Wa Sahlan</h3>
-            <p class="text-center mb-5 mx-auto">
-              Memudahkan santri mengakses dan mengelola data
-            </p>
+            <p class="text-center mb-5 mx-auto">Memudahkan santri mengakses dan mengelola data</p>
             <div class="mb-3">
               <div class="input-group">
                 <input name="username" type="text" class="form-control" placeholder="Username" required />
@@ -27,9 +25,7 @@
             </div>
             <div class="mb-4">
               <!-- Route dynamic -->
-              <button v-if="btn" class="btn btn-primary" type="submit">
-                Login
-              </button>
+              <button v-if="btn" class="btn btn-primary" type="submit">Login</button>
               <button v-else class="btn btn-secondary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status">Loading...</span>
@@ -49,63 +45,64 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
+  import Swal from "sweetalert2";
 
-export default {
-  layout: "verification",
-  data() {
-    return {
-      type: "password",
-      btn: true,
-      version: 0
-    };
-  },
-  created() {
-    this.version = process.env.version;
-  },
-  methods: {
-    async submit(event) {
-      this.btn = false;
-      const data = Object.fromEntries(new FormData(event.target));
-      try {
-        const result = await this.$auth.loginWith("local", { data: data });
-        if (result) {
-          this.btn = true;
-          this.$cookies.set("AccessToken", result.data.AccessToken, {
-            expires: 1,
-          });
-          this.$refs.login.reset();
-          this.$router.push("/");
-        }
-      } catch (error) {
-        this.btn = true;
-        if (error.response && error.response.status === 500) {
-          this.btn = true;
-          Swal.fire({
-            text: error.response.data.name.replace(/(?=[A-Z])/g, " "),
-            icon: "warning",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } else {
-          this.btn = true;
-          Swal.fire({
-            text: error.message,
-            icon: "warning",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      }
+  export default {
+    layout: "verification",
+    data() {
+      return {
+        type: "password",
+        btn: true,
+        version: 0,
+      };
     },
-    showpassword() {
-      const show = this.type === "password" ? "text" : "password";
-      this.type = show;
+    created() {
+      this.version = process.env.version;
     },
-  },
-};
+    methods: {
+      async submit(event) {
+        this.btn = false;
+        const data = Object.fromEntries(new FormData(event.target));
+        try {
+          const result = await this.$auth.loginWith("local", { data: data });
+          if (result) {
+            this.btn = true;
+            this.$cookies.set("AccessToken", result.data.AccessToken, {
+              expires: 1,
+            });
+            this.$refs.login.reset();
+            this.$router.push("/");
+          }
+        } catch (error) {
+          this.btn = true; // Re-enable button after error
+
+          let errorMessage = "An unexpected error occurred. Please try again.";
+
+          if (error.response) {
+            if (error.response.data && error.response.data.error) {
+              errorMessage = error.response.data.error;
+            } else if (error.response.status === 500) {
+              errorMessage = "Server error. Please try again later.";
+            }
+          } else {
+            errorMessage = error.message;
+          }
+
+          Swal.fire({
+            text: errorMessage,
+            icon: "error",
+            showConfirmButton: true,
+          });
+        }
+      },
+      showpassword() {
+        const show = this.type === "password" ? "text" : "password";
+        this.type = show;
+      },
+    },
+  };
 </script>
 
 <style scoped>
-@import url(~/assets/css/index.css);
+  @import url(~/assets/css/index.css);
 </style>
