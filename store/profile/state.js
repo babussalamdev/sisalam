@@ -1,3 +1,4 @@
 export default () => ({
-    btn: true,
-})
+  btn: true,
+  cooldown: 0, // countdown in seconds
+});

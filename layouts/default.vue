@@ -5,8 +5,11 @@
 </template>
 
 <script>
-export default {
-};
+  export default {
+    mounted() {
+      this.$store.dispatch("profile/initCooldown");
+    },
+  };
 </script>
 
 <style scoped></style>

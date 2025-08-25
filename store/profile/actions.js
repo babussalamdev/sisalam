@@ -52,25 +52,41 @@ export default {
     }
   },
 
-  async resetCode({ dispatch, commit }, event) {
+  async resetCode({ commit, state }) {
+    if (state.cooldown > 0) {
+      return; // prevent clicking while cooldown is active
+    }
+
     commit("btn");
 
-    // const email = this.$auth.user.email;
     const accessToken = Cookies.get("AccessToken");
     try {
       const datas = await this.$apiBase.$post(`resend-code`, { accessToken });
+
       if (datas) {
         commit("btn");
         Swal.fire({
           icon: "success",
-          text: "Perubahan Email Berhasil!",
+          text: "Kode verifikasi berhasil dikirim ulang!",
           showConfirmButton: false,
           timer: 1500,
         });
+
+        // start 5 min cooldown
+        // inside resetCode action after success
+        const expireAt = Date.now() + 300 * 1000; // 5 minutes from now
+        localStorage.setItem("resetCodeExpireAt", expireAt);
+
+        commit("setCooldown", 300);
+
+        const interval = setInterval(() => {
+          const remaining = Math.max(0, Math.floor((expireAt - Date.now()) / 1000));
+          commit("setCooldown", remaining);
+          if (remaining === 0) clearInterval(interval);
+        }, 1000);
       }
     } catch (error) {
-      commit("btn"); // Re-enable button after error
-
+      commit("btn");
       let errorMessage = "An unexpected error occurred. Please try again.";
 
       if (error.response) {
@@ -132,6 +148,24 @@ export default {
         icon: "error",
         showConfirmButton: true,
       });
+    }
+  },
+
+  async initCooldown({ commit }) {
+    const expireAt = localStorage.getItem("resetCodeExpireAt");
+    if (expireAt) {
+      const remaining = Math.max(0, Math.floor((expireAt - Date.now()) / 1000));
+      if (remaining > 0) {
+        commit("setCooldown", remaining);
+        const interval = setInterval(() => {
+          const r = Math.max(0, Math.floor((expireAt - Date.now()) / 1000));
+          commit("setCooldown", r);
+          if (r === 0) {
+            localStorage.removeItem("resetCodeExpireAt");
+            clearInterval(interval);
+          }
+        }, 1000);
+      }
     }
   },
 };

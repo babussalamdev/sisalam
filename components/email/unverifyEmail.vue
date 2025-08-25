@@ -47,7 +47,10 @@
             </div>
             <div class="col-12 col-md-4 col-lg-4 py-2 py-md-0 py-lg-0">
               <!-- Submit Button -->
-              <button v-if="btn" @click="resetCode()" class="btn btn-warning">Kirim Ulang Code</button>
+              <button v-if="btn && cooldown === 0" @click="resetCode()" class="btn btn-warning">Kirim Ulang Code</button>
+
+              <button v-else-if="cooldown > 0" class="btn btn-secondary" type="button" disabled>Tunggu {{ cooldown }} detik</button>
+
               <button v-else class="btn btn-secondary" type="button" disabled>
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span role="status">Loading...</span>
@@ -64,7 +67,7 @@
   import { mapState, mapGetters, mapActions } from "vuex";
   export default {
     computed: {
-      ...mapState("profile", ["btn"]),
+      ...mapState("profile", ["btn", "cooldown"]),
     },
     methods: {
       ...mapActions("profile", ["submitCode", "removeEmail", "resetCode"]),

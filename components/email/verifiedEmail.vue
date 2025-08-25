@@ -11,7 +11,7 @@
           <img class="fake-image" src="~/assets/image/icon/Left.png" alt="" />
         </div>
 
-        <form class="mt-4" @submit.prevent="submit" id="profileUpdate">
+        <form class="mt-4" @submit.prevent="submitEmail" id="profileUpdate">
           <!-- Pin Lama -->
           <div class="mb-3" v-if="this.$auth.user.email">
             <label for="emailnow" class="mb-2">Email Sekarang</label>
@@ -47,7 +47,7 @@
       ...mapState("profile", ["btn"]),
     },
     methods: {
-      ...mapActions("profile", ["submit"]),
+      ...mapActions("profile", ["submitEmail"]),
     },
   };
 </script>

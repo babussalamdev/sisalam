@@ -12,8 +12,7 @@
       </div>
     </nuxt-link>
     <!-- menu -->
-    <a @click="toTopup()" href="javascript:;" class="text-decoration-none cursor-pointer"
-      :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
+    <a @click="toTopup()" href="javascript:;" class="text-decoration-none cursor-pointer" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
       <div class="d-flex flex-column text-center bg-primaryr">
         <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
           <i class="bi bi-wallet-fill h4 pt-1 text-white fw-bold"></i>
@@ -64,49 +63,60 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2';
+  import Swal from "sweetalert2";
 
-export default {
-  methods: {
-    toTopup() {
-      const email = this.$auth.user.email
-      if (email) {
-        this.$router.push('/topup')
-      } else {
-        Swal.fire({
-          text: "Anda belum memiliki email yang valid!",
-          icon: "warning",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Tambahkan Email!"
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.$router.push('/menukartu/gantiemail')
-          }
-        });
-      }
-    }
-  },
-
-};
+  export default {
+    methods: {
+      toTopup() {
+        const email = this.$auth.user.email;
+        const emailStatus = this.$auth.user.email_verified;
+        if (email && emailStatus === "true") {
+          this.$router.push("/topup");
+        } else if (email && emailStatus === "false") {
+          Swal.fire({
+            text: "Email anda belum terverifikasi!",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Verifikasi Email!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.$router.push("/menukartu/gantiemail");
+            }
+          });
+        } else {
+          Swal.fire({
+            text: "Anda belum memiliki email yang valid!",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Tambahkan Email!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.$router.push("/menukartu/gantiemail");
+            }
+          });
+        }
+      },
+    },
+  };
 </script>
 
 <style scoped>
-.greyscale {
-  filter: grayscale(100%);
-  pointer-events: none;
-}
+  .greyscale {
+    filter: grayscale(100%);
+    pointer-events: none;
+  }
 
-.userprofile {
-  width: 48px;
-  height: 48px;
-  background-color: #44b5ff;
-  border-radius: 30px;
-  padding-top: 5px;
-}
+  .userprofile {
+    width: 48px;
+    height: 48px;
+    background-color: #44b5ff;
+    border-radius: 30px;
+    padding-top: 5px;
+  }
 
-p {
-  margin-bottom: 0 !important;
-  font-size: 12px;
-  color: #44b5ff;
-}
+  p {
+    margin-bottom: 0 !important;
+    font-size: 12px;
+    color: #44b5ff;
+  }
 </style>
