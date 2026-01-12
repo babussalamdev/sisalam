@@ -7,19 +7,30 @@
             <button class="btn btn-sm btn-secondary">Kembali</button>
           </div> -->
           <small class="mb-2">Masukkan Nilai Topup :</small>
+          {{ limit }}
           <div class="col-12">
             <div class="input-group mb-3">
               <span class="input-group-text">Rp</span>
-              <input class="form-control" type="number" name="Amount" min="10000" max="500000" v-model="amountLimit" @input="handleInputChange">
+              <input
+                class="form-control"
+                type="number"
+                name="Amount"
+                min="10000"
+                :max="limit.Amount"
+                v-model="amountLimit"
+                @input="handleInputChange" />
             </div>
           </div>
           <small>Silahkan pilih metode pembayaran berikut :</small>
           <div class="col-6 col-lg-4 g-3" v-for="(data, i) in arrayBank" :key="i">
             <div class="form-content">
-              <input type="radio" class="btn-check" name="Bank" :id="data" :value="data" autocomplete="off" required>
+              <input type="radio" class="btn-check" name="Bank" :id="data" :value="data" autocomplete="off" required />
               <label :for="data">
-                <img :src="require(`@/assets/image/bank/${data}.png`)" :alt="data"
-                  class="rounded-4 border border-1 border-dark img-fluid" style="width: 350px; height: auto;">
+                <img
+                  :src="require(`@/assets/image/bank/${data}.png`)"
+                  :alt="data"
+                  class="rounded-4 border border-1 border-dark img-fluid"
+                  style="width: 350px; height: auto" />
               </label>
             </div>
           </div>
@@ -46,11 +57,12 @@
               </button>
             </td>
           </div> -->
-          <small class="col-12 col-lg-7 text-danger">Untuk pembayaran hanya aktif selama 1x24 jam pastikan anda sudah
-            siap membayar sebelum menekan tombol bayar.</small>
+          <small class="col-12 col-lg-7 text-danger">
+            Untuk pembayaran hanya aktif selama 1x24 jam pastikan anda sudah siap membayar sebelum menekan tombol bayar.
+          </small>
           <div class="col-12 col-lg-5">
             <a class="d-block text-end" href="#!">
-              <img :src="require(`@/assets/image/bank/${bank}.png`)" class="img-fluid" width="250" height="auto">
+              <img :src="require(`@/assets/image/bank/${bank}.png`)" class="img-fluid" width="250" height="auto" />
             </a>
           </div>
         </div>
@@ -66,13 +78,13 @@
                   </tr>
                   <tr>
                     <td colspan="2" class="text-end text-capitalize">biaya admin</td>
-                    <td colspan="2" class="text-end">{{ bank === 'qris' ? nominal(feeQris) : nominal(feeBank) }}</td>
+                    <td colspan="2" class="text-end">{{ bank === "qris" ? nominal(feeQris) : nominal(feeBank) }}</td>
                     <!-- <td :class="`text-end ${user.Diskon ? 'text-danger' : ''}`">{{ user.Diskon ? `-
                       ${nominal(user.Diskon)}` : 0 }}</td> -->
                   </tr>
                   <tr>
                     <th scope="row" colspan="2" class="text-uppercase text-end">Total</th>
-                    <td class="text-end">{{ bank === 'qris' ? nominal(amount + feeQris) : nominal(amount + feeBank) }}</td>
+                    <td class="text-end">{{ bank === "qris" ? nominal(amount + feeQris) : nominal(amount + feeBank) }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -90,17 +102,19 @@
           </div>
         </div>
       </div>
-
     </div>
     <div v-else>
       <div v-if="payment.sender_bank_type === 'wallet_account'">
         <div class="card-body">
           <div class="d-flex flex-column justify-content-center align-items-center mb-0">
-            <img :src="require(`~/assets/image/bank/qris.png`)" class="card-img-top"
-              style="width: 150px; height: auto;">
+            <img :src="require(`~/assets/image/bank/qris.png`)" class="card-img-top" style="width: 150px; height: auto" />
             <Countdown class="pb-3" />
-            <qrcode-vue style="border: 7px solid #5CBAFF;" :value="payment.receiver_bank_account.qr_code_data"
-              :size="250" level="H" render-as="svg"></qrcode-vue>
+            <qrcode-vue
+              style="border: 7px solid #5cbaff"
+              :value="payment.receiver_bank_account.qr_code_data"
+              :size="250"
+              level="H"
+              render-as="svg"></qrcode-vue>
           </div>
         </div>
       </div>
@@ -122,13 +136,14 @@
     <!-- Receipt Content -->
     <div ref="receiptContent" class="px-1">
       <span class="d-flex justify-content-center align-items-center mb-3">
-        <div class="d-flex justify-content-center align-items-center bg-success-subtle p-3 rounded-circle"
-          style="width: 107px !important; height: 107px !important;">
-          <i class="bi bi-check-circle text-success text-center" style="font-size: 75px;"></i>
+        <div
+          class="d-flex justify-content-center align-items-center bg-success-subtle p-3 rounded-circle"
+          style="width: 107px !important; height: 107px !important">
+          <i class="bi bi-check-circle text-success text-center" style="font-size: 75px"></i>
         </div>
       </span>
       <h5 class="text-center text-dark">Pembayaran Anda Telah Berhasil</h5>
-      <hr>
+      <hr />
       <p class="text-center text-dark mb-1">Total Pembayaran</p>
       <h2 class="text-center text-dark mb-4 fw-bold">Rp {{ nominal(payment?.amount) }}</h2>
       <div class="row mb-3">
@@ -147,9 +162,7 @@
         <div class="col-6 px-1">
           <div class="card p-3 mb-3">
             <h6 class="mb-1">Metode Pembayaran</h6>
-            <h5 class="fw-bold mb-0">{{ payment?.sender_bank_type === 'virtual_account' ? 'Bank Transfer'
-              : 'QRIS' }}
-            </h5>
+            <h5 class="fw-bold mb-0">{{ payment?.sender_bank_type === "virtual_account" ? "Bank Transfer" : "QRIS" }}</h5>
           </div>
         </div>
         <div class="col-6 px-1">
@@ -161,12 +174,11 @@
       </div>
     </div>
     <!-- Download PDF Button -->
-    <a href="javascript:;"
+    <a
+      href="javascript:;"
       class="text-center text-white justify-content-center text-decoration-none btn btn-sm btn-primary gap-2 d-flex align-items-center mb-3"
       @click="setReceipePayment(true)">
-      <span class="material-icons">
-        download
-      </span>
+      <span class="material-icons">download</span>
       Bukti Pembayaran
     </a>
     <a href="javascript:;" @click="goToPage" class="btn btn-dark">Kembali Top Up</a>
@@ -175,104 +187,104 @@
 </template>
 
 <script>
-import QrcodeVue from 'qrcode.vue'
-import { mapState, mapMutations, mapActions, mapGetters } from 'vuex'
-import formatSet from '~/mixins/formatSet';
-export default {
-  mixins: [formatSet],
-  components: {
-    QrcodeVue,
-  },
-  data() {
-    return {
-      amountLimit: 0,
-      batasTopup: '',
-      warningMessage: '',
-    }
-  },
-  computed: {
-    ...mapState('topup', ['load', 'user', 'arrayBank', 'payment', 'bank', 'receipePayment', 'amount', 'feeQris', 'feeBank', 'slip']),
-    ...mapGetters('topup', ['getCode']),
-    code: {
-      get() {
-        return this.getCode;
+  import QrcodeVue from "qrcode.vue";
+  import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+  import formatSet from "~/mixins/formatSet";
+  export default {
+    mixins: [formatSet],
+    components: {
+      QrcodeVue,
+    },
+    data() {
+      return {
+        amountLimit: 0,
+        batasTopup: "",
+        warningMessage: "",
+      };
+    },
+    computed: {
+      ...mapState("topup", ["load", "user", "arrayBank", "payment", "bank", "limit", "receipePayment", "amount", "feeQris", "feeBank", "slip"]),
+      ...mapGetters("topup", ["getCode"]),
+      code: {
+        get() {
+          return this.getCode;
+        },
+        set(value) {
+          const obj = {
+            key: "code",
+            value,
+          };
+          this.setValue(obj);
+        },
       },
-      set(value) {
-        const obj = {
-          key: 'code',
-          value
+    },
+    methods: {
+      ...mapMutations("topup", ["setValue", "getInvoice", "removeBank", "setReceipePayment"]),
+      ...mapActions("topup", ["matchVoucher", "nextStep", "requestFlip", "resetTopup"]),
+      goToPage() {
+        this.resetTopup({ page: "/card", router: this.$router });
+      },
+      rupiah(a) {
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(a);
+      },
+      nominal(a) {
+        return new Intl.NumberFormat("id-ID", {
+          minimumFractionDigits: 0,
+        }).format(a);
+      },
+      numVa(a) {
+        return a.toString().padStart(3, "0");
+      },
+      handleInputChange() {
+        if (this.amountLimit === "") {
+          this.amountLimit = 0;
+        } else {
+          if (this.amountLimit !== 0) {
+            this.amountLimit = parseInt(this.amountLimit);
+          }
         }
-        this.setValue(obj)
-      }
-    }
-  },
-  methods: {
-    ...mapMutations('topup', ['setValue', 'getInvoice', 'removeBank', 'setReceipePayment']),
-    ...mapActions('topup', ['matchVoucher', 'nextStep', 'requestFlip', 'resetTopup']),
-    goToPage() {
-      this.resetTopup({ page: '/card', router: this.$router });
+      },
     },
-    rupiah(a) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-      }).format(a)
-    },
-    nominal(a) {
-      return new Intl.NumberFormat('id-ID', {
-        minimumFractionDigits: 0
-      }).format(a)
-    },
-    numVa(a) {
-      return a.toString().padStart(3, '0');
-    },
-    handleInputChange() {
-      if (this.amountLimit === '') {
-        this.amountLimit = 0;
-      } else {
-        if (this.amountLimit !== 0) {
-          this.amountLimit = parseInt(this.amountLimit);
-        }
-      }
-    },
-  },
-}
+  };
 </script>
 <style scoped>
-.form-content input[type=radio]:checked+label,
-.form-content input[type=radio]:not(:checked)+label {
-  padding: 0;
-}
-
-.form-content input[type=radio]:checked+label:before,
-.form-content input[type=radio]:not(:checked)+label:before {
-  content: none
-}
-
-.form-content input[type=radio]:checked+label:after,
-.form-content input[type=radio]:not(:checked)+label:after {
-  content: none
-}
-
-.form-content input[type=radio]:not(:checked)+label img {
-  background-color: transparent;
-  filter: grayscale(100%);
-}
-
-.form-content input[type=radio]:checked+label img {
-  background-color: aliceblue;
-  filter: grayscale(0%);
-  /* Kembali ke warna asli */
-}
-
-@media (max-width: 576px) {
-  h6 {
-    font-size: 12px;
+  .form-content input[type="radio"]:checked + label,
+  .form-content input[type="radio"]:not(:checked) + label {
+    padding: 0;
   }
 
-  h5 {
-    font-size: 14px;
+  .form-content input[type="radio"]:checked + label:before,
+  .form-content input[type="radio"]:not(:checked) + label:before {
+    content: none;
   }
-}
+
+  .form-content input[type="radio"]:checked + label:after,
+  .form-content input[type="radio"]:not(:checked) + label:after {
+    content: none;
+  }
+
+  .form-content input[type="radio"]:not(:checked) + label img {
+    background-color: transparent;
+    filter: grayscale(100%);
+  }
+
+  .form-content input[type="radio"]:checked + label img {
+    background-color: aliceblue;
+    filter: grayscale(0%);
+    /* Kembali ke warna asli */
+  }
+
+  @media (max-width: 576px) {
+    h6 {
+      font-size: 12px;
+    }
+
+    h5 {
+      font-size: 14px;
+    }
+  }
 </style>

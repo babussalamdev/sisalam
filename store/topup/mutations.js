@@ -1,28 +1,29 @@
 export default {
   setReceipePayment(state, data) {
-    state.receipePayment = data
+    state.receipePayment = data;
   },
   statusPayment(state, data) {
-    state.payment = { ...state.payment, ...data.flipLog }
-    state.slip = 'yes'
+    state.payment = { ...state.payment, ...data.flipLog };
+    state.slip = "yes";
   },
   setValue(state, data) {
-    state[data.key] = data.value
+    state[data.key] = data.value;
   },
   changeLoad(state) {
-    state.load = state.load ? false : true
+    state.load = state.load ? false : true;
   },
   updateStatus(state, data) {
-    state.user.Status = data
-    state.form = state.forms[data]
-    state.content = state.contents.filter(item => item.SK.includes(state.form.Content));
+    state.user.Status = data;
+    state.form = state.forms[data];
+    state.content = state.contents.filter((item) => item.SK.includes(state.form.Content));
   },
 
   loadForm(state, data) {
     // const { User, Layout, Form, Content, Bank, Payment } = data
-    const { Bank, Payment } = data
-    state.payment = Payment
-    state.arrayBank = Bank
+    const { Bank, Payment, Limit } = data;
+    state.payment = Payment;
+    state.limit = Limit;
+    state.arrayBank = Bank;
     // state.user = User
     // state.layout = Layout
     // state.forms = Form
@@ -32,42 +33,40 @@ export default {
   },
 
   loadStatus(state, data) {
-    state.user = { ...state.user, ...data }
+    state.user = { ...state.user, ...data };
   },
 
   setSelect(state, data) {
     state.selectedFile = data;
-    state.button = true
+    state.button = true;
   },
 
   matchVoucher(state, data) {
-    state.user = { ...state.user, ...data }
+    state.user = { ...state.user, ...data };
   },
 
   getInvoice(state, event) {
     const data = Object.fromEntries(new FormData(event.target));
     state.bank = data.Bank;
-    state.amount = +data.Amount
+    state.amount = +data.Amount;
   },
 
   removeBank(state) {
-    state.bank = '';
-    state.amount = 0
+    state.bank = "";
+    state.amount = 0;
   },
 
   setPayment(state, data) {
-    state.payment = data
+    state.payment = data;
   },
 
   changeExpired(state) {
-    state.bank = ''
-    state.payment = ''
+    state.bank = "";
+    state.payment = "";
   },
 
   resetTopup(state) {
-    state.slip = 'no'
-    state.bank = ''
-  }
-}
-
-
+    state.slip = "no";
+    state.bank = "";
+  },
+};
