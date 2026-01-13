@@ -20,10 +20,11 @@ export default {
 
   loadForm(state, data) {
     // const { User, Layout, Form, Content, Bank, Payment } = data
-    const { Bank, Payment, Limit } = data;
+    const { Bank, Payment, Limit, Card } = data;
     state.payment = Payment;
-    state.limit = Limit;
     state.arrayBank = Bank;
+    state.limit = Limit;
+    state.card = Card;
     // state.user = User
     // state.layout = Layout
     // state.forms = Form
@@ -47,8 +48,29 @@ export default {
 
   getInvoice(state, event) {
     const data = Object.fromEntries(new FormData(event.target));
+
     state.bank = data.Bank;
-    state.amount = +data.Amount;
+    state.amount = +data.Amount; // Example: 10000
+
+    // 1. Define QRIS Rate (0.7%)
+    const qrisRate = 0.7 / 100;
+
+    // 2. Define Divisor (0.993)
+    const divisor = 1 - qrisRate;
+
+    // 3. Calculate Total AND Round Up to nearest integer
+    // We use Math.ceil() so 10070.49 becomes 10071
+    // This ensures you receive the full 10.000, not 9.999
+    const grossAmount = Math.ceil(state.amount / divisor);
+
+    // 4. Calculate the Fee (Total - Original)
+    const feeValue = grossAmount - state.amount;
+
+    // Save to state
+    state.feeQris = feeValue;
+
+    // If you need the Total for the UI:
+    // state.totalBill = grossAmount;
   },
 
   removeBank(state) {

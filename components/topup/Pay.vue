@@ -7,7 +7,6 @@
             <button class="btn btn-sm btn-secondary">Kembali</button>
           </div> -->
           <small class="mb-2">Masukkan Nilai Topup :</small>
-          {{ limit }}
           <div class="col-12">
             <div class="input-group mb-3">
               <span class="input-group-text">Rp</span>
@@ -16,7 +15,7 @@
                 type="number"
                 name="Amount"
                 min="10000"
-                :max="limit.Amount"
+                :max="maxTopupLimit"
                 v-model="amountLimit"
                 @input="handleInputChange" />
             </div>
@@ -190,6 +189,7 @@
   import QrcodeVue from "qrcode.vue";
   import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
   import formatSet from "~/mixins/formatSet";
+
   export default {
     mixins: [formatSet],
     components: {
@@ -203,7 +203,20 @@
       };
     },
     computed: {
-      ...mapState("topup", ["load", "user", "arrayBank", "payment", "bank", "limit", "receipePayment", "amount", "feeQris", "feeBank", "slip"]),
+      ...mapState("topup", [
+        "load",
+        "user",
+        "arrayBank",
+        "payment",
+        "bank",
+        "limit",
+        "card",
+        "receipePayment",
+        "amount", // Vuex state amount
+        "feeQris",
+        "feeBank",
+        "slip",
+      ]),
       ...mapGetters("topup", ["getCode"]),
       code: {
         get() {
@@ -217,10 +230,22 @@
           this.setValue(obj);
         },
       },
+      // NEW: Calculate the max allowable topup
+      maxTopupLimit() {
+        // Safe check to ensure objects exist before accessing properties
+        const limitAmount = this.limit && this.limit.Amount ? parseInt(this.limit.Amount) : 0;
+        const currentBalance = this.card && this.card.Balance ? parseInt(this.card.Balance) : 0;
+
+        const result = limitAmount - currentBalance;
+
+        // Ensure result is not negative
+        return result > 0 ? result : 0;
+      },
     },
     methods: {
       ...mapMutations("topup", ["setValue", "getInvoice", "removeBank", "setReceipePayment"]),
       ...mapActions("topup", ["matchVoucher", "nextStep", "requestFlip", "resetTopup"]),
+
       goToPage() {
         this.resetTopup({ page: "/card", router: this.$router });
       },
@@ -240,13 +265,27 @@
         return a.toString().padStart(3, "0");
       },
       handleInputChange() {
-        if (this.amountLimit === "") {
-          this.amountLimit = 0;
-        } else {
-          if (this.amountLimit !== 0) {
-            this.amountLimit = parseInt(this.amountLimit);
-          }
+        // 1. Parse input to integer
+        let val = parseInt(this.amountLimit);
+
+        // 2. Handle non-number inputs
+        if (isNaN(val)) {
+          val = 0;
         }
+
+        // 3. Logic: If input is greater than calculated max, reset it to max
+        if (val > this.maxTopupLimit) {
+          this.amountLimit = this.maxTopupLimit;
+        } else {
+          this.amountLimit = val;
+        }
+
+        // 4. Update Vuex State 'amount' so the summary table updates
+        // Since your template uses 'amount' in the summary table but 'amountLimit' in the input
+        this.setValue({
+          key: "amount",
+          value: this.amountLimit,
+        });
       },
     },
   };
