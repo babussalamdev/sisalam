@@ -108,6 +108,7 @@ export default {
     const Amount = state.bank === "qris" ? state.amount + state.feeQris : state.amount + state.feeBank;
     const Name = this.$auth.user.Nama;
     const Bank = state.bank;
+    const Base_Amount = state.amount;
     const CNC = this.$auth.user.cnc;
     const Email = this.$auth.user.email;
     const body = {
@@ -116,6 +117,7 @@ export default {
       Bank,
       CNC,
       Email,
+      Base_Amount,
     };
     try {
       const value = await this.$apiFlip.$post("/flip-topup", body);
