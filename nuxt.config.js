@@ -59,6 +59,7 @@ export default {
       "~/components/topup",
       "~/components/bank",
       "~/components/email",
+      "~/components/laundry",
     ],
   },
 
