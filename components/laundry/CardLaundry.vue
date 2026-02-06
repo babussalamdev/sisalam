@@ -3,7 +3,7 @@
     <div class="card-wallet border-0 rounded-4 p-4 mt-4 shadow-lg">
       <div class="d-flex justify-content-between align-items-start">
         <i class="bi bi-credit-card-2-back-fill h2 text-white opacity-75"></i>
-        <img src="~/assets/image/logo.webp" width="40" height="40" class="img-fluid rounded-circle bg-white p-1" />
+        <img src="~/assets/image/LogoLaundry.png" width="40" height="40" class="img-fluid rounded-circle bg-white p-1" />
       </div>
 
       <div class="mt-4 mb-4">
@@ -38,7 +38,7 @@
   import { mapState } from "vuex";
   export default {
     computed: {
-      ...mapState("index", ["card"]),
+      ...mapState("laundry", ["card"]),
     },
     methods: {
       nominal(a) {

@@ -22,7 +22,7 @@
   export default {
     layout: "utama",
     async asyncData({ store }) {
-      store.dispatch("index/renderPage");
+      store.dispatch("laundry/renderPage");
     },
   };
 </script>

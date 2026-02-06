@@ -8,13 +8,13 @@
         :key="i"
         class="transaction-item d-flex justify-content-between align-items-center py-3 border-bottom-soft">
         <div class="d-flex align-items-center">
-          <div class="icon-box me-3 shadow-sm" :class="getGradientClass(data.GSIPK1)">
-            <i :class="getIconClass(data.GSIPK1)"></i>
+          <div class="icon-box me-3 shadow-sm" :class="getGradientClass(data.status)">
+            <i :class="getIconClass(data.status)"></i>
           </div>
 
           <div class="d-flex flex-column">
             <h6 class="fw-bold text-dark mb-1">
-              {{ getTitle(data.GSIPK1) }}
+              {{ getTitle(data.status) }}
             </h6>
             <p class="text-muted small mb-0">
               {{ formDate(data.SK) }}
@@ -25,7 +25,7 @@
         </div>
 
         <div class="text-end">
-          <h6 class="fw-bold mb-0" :class="getTextColor(data.GSIPK1)">{{ data.GSIPK1 === "debit" ? "+" : "-" }} Rp {{ nominal(data.Amount) }}</h6>
+          <h6 class="fw-bold mb-0" :class="getTextColor(data.status)">{{ getAmountPrefix(data.status) }} Rp {{ nominal(data.total_denda) }}</h6>
         </div>
       </div>
     </div>
@@ -37,113 +37,138 @@
 
   export default {
     computed: {
-      ...mapState("index", ["cardLog"]),
+      ...mapState("laundry", ["laundryLog"]),
       filterData() {
-        const data = this.cardLog;
+        const data = this.laundryLog || [];
         const limit = this.$route.path === "/card" ? 5 : data.length;
         return data.slice(0, limit);
       },
     },
 
     methods: {
-      // Helper to determine the gradient background based on type
-      getGradientClass(type) {
-        if (type === "debit") return "bg-gradient-success"; // Green
-        if (type === "credit") return "bg-gradient-danger"; // Red/Pink
-        return "bg-gradient-primary"; // Indigo
+      getGradientClass(status) {
+        switch (status) {
+          case "paid":
+            return "bg-gradient-success";
+          case "unpaid":
+            return "bg-gradient-danger";
+          case "covered":
+            return "bg-gradient-warning"; // New Covered Style
+          default:
+            return "bg-gradient-primary";
+        }
       },
 
-      // Helper to determine icon class
-      getIconClass(type) {
-        if (type === "debit") return "bi bi-arrow-down-left-circle-fill text-white h5 mb-0"; // Arrow coming in
-        if (type === "credit") return "bi bi-receipt text-white h5 mb-0"; // Receipt/Bill
-        return "bi bi-arrow-repeat text-white h5 mb-0"; // Swap/Transfer
+      getIconClass(status) {
+        switch (status) {
+          case "paid":
+            return "bi bi-check2-circle text-white h5 mb-0";
+          case "unpaid":
+            return "bi bi-exclamation-circle text-white h5 mb-0";
+          case "covered":
+            return "bi bi-shield-check text-white h5 mb-0"; // Shield for protection/coverage
+          default:
+            return "bi bi-arrow-repeat text-white h5 mb-0";
+        }
       },
 
-      // Helper for Text Color
-      getTextColor(type) {
-        if (type === "debit") return "text-success-theme";
-        if (type === "credit") return "text-danger-theme";
-        return "text-dark";
+      getTextColor(status) {
+        switch (status) {
+          case "paid":
+            return "text-success-theme";
+          case "unpaid":
+            return "text-danger-theme";
+          case "covered":
+            return "text-warning-theme"; // New Theme Color
+          default:
+            return "text-dark";
+        }
       },
 
-      // Helper for Title Text
-      getTitle(type) {
-        if (type === "debit") return "Top Up";
-        if (type === "credit") return "Invoice Payment";
-        return "Mutasi Kartu";
+      getTitle(status) {
+        switch (status) {
+          case "paid":
+            return "Laundry Paid";
+          case "unpaid":
+            return "Laundry Bill";
+          case "covered":
+            return "Plan Covered"; // Professional sounding title
+          default:
+            return "Mutasi Kartu";
+        }
+      },
+
+      getAmountPrefix(status) {
+        if (status === "paid") return "+";
+        if (status === "unpaid") return "-";
+        return "•"; // Dot for covered/neutral transactions
       },
 
       formDate(daTe) {
-        const inputDate = daTe;
-        const dateObject = new Date(inputDate);
-        const options = { day: "numeric", month: "short", year: "numeric" }; // Changed to "short" for cleaner look
+        if (!daTe) return "-";
+        const dateObject = new Date(daTe);
+        const options = { day: "numeric", month: "short", year: "numeric" };
         return dateObject.toLocaleDateString("id-ID", options);
       },
 
       nominal(a) {
         return new Intl.NumberFormat("id-ID", {
-          currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(a);
+        }).format(a || 0);
       },
     },
   };
 </script>
 
 <style scoped>
-  /* 1. CONTAINER & LAYOUT */
   .border-bottom-soft {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
-
   .transaction-item:last-child {
     border-bottom: none;
   }
 
-  /* 2. ICON BOXES (Squircles with Gradients) */
   .icon-box {
     width: 48px;
     height: 48px;
-    border-radius: 16px; /* Squircle shape */
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  /* Gradient: Success (Topup) -> Emerald to Teal */
+  /* Gradients */
   .bg-gradient-success {
     background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
   }
-
-  /* Gradient: Danger (Tagihan) -> Berry Red (Matches your Bill Card) */
   .bg-gradient-danger {
     background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
   }
-
-  /* Gradient: Primary (General) -> Indigo (Matches your Main Card) */
+  /* NEW: Warm Gold/Orange for Covered */
+  .bg-gradient-warning {
+    background: linear-gradient(135deg, #f09819 0%, #edde5d 100%);
+  }
   .bg-gradient-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
 
-  /* 3. TEXT COLORS */
+  /* Theme Text Colors */
   .text-success-theme {
     color: #00b09b;
   }
-
   .text-danger-theme {
     color: #dd2476;
   }
+  .text-warning-theme {
+    color: #f09819;
+  }
 
-  /* 4. UTILITIES */
   .ls-1 {
     letter-spacing: 1px;
   }
-
   h6 {
     font-size: 15px;
   }
-
   p {
     font-size: 12px;
   }

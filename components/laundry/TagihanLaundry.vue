@@ -7,7 +7,7 @@
 
       <div class="flex-grow-1">
         <p class="text-white-50 mb-0 small text-uppercase fw-bold ls-1">Total Tagihan</p>
-        <h3 class="fw-bold text-white mb-0">Rp {{ nominal(50000) }}</h3>
+        <h3 class="fw-bold text-white mb-0">Rp {{ $auth.user.cnc !== "-" ? nominal(card?.DendaLaundry) : "-" }}</h3>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
   import { mapState } from "vuex";
   export default {
     computed: {
-      ...mapState("index", ["card"]),
+      ...mapState("laundry", ["card"]),
     },
     methods: {
       nominal(a) {
