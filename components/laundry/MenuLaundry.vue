@@ -18,7 +18,7 @@
       <span class="menu-label">Pay Laundry</span>
     </a>
 
-    <nuxt-link to="/history" class="menu-item text-decoration-none text-center" :class="$auth.user.cnc !== '-' ? '' : 'disabled-item'">
+    <nuxt-link to="/laundry/history" class="menu-item text-decoration-none text-center" :class="$auth.user.cnc !== '-' ? '' : 'disabled-item'">
       <div class="menu-icon shadow-sm mb-2">
         <i class="bi bi-clock-history"></i>
       </div>

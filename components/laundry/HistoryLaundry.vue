@@ -13,14 +13,24 @@
           </div>
 
           <div class="d-flex flex-column">
-            <h6 class="fw-bold text-dark mb-1">
-              {{ getTitle(data.status) }}
-            </h6>
-            <p class="text-muted small mb-0">
-              {{ formDate(data.SK) }}
-              <span class="mx-1">•</span>
-              {{ data.SK.split(" ")[1] }}
-            </p>
+            <h6 class="fw-bold text-dark mb-1">Laundry {{ formDate(data.SK) }}</h6>
+            <div class="d-flex align-items-center">
+              <p class="text-muted mb-0 h5 me-2">{{ data.status }}</p>
+
+              <div class="info-tooltip-wrapper">
+                <i class="bi bi-info-circle text-muted small-icon"></i>
+                <div class="tooltip-content shadow-lg">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span>Items:</span>
+                    <span class="fw-bold">{{ data.jumlah_laundry }} pcs</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Over limit:</span>
+                    <span class="fw-bold text-warning">{{ data.jumlah_kelebihan }} pcs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -85,22 +95,9 @@
         }
       },
 
-      getTitle(status) {
-        switch (status) {
-          case "paid":
-            return "Laundry Paid";
-          case "unpaid":
-            return "Laundry Bill";
-          case "covered":
-            return "Plan Covered"; // Professional sounding title
-          default:
-            return "Mutasi Kartu";
-        }
-      },
-
       getAmountPrefix(status) {
-        if (status === "paid") return "+";
-        if (status === "unpaid") return "-";
+        if (status === "paid") return "-";
+        if (status === "unpaid") return "+";
         return "•"; // Dot for covered/neutral transactions
       },
 
@@ -171,5 +168,59 @@
   }
   p {
     font-size: 12px;
+  }
+
+  /* Tooltip Container */
+  .info-tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+  }
+
+  .small-icon {
+    font-size: 0.85rem;
+    vertical-align: middle;
+  }
+
+  /* Tooltip Box (Hidden by default) */
+  .tooltip-content {
+    visibility: hidden;
+    width: 160px;
+    background-color: #2d3436;
+    color: #fff;
+    text-align: left;
+    border-radius: 8px;
+    padding: 10px 12px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%; /* Position above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 11px;
+  }
+
+  /* Tooltip Arrow */
+  .tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #2d3436 transparent transparent transparent;
+  }
+
+  /* Show on Hover */
+  .info-tooltip-wrapper:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Optional: adjust the existing h5 class if it's too big */
+  .h5 {
+    font-size: 12px !important;
   }
 </style>
