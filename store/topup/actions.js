@@ -126,6 +126,34 @@ export default {
     } catch (error) {
       commit("changeLoad");
       console.log(error);
+
+      // --- NEW CODE START ---
+      // Check if there is a response and the status is 422
+      if (error.response && error.response.status === 422) {
+        const responseData = error.response.data;
+
+        // Check if the 'errors' array exists and contains code 8501
+        const isQrisError = responseData.errors && responseData.errors.some((e) => e.code === 8501);
+
+        if (isQrisError) {
+          Swal.fire({
+            icon: "error",
+            title: "Maaf",
+            text: "Sedang ada gangguan dalam metode pembayaran ini, silahkan pilih metode pembayaran lain.",
+            confirmButtonText: "Oke",
+            confirmButtonColor: "#d33",
+          });
+          return; // Stop here so other error handlers don't run
+        }
+      }
+      // --- NEW CODE END ---
+
+      // Optional: Generic error fallback for other issues
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Terjadi kesalahan, silakan coba lagi nanti.",
+      });
     }
   },
 
