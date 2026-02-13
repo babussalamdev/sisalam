@@ -1,13 +1,18 @@
 <template>
-  <div class="card-bill border-0 rounded-4 mt-3 shadow p-4 position-relative overflow-hidden" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
+  <div class="card-bill border-0 rounded-4 shadow-lg p-4 my-4 position-relative overflow-hidden mb-4">
+    <div class="decorative-circle"></div>
+
     <div class="d-flex align-items-center position-relative z-2">
       <div class="icon-box d-flex align-items-center justify-content-center me-3 rounded-circle shadow-sm">
         <i class="bi bi-receipt text-danger-theme h4 mb-0"></i>
       </div>
 
       <div class="flex-grow-1">
-        <p class="text-white-50 mb-0 small text-uppercase fw-bold ls-1">Total Tagihan</p>
-        <h3 class="fw-bold text-white mb-0">Rp {{ $auth.user.cnc !== "-" ? nominal(card?.DendaLaundry) : "-" }}</h3>
+        <p class="text-white-50 mb-0 small text-uppercase fw-bold ls-1">Total Tagihan Laundry</p>
+        <h2 class="fw-bold text-white mb-0">
+          <span class="fs-6 fw-normal opacity-75">Rp</span>
+          {{ nominal(card.DendaLaundry) }}
+        </h2>
       </div>
     </div>
   </div>
@@ -31,27 +36,25 @@
 </script>
 
 <style scoped>
-  /* THEME GRADIENT:
-     Starts Red/Orange (Attention) -> Ends Magenta (Matches the Purple/Indigo theme) 
-  */
+  /* MATCHING HOME PAGE THEME */
   .card-bill {
     background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
     color: white;
+    transition: transform 0.3s ease;
   }
 
-  .greyscale {
-    filter: grayscale(100%);
-    opacity: 0.6;
+  /* Subtle hover effect */
+  .card-bill:hover {
+    transform: translateY(-2px);
   }
 
   .icon-box {
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
     background-color: rgba(255, 255, 255, 0.95);
-    min-width: 50px; /* Prevents shrinking on small screens */
+    min-width: 52px;
   }
 
-  /* Color the icon to match the card background for continuity */
   .text-danger-theme {
     color: #dd2476;
   }
@@ -65,14 +68,13 @@
     font-size: 0.7rem;
   }
 
-  /* Decorative circle to add texture like the main card */
   .decorative-circle {
     position: absolute;
-    top: -20px;
-    right: -20px;
-    width: 100px;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.1);
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
     border-radius: 50%;
     z-index: 1;
   }

@@ -25,7 +25,7 @@
           </div>
         </nuxt-link>
         <!-- laundry -->
-        <!-- <nuxt-link to="/laundry" active-class="linkActive" class="text-decoration-none">
+        <nuxt-link to="/laundry" active-class="linkActive" class="text-decoration-none">
           <div class="d-flex flex-column text-center">
             <div class="userprofile d-flex align-items-center justify-content-center mx-auto">
               <i class="bi bi-droplet-half h4 fw-bold text-secondary"></i>
@@ -34,7 +34,7 @@
               <p class="fw-semibold text-secondary">Laundry</p>
             </div>
           </div>
-        </nuxt-link> -->
+        </nuxt-link>
         <!-- mutabaah -->
         <nuxt-link to="/mutabaah" active-class="linkActive" class="text-decoration-none">
           <div class="d-flex flex-column text-center">

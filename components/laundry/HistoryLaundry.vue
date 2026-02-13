@@ -1,42 +1,42 @@
 <template>
-  <div class="history mt-4">
-    <div class="list-container pb-5">
-      <h6 class="text-uppercase text-muted small fw-bold mb-3 px-1 ls-1">Last Laundry Activity</h6>
+  <div class="history-list pb-5">
+    <h6 class="text-uppercase text-muted small fw-bold mb-3 px-1 ls-1">Transaction History</h6>
 
-      <div
-        v-for="(data, i) in filterData"
-        :key="i"
-        class="transaction-item d-flex justify-content-between align-items-center py-3 border-bottom-soft">
-        <div class="d-flex align-items-center">
-          <div class="icon-box me-3 shadow-sm" :class="getGradientClass(data.status)">
-            <i :class="getIconClass(data.status)"></i>
-          </div>
+    <div
+      v-for="(data, i) in filterData"
+      :key="i"
+      class="transaction-card d-flex justify-content-between align-items-center p-3 mb-3 bg-white rounded-4 shadow-sm border-0">
+      <div class="d-flex align-items-center">
+        <div class="icon-box me-3 shadow-sm" :class="getGradientClass(data.status)">
+          <i :class="getIconClass(data.status)"></i>
+        </div>
 
-          <div class="d-flex flex-column">
-            <h6 class="fw-bold text-dark mb-1">Laundry {{ formDate(data.SK) }}</h6>
-            <div class="d-flex align-items-center">
-              <p class="text-muted mb-0 h5 me-2">{{ data.status }}</p>
+        <div class="d-flex flex-column">
+          <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem">Laundry {{ formDate(data.SK) }}</h6>
+          <div class="d-flex align-items-center">
+            <span class="badge rounded-pill me-2 fw-normal" :class="getBadgeClass(data.status)">
+              {{ data.status }}
+            </span>
 
-              <div class="info-tooltip-wrapper">
-                <i class="bi bi-info-circle text-muted small-icon"></i>
-                <div class="tooltip-content shadow-lg">
-                  <div class="d-flex justify-content-between mb-1">
-                    <span>Items:</span>
-                    <span class="fw-bold">{{ data.jumlah_laundry }} pcs</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <span>Over limit:</span>
-                    <span class="fw-bold text-warning">{{ data.jumlah_kelebihan }} pcs</span>
-                  </div>
+            <div class="info-tooltip-wrapper">
+              <i class="bi bi-info-circle-fill text-muted small-icon opacity-50"></i>
+              <div class="tooltip-content shadow-lg">
+                <div class="d-flex justify-content-between mb-1">
+                  <span>Items:</span>
+                  <span class="fw-bold">{{ data.jumlah_laundry }} pcs</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Over limit:</span>
+                  <span class="fw-bold text-warning">{{ data.jumlah_kelebihan }} pcs</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="text-end">
-          <h6 class="fw-bold mb-0" :class="getTextColor(data.status)">{{ getAmountPrefix(data.status) }} Rp {{ nominal(data.total_denda) }}</h6>
-        </div>
+      <div class="text-end">
+        <h6 class="fw-bold mb-0" :class="getTextColor(data.status)">{{ getAmountPrefix(data.status) }} Rp {{ nominal(data.total_denda) }}</h6>
       </div>
     </div>
   </div>
@@ -49,12 +49,12 @@
     computed: {
       ...mapState("laundry", ["laundryLog"]),
       filterData() {
+        // Safe guard and sort logic if needed
         const data = this.laundryLog || [];
-        const limit = this.$route.path === "/card" ? 5 : data.length;
-        return data.slice(0, limit);
+        // If simply listing all, just return data
+        return data;
       },
     },
-
     methods: {
       getGradientClass(status) {
         switch (status) {
@@ -63,85 +63,108 @@
           case "unpaid":
             return "bg-gradient-danger";
           case "covered":
-            return "bg-gradient-warning"; // New Covered Style
+            return "bg-gradient-warning";
           default:
             return "bg-gradient-primary";
         }
       },
-
+      // NEW: Badge styling to match modern UI
+      getBadgeClass(status) {
+        switch (status) {
+          case "paid":
+            return "bg-success-subtle text-success";
+          case "unpaid":
+            return "bg-danger-subtle text-danger";
+          case "covered":
+            return "bg-warning-subtle text-warning";
+          default:
+            return "bg-light text-dark";
+        }
+      },
       getIconClass(status) {
         switch (status) {
           case "paid":
-            return "bi bi-check2-circle text-white h5 mb-0";
+            return "bi bi-check-lg text-white h5 mb-0";
           case "unpaid":
-            return "bi bi-exclamation-circle text-white h5 mb-0";
+            return "bi bi-exclamation-lg text-white h5 mb-0";
           case "covered":
-            return "bi bi-shield-check text-white h5 mb-0"; // Shield for protection/coverage
+            return "bi bi-shield-check text-white h5 mb-0";
           default:
             return "bi bi-arrow-repeat text-white h5 mb-0";
         }
       },
-
       getTextColor(status) {
         switch (status) {
           case "paid":
             return "text-success-theme";
           case "unpaid":
             return "text-danger-theme";
-          case "covered":
-            return "text-warning-theme"; // New Theme Color
           default:
             return "text-dark";
         }
       },
-
       getAmountPrefix(status) {
         if (status === "paid") return "-";
         if (status === "unpaid") return "+";
-        return "•"; // Dot for covered/neutral transactions
+        return "";
       },
-
       formDate(daTe) {
         if (!daTe) return "-";
         const dateObject = new Date(daTe);
+        // Short month looks cleaner in lists (e.g., 10 Feb 2026)
         const options = { day: "numeric", month: "short", year: "numeric" };
         return dateObject.toLocaleDateString("id-ID", options);
       },
-
       nominal(a) {
-        return new Intl.NumberFormat("id-ID", {
-          minimumFractionDigits: 0,
-        }).format(a || 0);
+        return new Intl.NumberFormat("id-ID", { minimumFractionDigits: 0 }).format(a || 0);
       },
     },
   };
 </script>
 
 <style scoped>
-  .border-bottom-soft {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  }
-  .transaction-item:last-child {
-    border-bottom: none;
+  /* CARD STYLE LIST ITEMS */
+  .transaction-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
+  .transaction-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* Badge Colors (Bootstrap 5.3 mimic) */
+  .bg-success-subtle {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+  .bg-danger-subtle {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+  .bg-warning-subtle {
+    background-color: #fff3cd;
+    color: #664d03;
+  }
+
+  /* Icons */
   .icon-box {
     width: 48px;
     height: 48px;
-    border-radius: 16px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
   }
 
-  /* Gradients */
+  /* Gradient Backgrounds */
   .bg-gradient-success {
     background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
   }
   .bg-gradient-danger {
     background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
   }
-  /* NEW: Warm Gold/Orange for Covered */
   .bg-gradient-warning {
     background: linear-gradient(135deg, #f09819 0%, #edde5d 100%);
   }
@@ -149,59 +172,43 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
 
-  /* Theme Text Colors */
+  /* Text Colors */
   .text-success-theme {
     color: #00b09b;
   }
   .text-danger-theme {
     color: #dd2476;
   }
-  .text-warning-theme {
-    color: #f09819;
-  }
 
   .ls-1 {
     letter-spacing: 1px;
   }
-  h6 {
-    font-size: 15px;
-  }
-  p {
-    font-size: 12px;
-  }
 
-  /* Tooltip Container */
+  /* Tooltip Improvements */
   .info-tooltip-wrapper {
     position: relative;
-    display: inline-block;
-    cursor: help;
+    cursor: pointer;
+    margin-top: 2px;
   }
 
-  .small-icon {
-    font-size: 0.85rem;
-    vertical-align: middle;
-  }
-
-  /* Tooltip Box (Hidden by default) */
   .tooltip-content {
     visibility: hidden;
-    width: 160px;
+    width: 150px;
     background-color: #2d3436;
     color: #fff;
-    text-align: left;
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 6px;
+    padding: 8px 12px;
     position: absolute;
-    z-index: 10;
-    bottom: 125%; /* Position above the icon */
+    z-index: 100;
+    bottom: 140%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(10px);
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: all 0.2s ease;
     font-size: 11px;
+    pointer-events: none;
   }
 
-  /* Tooltip Arrow */
   .tooltip-content::after {
     content: "";
     position: absolute;
@@ -213,14 +220,9 @@
     border-color: #2d3436 transparent transparent transparent;
   }
 
-  /* Show on Hover */
   .info-tooltip-wrapper:hover .tooltip-content {
     visibility: visible;
     opacity: 1;
-  }
-
-  /* Optional: adjust the existing h5 class if it's too big */
-  .h5 {
-    font-size: 12px !important;
+    transform: translateX(-50%) translateY(0);
   }
 </style>

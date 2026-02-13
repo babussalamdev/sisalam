@@ -15,12 +15,8 @@ export default {
 
     const sk = this.$auth.user.SK;
 
-    // Safely get dates from payload, defaulting to empty strings if not provided
-    const start = payload?.startdate || "";
-    const end = payload?.enddate || "";
-
     try {
-      const url = `get-santri-laundry?type=history-page&sk=${sk.replace("#", "%23")}&startdate=${start} 00:00&enddate=${end}`;
+      const url = `get-santri-laundry?type=history-page&sk=${sk.replace("#", "%23")}`;
       const result = await this.$apiBase.$get(url);
 
       if (result) {

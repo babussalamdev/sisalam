@@ -1,7 +1,7 @@
 <template>
   <div class="payment-summary pb-5">
     <div class="row justify-content-center">
-      <div class="col-12 col-md-8 col-lg-6">
+      <div class="col-12 col-md-10 col-lg-12 col-xl-12">
         <div v-if="!user.Diskon" class="card border-0 rounded-4 shadow-sm mb-3">
           <div class="card-body p-3">
             <label class="small text-muted fw-bold mb-2 text-uppercase ls-1">Kode Promo / Voucher</label>

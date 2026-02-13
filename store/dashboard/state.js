@@ -1,6 +1,7 @@
 export default () => ({
-  pelanggaran: '',
-  absensi: '',
-  ziyadah: '',
-  kaldik: []
-})
+  pelanggaran: "",
+  absensi: "",
+  ziyadah: "",
+  kaldik: [],
+  card: "",
+});
