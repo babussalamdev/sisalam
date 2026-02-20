@@ -25,7 +25,7 @@
       }
     },
     async asyncData({ store }) {
-      store.dispatch("index/renderPage");
+      store.dispatch("laundry/renderPageBillPay");
     },
   };
 </script>

@@ -57,7 +57,9 @@
             </td>
           </div> -->
           <small class="col-12 col-lg-7 text-danger">
-            Untuk pembayaran hanya aktif selama 1x24 jam pastikan anda sudah siap membayar sebelum menekan tombol bayar.
+            Untuk pembayaran hanya aktif selama
+            <strong>30 menit</strong>
+            , pastikan anda sudah siap membayar sebelum menekan tombol bayar.
           </small>
           <div class="col-12 col-lg-5">
             <a class="d-block text-end" href="#!">

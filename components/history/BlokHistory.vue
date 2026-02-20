@@ -1,9 +1,5 @@
 <template>
   <div class="shadow py-3 rounded-4">
-    <div class="text-center">
-      <p class="userprofile-p fw-semibold">Saldo</p>
-      <h5 class="fw-bold">{{ nominal(topup - invoice) }}</h5>
-    </div>
     <div class="d-flex justify-content-evenly">
       <div class="d-flex gap-2">
         <div class="userprofile bg-success d-flex align-items-center justify-content-center mb-2 mt-1 mx-auto">
@@ -28,33 +24,33 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-export default {
-  computed: {
-    ...mapState('index', ['card', 'cardLog', 'topup', 'invoice']),
-  },
-  methods: {
-    nominal(a) {
-      return new Intl.NumberFormat("id-ID", {
-        currency: "IDR",
-        minimumFractionDigits: 0,
-      }).format(a);
+  import { mapState } from "vuex";
+  export default {
+    computed: {
+      ...mapState("index", ["card", "cardLog", "topup", "invoice"]),
     },
-  },
-}
+    methods: {
+      nominal(a) {
+        return new Intl.NumberFormat("id-ID", {
+          currency: "IDR",
+          minimumFractionDigits: 0,
+        }).format(a);
+      },
+    },
+  };
 </script>
 
 <style scoped>
-/* account summary */
-.userprofile {
-  width: 36px;
-  height: 36px;
-  border-radius: 30px;
-  padding-top: 5px;
-}
+  /* account summary */
+  .userprofile {
+    width: 36px;
+    height: 36px;
+    border-radius: 30px;
+    padding-top: 5px;
+  }
 
-.userprofile-p {
-  margin-bottom: 0 !important;
-  font-size: 12px;
-}
+  .userprofile-p {
+    margin-bottom: 0 !important;
+    font-size: 12px;
+  }
 </style>

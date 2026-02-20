@@ -3,4 +3,7 @@ export default {
     state.card = value.card[0];
     state.laundryLog = value.laundry;
   },
+  setRenderBill(state, value) {
+    state.bill = value;
+  },
 };
