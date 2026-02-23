@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 export default {
   async renderPage({ commit, dispatch }, data) {
     dispatch("load/submitLoad", null, { root: true });
@@ -44,6 +46,62 @@ export default {
     } finally {
       // Turn off loading state regardless of success or failure
       dispatch("load/submitLoad", null, { root: true });
+    }
+  },
+  async requestPay({ commit, state }) {
+    const Amount = state.bill.DendaLaundry;
+    if (!Amount || Amount <= 0) {
+      return Swal.fire({
+        icon: "info",
+        title: "Tidak Ada Tagihan",
+        text: "Jumlah tagihan Anda adalah Rp 0. Tidak ada pembayaran yang diperlukan.",
+      });
+    }
+
+    // 2. Proceed with API call if Amount > 0
+    commit("changeLoad");
+    const Name = this.$auth.user.Nama;
+    const CNC = this.$auth.user.cnc;
+    const Email = this.$auth.user.email;
+    const SK = this.$auth.user.SK;
+
+    const body = { Amount, Name, CNC, Email, SK };
+
+    try {
+      // 1. Send the request
+      const value = await this.$apiBase.$post("/input-santri-laundry?type=bill-laundry", body);
+
+      // 2. Stop loading state
+      commit("changeLoad");
+
+      // 3. Show success alert
+      await Swal.fire({
+        icon: "success",
+        title: "Pembayaran Berhasil",
+        text: "Tagihan laundry Anda telah dibayar.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      // 4. Redirect to /laundry page
+      this.$router.push("/laundry");
+    } catch (error) {
+      commit("changeLoad");
+
+      // 5. Handle specific error cases (like Insufficient Balance)
+      let errorMessage = "Terjadi kesalahan, silakan coba lagi nanti.";
+
+      if (error.response && error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Membayar",
+        text: errorMessage, // Displays "Insufficient balance" if sent by backend
+      });
+
+      console.error("Payment Error:", error);
     }
   },
 };

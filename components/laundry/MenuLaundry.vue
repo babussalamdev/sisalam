@@ -86,7 +86,7 @@
     width: 56px;
     height: 56px;
     /* Gradient matches the "Total Tagihan" bridge colors */
-    background: linear-gradient(135deg, #667eea 0%, #dd2476 100%);
+    background: linear-gradient(135deg, #66a6ea 0%, #4b55a2 100%);
     border-radius: 18px; /* Squircle */
     display: flex;
     align-items: center;
@@ -99,7 +99,7 @@
   /* Hover & Active Effects */
   .menu-item:hover .menu-icon {
     transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(221, 36, 118, 0.3) !important;
+    box-shadow: 0 10px 15px -3px rgba(36, 64, 221, 0.3) !important;
   }
 
   .menu-item:active .menu-icon {

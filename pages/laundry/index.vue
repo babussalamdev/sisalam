@@ -4,7 +4,9 @@
       <div class="media mx-auto">
         <div class="row">
           <div class="col-12">
-            <!-- <Header /> -->
+            <div class="d-flex justify-content-end p-2">
+              <small class="fw-bold">v{{ version }}</small>
+            </div>
             <CardLaundry />
             <TagihanLaundry />
             <MenuLaundry />
@@ -21,6 +23,14 @@
 <script>
   export default {
     layout: "utama",
+    data() {
+      return {
+        version: 0,
+      };
+    },
+    created() {
+      this.version = process.env.version;
+    },
     async asyncData({ store }) {
       store.dispatch("laundry/renderPage");
     },

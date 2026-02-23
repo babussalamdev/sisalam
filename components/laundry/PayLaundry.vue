@@ -2,7 +2,7 @@
   <div class="payment-summary pb-5">
     <div class="row justify-content-center">
       <div class="col-12 col-md-10 col-lg-12 col-xl-12">
-        <div v-if="!user.Diskon" class="card border-0 rounded-4 shadow-sm mb-3">
+        <!-- <div v-if="!user.Diskon" class="card border-0 rounded-4 shadow-sm mb-3">
           <div class="card-body p-3">
             <label class="small text-muted fw-bold mb-2 text-uppercase ls-1">Kode Promo / Voucher</label>
             <div class="input-group">
@@ -16,7 +16,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="card border-0 rounded-4 shadow-lg overflow-hidden mb-3">
           <div class="bg-light p-3 border-bottom border-light">
@@ -29,21 +29,22 @@
               <span class="fw-semibold">Rp {{ nominal(bill?.DendaLaundry) }}</span>
             </div>
 
-            <div class="d-flex justify-content-between mb-3">
+            <!-- <div class="d-flex justify-content-between mb-3">
               <span class="text-muted">Biaya Admin</span>
               <span class="fw-semibold">Rp {{ nominal(5000) }}</span>
-            </div>
+            </div> -->
 
-            <div v-if="user.Diskon" class="d-flex justify-content-between mb-3 text-success">
+            <!-- <div v-if="user.Diskon" class="d-flex justify-content-between mb-3 text-success">
               <span>Diskon Voucher</span>
               <span class="fw-bold">- Rp {{ nominal(user.Diskon) }}</span>
-            </div>
+            </div> -->
 
             <hr class="dashed my-3" />
 
             <div class="d-flex justify-content-between align-items-center">
               <span class="h6 mb-0 text-uppercase fw-bold text-muted">Total Bayar</span>
-              <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(bill?.DendaLaundry + 5000 - (user.Diskon || 0)) }}</span>
+              <!-- <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(bill?.DendaLaundry + 5000 - (user.Diskon || 0)) }}</span> -->
+              <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(bill?.DendaLaundry) }}</span>
             </div>
           </div>
         </div>
@@ -62,7 +63,8 @@
               </div>
             </div>
 
-            <div v-if="bill?.Balance >= 55000 - (user.Diskon || 0)">
+            <!-- <div v-if="bill?.Balance >= 55000 - (user.Diskon || 0)"> -->
+            <div v-if="bill?.Balance >= bill?.DendaLaundry">
               <span class="badge bg-white text-success fw-bold rounded-pill px-3 py-2 shadow-sm">
                 <i class="bi bi-check-circle-fill me-1"></i>
                 Cukup
@@ -83,7 +85,7 @@
         </div>
 
         <div class="d-grid gap-2">
-          <button v-if="!load" @click="requestFlip" class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3">Bayar Sekarang</button>
+          <button v-if="!load" @click="requestPay" class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3">Bayar Sekarang</button>
 
           <button v-else class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3" type="button" disabled>
             <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
@@ -106,13 +108,12 @@
     computed: {
       // FIXED VUEX MAPPING
       // You cannot combine two modules in one mapState string. They must be separate.
-      ...mapState("topup", ["load", "user"]),
+      ...mapState("laundry", ["load"]),
       ...mapState("laundry", ["bill"]), // This fetches the Balance correctly
     },
 
     methods: {
-      ...mapMutations("topup", ["setValue", "getInvoice", "removeBank", "setReceipePayment"]),
-      ...mapActions("topup", ["matchVoucher", "nextStep", "requestFlip", "resetTopup"]),
+      ...mapActions("laundry", ["matchVoucher", "requestPay"]),
       nominal(a) {
         return new Intl.NumberFormat("id-ID", {
           currency: "IDR",

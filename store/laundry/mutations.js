@@ -6,4 +6,7 @@ export default {
   setRenderBill(state, value) {
     state.bill = value;
   },
+  changeLoad(state) {
+    state.load = state.load ? false : true;
+  },
 };

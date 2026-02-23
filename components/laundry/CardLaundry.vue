@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative container-card px-2">
-    <div class="card-wallet border-0 rounded-4 p-4 mt-4 shadow-lg position-relative overflow-hidden">
+    <div class="card-wallet border-0 rounded-4 p-4 shadow-lg position-relative overflow-hidden" :class="$auth.user.cnc === '-' ? 'greyscale' : ''">
       <div class="card-shine"></div>
 
       <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-2">
@@ -11,26 +11,31 @@
           <div class="chip-line"></div>
         </div>
         <div class="bg-white rounded-circle p-1 d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px">
-          <img src="~/assets/image/LogoLaundry.png" class="img-fluid" alt="Logo" />
+          <img src="~/assets/image/logo.webp" class="img-fluid" alt="Logo" />
         </div>
       </div>
 
       <div class="mb-4 position-relative z-2">
-        <p class="text-white-50 mb-1 small text-uppercase ls-2 fw-bold" style="font-size: 10px">Card Holder</p>
-        <h4 class="fw-bold text-white tracking-wide text-capitalize text-truncate mb-0">
-          {{ $auth.user.name }}
+        <p class="text-white-50 mb-1 small text-uppercase ls-2 fw-bold" style="font-size: 10px">Card Number</p>
+        <h4 class="fw-bold text-white tracking-wide mb-0">
+          {{ card?.SK ? card?.SK : "-" }}
         </h4>
       </div>
 
       <div class="d-flex justify-content-between align-items-end position-relative z-2">
         <div>
-          <p class="text-white-50 mb-1 small text-uppercase ls-2 fw-bold" style="font-size: 10px">Total Balance</p>
-          <h2 class="fw-bold text-white mb-0">
+          <p class="text-white-50 mb-0 small text-uppercase ls-2 fw-bold" style="font-size: 10px">Card Holder</p>
+          <h6 class="text-white text-capitalize mb-0 fw-semibold">
+            {{ $auth.user.cnc !== "-" ? $auth.user.name : "-" }}
+          </h6>
+        </div>
+        <div class="text-end">
+          <p class="text-white-50 mb-0 small text-uppercase ls-2 fw-bold" style="font-size: 10px">Balance</p>
+          <h5 class="fw-bold text-white mb-0">
             <span class="fs-6 fw-normal opacity-75">Rp</span>
             {{ $auth.user.cnc !== "-" ? nominal(card?.Balance) : "-" }}
-          </h2>
+          </h5>
         </div>
-        <i class="bi bi-wifi h4 text-white-50 mb-1 opacity-50 rotate-90"></i>
       </div>
     </div>
 
@@ -74,15 +79,19 @@
 </script>
 
 <style scoped>
-  /* Main Card Gradient */
-  .card-wallet {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 200px;
-    z-index: 10;
-    transform-style: preserve-3d;
+  .greyscale {
+    filter: grayscale(100%);
+    opacity: 0.8;
   }
 
-  /* Shine Effect */
+  .card-wallet {
+    /* Using the modern gradient instead of the background image */
+    background: linear-gradient(135deg, #66a6ea 0%, #4b55a2 100%);
+    min-height: 200px;
+    z-index: 10;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
   .card-shine {
     position: absolute;
     top: -50%;
@@ -94,7 +103,6 @@
     z-index: 1;
   }
 
-  /* Simulated Chip */
   .chip-sim {
     width: 45px;
     height: 32px;
@@ -104,11 +112,12 @@
     overflow: hidden;
     box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
   }
+
   .chip-line {
     position: absolute;
     background: rgba(0, 0, 0, 0.15);
-    border-radius: 2px;
   }
+
   .chip-line:nth-child(1) {
     width: 100%;
     height: 1px;
@@ -130,16 +139,14 @@
     left: 30px;
   }
 
-  /* Stacked Effect */
   .fake-card {
     height: 20px;
     width: 90%;
-    background: #5a54a6;
-    margin-top: -10px;
-    opacity: 0.5;
+    background: #4b55a2;
+    margin-top: -12px;
+    opacity: 0.3;
     z-index: 1;
     position: relative;
-    transition: all 0.3s ease;
   }
 
   .ls-2 {
@@ -147,12 +154,5 @@
   }
   .z-2 {
     z-index: 2;
-  }
-  .rotate-90 {
-    transform: rotate(90deg);
-  }
-
-  .text-white-50 {
-    color: rgba(255, 255, 255, 0.7) !important;
   }
 </style>

@@ -6,4 +6,5 @@ export default () => ({
   bill: "",
   topup: 0,
   invoice: 0,
+  load: false,
 });

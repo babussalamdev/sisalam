@@ -1,64 +1,31 @@
 <template>
-  <div class="menu d-flex justify-content-evenly mt-4">
-    <!-- menu -->
-    <nuxt-link v-if="$auth.user.cnc === '-'" to="/card/aktivasikartu" class="text-decoration-none">
-      <div class="d-flex flex-column text-center bg-primaryr">
-        <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
-          <i class="bi bi-postcard-fill h4 pt-1 text-white fw-bold"></i>
-        </div>
-        <div>
-          <p class="fw-semibold">Aktivasi</p>
+  <div class="menu-container d-flex justify-content-evenly mt-4 px-2 mb-4">
+    <nuxt-link v-if="$auth.user.cnc === '-'" to="/card/aktivasikartu" class="menu-item text-decoration-none text-center">
+      <div class="menu-icon-wrapper">
+        <div class="menu-icon shadow-sm">
+          <i class="bi bi-postcard-fill"></i>
         </div>
       </div>
+      <span class="menu-label">Aktivasi</span>
     </nuxt-link>
-    <!-- menu -->
-    <a @click="toTopup()" href="javascript:;" class="text-decoration-none cursor-pointer" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
-      <div class="d-flex flex-column text-center bg-primaryr">
-        <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
-          <i class="bi bi-wallet-fill h4 pt-1 text-white fw-bold"></i>
-        </div>
-        <div>
-          <p class="fw-semibold">Top Up</p>
+
+    <a @click="toTopup()" href="javascript:;" class="menu-item text-decoration-none text-center" :class="{ 'disabled-item': $auth.user.cnc === '-' }">
+      <div class="menu-icon-wrapper">
+        <div class="menu-icon shadow-sm">
+          <i class="bi bi-wallet-fill"></i>
         </div>
       </div>
+      <span class="menu-label">Top Up</span>
     </a>
-    <!-- menu -->
-    <!-- <nuxt-link to="/profil" class="text-decoration-none">
-      <div class="d-flex flex-column text-center bg-primaryr">
-        <div
-          class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto"
-        >
-          <i class="bi bi-person-fill h4 text-white fw-bold"></i>
-        </div>
-        <div>
-          <p class="fw-semibold">Profil</p>
+
+    <nuxt-link to="/history" class="menu-item text-decoration-none text-center" :class="{ 'disabled-item': $auth.user.cnc === '-' }">
+      <div class="menu-icon-wrapper">
+        <div class="menu-icon shadow-sm">
+          <i class="bi bi-hourglass-split"></i>
         </div>
       </div>
-    </nuxt-link> -->
-    <!-- menu -->
-    <nuxt-link to="/history" class="text-decoration-none" :class="$auth.user.cnc !== '-' ? '' : 'greyscale'">
-      <div class="d-flex flex-column text-center bg-primaryr">
-        <div class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto">
-          <i class="bi bi-hourglass-split h4 pt-1 text-white fw-bold"></i>
-        </div>
-        <div>
-          <p class="fw-semibold">History</p>
-        </div>
-      </div>
+      <span class="menu-label">History</span>
     </nuxt-link>
-    <!-- menu -->
-    <!-- <nuxt-link to="/menu" class="text-decoration-none">
-      <div class="d-flex flex-column text-center bg-primaryr">
-        <div
-          class="userprofile d-flex align-items-center justify-content-center mb-2 mx-auto"
-        >
-          <i class="bi bi-menu-button-fill h4 pt-1 text-white fw-bold"></i>
-        </div>
-        <div>
-          <p class="fw-semibold">Menu</p>
-        </div>
-      </div>
-    </nuxt-link> -->
   </div>
 </template>
 
@@ -70,25 +37,24 @@
       toTopup() {
         const email = this.$auth.user.email;
         const emailStatus = this.$auth.user.email_verified;
+
         if (email && emailStatus === "true") {
           this.$router.push("/topup");
-        } else if (email && emailStatus === "false") {
-          Swal.fire({
-            text: "Email anda belum terverifikasi!",
-            icon: "warning",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Verifikasi Email!",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.$router.push("/menukartu/gantiemail");
-            }
-          });
         } else {
+          // Cleaner Alert logic using the new style
+          const msg = email && emailStatus === "false" ? "Email anda belum terverifikasi!" : "Anda belum memiliki email yang valid!";
+
           Swal.fire({
-            text: "Anda belum memiliki email yang valid!",
+            title: "Opps...",
+            text: msg,
             icon: "warning",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Tambahkan Email!",
+            confirmButtonColor: "#4b55a2", // Matches the new card theme
+            confirmButtonText: "Atur Email",
+            background: "#fff",
+            customClass: {
+              popup: "rounded-4 shadow-lg",
+              confirmButton: "rounded-3 px-4",
+            },
           }).then((result) => {
             if (result.isConfirmed) {
               this.$router.push("/menukartu/gantiemail");
@@ -101,22 +67,63 @@
 </script>
 
 <style scoped>
-  .greyscale {
-    filter: grayscale(100%);
-    pointer-events: none;
+  /* Container spacing */
+  .menu-container {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .userprofile {
-    width: 48px;
-    height: 48px;
-    background-color: #44b5ff;
-    border-radius: 30px;
-    padding-top: 5px;
+  /* Individual Menu Item */
+  .menu-item {
+    cursor: pointer;
+    width: 80px;
+    transition: all 0.2s ease;
   }
 
-  p {
-    margin-bottom: 0 !important;
+  .menu-icon-wrapper {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  .menu-icon {
+    width: 56px;
+    height: 56px;
+    /* Matching the blue gradient from the card style */
+    background: linear-gradient(135deg, #66a6ea 0%, #4b55a2 100%);
+    border-radius: 18px; /* Squircle effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.4rem;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Hover & Click Animations */
+  .menu-item:hover .menu-icon {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(75, 85, 162, 0.25) !important;
+  }
+
+  .menu-item:active .menu-icon {
+    transform: scale(0.92);
+  }
+
+  .menu-label {
     font-size: 12px;
-    color: #44b5ff;
+    font-weight: 600;
+    color: #4b55a2; /* Using the theme color instead of light grey */
+    display: block;
+  }
+
+  /* Disabled/Inactive State */
+  .disabled-item {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(100%);
   }
 </style>
