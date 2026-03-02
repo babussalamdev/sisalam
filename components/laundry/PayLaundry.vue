@@ -26,7 +26,7 @@
           <div class="card-body p-4 bg-white">
             <div class="d-flex justify-content-between mb-3">
               <span class="text-muted">Nominal Laundry</span>
-              <span class="fw-semibold">Rp {{ nominal(bill?.DendaLaundry) }}</span>
+              <span class="fw-semibold">Rp {{ nominal(this.$auth.user.DendaLaundry || 0) }}</span>
             </div>
 
             <!-- <div class="d-flex justify-content-between mb-3">
@@ -44,7 +44,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <span class="h6 mb-0 text-uppercase fw-bold text-muted">Total Bayar</span>
               <!-- <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(bill?.DendaLaundry + 5000 - (user.Diskon || 0)) }}</span> -->
-              <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(bill?.DendaLaundry) }}</span>
+              <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(this.$auth.user.DendaLaundry || 0) }}</span>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@
             </div>
 
             <!-- <div v-if="bill?.Balance >= 55000 - (user.Diskon || 0)"> -->
-            <div v-if="bill?.Balance >= bill?.DendaLaundry">
+            <div v-if="bill?.Balance >= this.$auth.user.DendaLaundry || 0">
               <span class="badge bg-white text-success fw-bold rounded-pill px-3 py-2 shadow-sm">
                 <i class="bi bi-check-circle-fill me-1"></i>
                 Cukup

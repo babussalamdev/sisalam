@@ -4,6 +4,5 @@ export default {
     state.absensi = data.Absensi;
     state.ziyadah = data.Ziyadah;
     state.kaldik = data.Kaldik;
-    state.card = data.card;
   },
 };

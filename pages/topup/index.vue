@@ -7,7 +7,7 @@
             <img src="~/assets/image/icon/Left.png" alt="" />
           </nuxt-link>
           <h4>Top Up</h4>
-          <img class="fake-image" src="~/assets/image/icon/Left.png" alt="" />
+          <small class="fw-bold">v{{ version }}</small>
         </div>
         <Pay class="mt-2" />
       </div>
@@ -16,100 +16,105 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
+  import Swal from "sweetalert2";
 
-export default {
-  middleware({ $auth, redirect }) {
-    if ($auth.user.cnc === '-') {
-      return redirect('/card')
-    }
-  },
-  async asyncData({ store }) {
-    store.dispatch("topup/loadForm");
-  },
-  data() {
-    return {
-      type: "password",
-      btn: true,
-    };
-  },
-  methods: {
-    async submit(event) {
-      this.btn = false;
-      const data = Object.fromEntries(new FormData(event.target));
-      try {
-        const result = await this.$apiCard.$put(`put-card?method=topup`, data);
-        if (result) {
+  export default {
+    middleware({ $auth, redirect }) {
+      if ($auth.user.cnc === "-") {
+        return redirect("/card");
+      }
+    },
+    async asyncData({ store }) {
+      store.dispatch("topup/loadForm");
+    },
+    data() {
+      return {
+        version: 0,
+
+        type: "password",
+        btn: true,
+      };
+    },
+    created() {
+      this.version = process.env.version;
+    },
+    methods: {
+      async submit(event) {
+        this.btn = false;
+        const data = Object.fromEntries(new FormData(event.target));
+        try {
+          const result = await this.$apiCard.$put(`put-card?method=topup`, data);
+          if (result) {
+            this.btn = true;
+            Swal.fire({
+              icon: "success",
+              text: result.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            this.$refs.formData.reset();
+          }
+        } catch (error) {
           this.btn = true;
           Swal.fire({
-            icon: "success",
-            text: result.message,
+            icon: "error",
+            text: error,
             showConfirmButton: false,
             timer: 1500,
           });
-          this.$refs.formData.reset()
         }
-      } catch (error) {
-        this.btn = true;
-        Swal.fire({
-          icon: "error",
-          text: error,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
+      },
+      showpassword() {
+        const show = this.type === "password" ? "text" : "password";
+        this.type = show;
+      },
     },
-    showpassword() {
-      const show = this.type === "password" ? "text" : "password";
-      this.type = show;
-    },
-  },
-};
+  };
 </script>
 
 <style scoped>
-/* all */
-#topup {
-  /* padding-top: 20px; */
-}
-
-.fake-image {
-  opacity: 0;
-}
-
-/* judul */
-h1 {
-  font-size: 24px;
-}
-
-p {
-  font-size: 14px;
-}
-
-/* form */
-input {
-  height: 50px;
-}
-
-button {
-  width: 100%;
-  height: 50px;
-}
-
-.media {
-  width: 40%;
-}
-
-@media screen and (max-width: 576px) {
-  .media {
-    width: 100% !important;
+  /* all */
+  #topup {
+    /* padding-top: 20px; */
   }
-}
 
-/* tablet */
-@media screen and (max-width: 991px) {
-  .media {
-    width: 70%;
+  .fake-image {
+    opacity: 0;
   }
-}
+
+  /* judul */
+  h1 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  /* form */
+  input {
+    height: 50px;
+  }
+
+  button {
+    width: 100%;
+    height: 50px;
+  }
+
+  .media {
+    width: 40%;
+  }
+
+  @media screen and (max-width: 576px) {
+    .media {
+      width: 100% !important;
+    }
+  }
+
+  /* tablet */
+  @media screen and (max-width: 991px) {
+    .media {
+      width: 70%;
+    }
+  }
 </style>

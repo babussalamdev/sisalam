@@ -3,5 +3,4 @@ export default () => ({
   absensi: "",
   ziyadah: "",
   kaldik: [],
-  card: "",
 });

@@ -13,12 +13,12 @@
             <p class="text-uppercase text-muted fw-bold mb-1 ls-1" style="font-size: 0.75rem">Total Tagihan Laundry</p>
             <h3 class="fw-bold text-danger mb-0">
               <span class="fs-6 text-muted me-1 fw-normal">Rp</span>
-              {{ nominal(card.DendaLaundry) }}
+              {{ nominal(this.$auth.user.DendaLaundry || 0) }}
             </h3>
           </div>
         </div>
 
-        <div class="text-end" v-if="card.DendaLaundry > 0">
+        <div class="text-end" v-if="this.$auth.user.DendaLaundry || 0">
           <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">Unpaid</span>
         </div>
       </div>
@@ -27,11 +27,7 @@
 </template>
 
 <script>
-  import { mapState } from "vuex";
   export default {
-    computed: {
-      ...mapState("laundry", ["card"]),
-    },
     methods: {
       nominal(a) {
         return new Intl.NumberFormat("id-ID", {

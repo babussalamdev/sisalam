@@ -11,7 +11,7 @@
         <p class="text-white-50 mb-0 small text-uppercase fw-bold ls-1">Total Tagihan Laundry</p>
         <h2 class="fw-bold text-white mb-0">
           <span class="fs-6 fw-normal opacity-75">Rp</span>
-          {{ nominal(card.DendaLaundry) }}
+          {{ nominal(this.$auth.user.DendaLaundry || 0) }}
         </h2>
       </div>
     </div>
@@ -19,11 +19,7 @@
 </template>
 
 <script>
-  import { mapState } from "vuex";
   export default {
-    computed: {
-      ...mapState("laundry", ["card"]),
-    },
     methods: {
       nominal(a) {
         return new Intl.NumberFormat("id-ID", {

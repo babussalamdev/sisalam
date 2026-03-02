@@ -49,7 +49,7 @@ export default {
     }
   },
   async requestPay({ commit, state }) {
-    const Amount = state.bill.DendaLaundry;
+    const Amount = this.$auth.user.DendaLaundry || 0;
     if (!Amount || Amount <= 0) {
       return Swal.fire({
         icon: "info",
@@ -81,6 +81,10 @@ export default {
         text: "Tagihan laundry Anda telah dibayar.",
         timer: 2000,
         showConfirmButton: false,
+      });
+      this.$auth.setUser({
+        ...this.$auth.user,
+        DendaLaundry: 0,
       });
 
       // 4. Redirect to /laundry page

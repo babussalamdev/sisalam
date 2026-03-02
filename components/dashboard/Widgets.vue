@@ -36,7 +36,7 @@
           <i class="bi bi-droplet-fill me-1"></i>
           Tagihan Laundry
         </p>
-        <h1 class="mb-1">{{ rupiah(card?.DendaLaundry || 0) }}</h1>
+        <h1 class="mb-1">{{ rupiah(this.$auth.user.DendaLaundry || 0) }}</h1>
         <!-- <h6 class="text-secondary mb-3">Total 25 Pakaian</h6>
         <p class="mb-0"></p> -->
       </div>
@@ -52,7 +52,7 @@
   export default {
     mixins: [formatSet],
     computed: {
-      ...mapState("dashboard", ["pelanggaran", "absensi", "ziyadah", "card"]),
+      ...mapState("dashboard", ["pelanggaran", "absensi", "ziyadah"]),
     },
     methods: {
       formatDate(dateString) {
