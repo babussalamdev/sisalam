@@ -1,186 +1,93 @@
 <template>
-  <div>
-    <div class="container">
-      <div class="total-wrapper mb-4 d-flex flex-column justify-content-center align-items-center">
-        <p class="py-1 px-2 bg-secondary-subtle rounded-3">
+  <div class="pb-5">
+    <div class="container mt-3">
+      <div class="d-flex overflow-auto gap-2 mb-4 hide-scrollbar">
+        <button
+          v-for="item in subjectOptions"
+          :key="item.value"
+          @click="updateSubject(item.value)"
+          class="btn rounded-pill px-4 fw-medium shadow-sm transition-all"
+          :class="selectedSubject === item.value ? 'btn-primary text-white' : 'btn-light text-secondary border'"
+          style="white-space: nowrap">
+          {{ item.label }}
+        </button>
+      </div>
+
+      <div
+        class="total-wrapper mb-4 p-4 rounded-4 shadow-sm text-white text-center"
+        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+        <span class="badge bg-white text-primary mb-2 px-3 py-2 rounded-pill shadow-sm">
           <i class="bi bi-book me-1"></i>
-          Total Hafalan
-        </p>
-        <h1 class="fw-bold">{{ datas.Juz }} Juz</h1>
-        <h6>{{ datas.totalPages }} halaman</h6>
-      </div>
-      <!-- widgets -->
-      <div class="widgets mb-4">
-        <!-- <div class="card p-3 bg-light border-0 shadow-sm rounded-4">
-        <p class="mb-2"><i class="bi bi-exclamation-circle me-1"></i>Status Asrama</p>
-        <h1 class="mb-1 text-capitalize">{{ this.$auth.user.Logs?.asrama?.status }}<i class="material-icons ms-1">
-            school </i></h1>
-        <h6 class="text-secondary mb-3">{{ formatDate(this.$auth.user.Logs?.asrama?.time) }}</h6>
-        <div class="line-bottom bg-success rounded-5"></div>
-      </div> -->
-        <div class="card p-3 bg-light border-0 shadow-sm rounded-4">
-          <p class="mb-2">
-            <i class="bi bi-book me-2"></i>
-            Hafalan Awal
-          </p>
-          <h1 class="mb-1" style="font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600">{{ datas?.oldestFrom?.From?.name }}</h1>
-          <h6 class="text-secondary mb-3">Ayat {{ datas?.oldestFrom?.From?.ayat?.number }}</h6>
-          <p class="mb-0">{{ changeDate(datas?.oldestFrom?.SK?.split(" ")[0]) }}</p>
-          <!-- <div class="line-bottom bg-success rounded-5"></div> -->
-        </div>
-        <div class="card p-3 bg-light border-0 shadow-sm rounded-4">
-          <p class="mb-2">
-            <i class="bi bi-book me-2"></i>
-            Hafalan Terakhir
-          </p>
-          <h1 class="mb-1" style="font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600">{{ datas?.earliestTo?.To?.name }}</h1>
-          <h6 class="text-secondary mb-3">Ayat {{ datas?.earliestTo?.To?.ayat?.number }}</h6>
-          <p class="mb-0">{{ changeDate(datas?.earliestTo?.SK?.split(" ")[0]) }}</p>
-          <!-- <div class="line-bottom bg-success rounded-5"></div> -->
-        </div>
-        <!-- <div class="card p-3 bg-danger-subtle border-0 shadow-sm rounded-4">
-        <p class="mb-2"><i class="bi bi-exclamation-triangle me-1"></i>Riwayat Pelanggaran</p>
-        <h1 class="mb-1">25 Poin</h1>
-        <h6 class="text-secondary mb-3">Total 6 Pelanggaran</h6>
-        <p class="mb-0">29 September 2024</p>
-      </div> -->
+          Total {{ getSubjectLabel(selectedSubject) }}
+        </span>
+        <h1 class="fw-bold mb-1" style="font-size: 2.5rem">{{ datas.Juz || 0 }} Juz</h1>
+        <h6 class="opacity-75 mb-0">{{ datas.totalPages || 0 }} halaman</h6>
       </div>
 
-      <!-- history -->
-      <div class="history" style="padding-bottom: 70px !important">
-        <p class="mb-3" style="font-size: 10px">Riwayat Ziyadah</p>
-        <div v-for="(data, index) in datas?.hafalan" :key="index" class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2 align-items-center">
-              <div
-                class="icon d-flex align-items-center justify-content-center bg-primary-subtle rounded-circle"
-                style="width: 45px; height: 45px; min-width: 45px">
-                <i class="bi bi-info" style="font-size: 1.2rem"></i>
-              </div>
+      <div class="row g-3 mb-4">
+        <div class="col-6">
+          <div class="card p-3 h-100 bg-white border-0 shadow-sm rounded-4">
+            <p class="mb-2 text-secondary" style="font-size: 0.85rem">
+              <i class="bi bi-journal-arrow-up me-1"></i>
+              Awal
+            </p>
+            <h4 class="mb-1 text-truncate" style="font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600">
+              {{ datas?.oldestFrom?.From?.name || "-" }}
+            </h4>
+            <p class="text-secondary mb-2" style="font-size: 0.8rem">Ayat {{ datas?.oldestFrom?.From?.ayat?.number || "-" }}</p>
+            <p class="mb-0 text-muted" style="font-size: 0.75rem">{{ changeDate(datas?.oldestFrom?.SK?.split(" ")[0]) }}</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="card p-3 h-100 bg-white border-0 shadow-sm rounded-4">
+            <p class="mb-2 text-secondary" style="font-size: 0.85rem">
+              <i class="bi bi-journal-arrow-down me-1"></i>
+              Terakhir
+            </p>
+            <h4 class="mb-1 text-truncate" style="font-family: 'Noto Kufi Arabic', sans-serif; font-weight: 600">
+              {{ datas?.earliestTo?.To?.name || "-" }}
+            </h4>
+            <p class="text-secondary mb-2" style="font-size: 0.8rem">Ayat {{ datas?.earliestTo?.To?.ayat?.number || "-" }}</p>
+            <p class="mb-0 text-muted" style="font-size: 0.75rem">{{ changeDate(datas?.earliestTo?.SK?.split(" ")[0]) }}</p>
+          </div>
+        </div>
+      </div>
 
-              <div class="d-flex flex-column">
-                <p class="mb-0">{{ data.SK.split(" ")[0] }}</p>
-                <p class="mb-0">{{ data.SK.slice(11, 16) }}</p>
-                <p class="mb-0">{{ data.Page }} Halaman</p>
-              </div>
+      <div class="history mb-5 pb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="mb-0 fw-bold">Riwayat {{ getSubjectLabel(selectedSubject) }}</h6>
+          <span class="badge bg-light text-secondary rounded-pill border">{{ datas?.hafalan?.length || 0 }} Aktivitas</span>
+        </div>
+
+        <div v-if="!datas?.hafalan?.length" class="text-center text-muted py-4">
+          <i class="bi bi-inbox fs-1"></i>
+          <p class="mt-2">Belum ada riwayat {{ getSubjectLabel(selectedSubject).toLowerCase() }}.</p>
+        </div>
+
+        <div v-for="(data, index) in datas?.hafalan" :key="index" class="card mb-3 bg-white p-3 border-0 shadow-sm rounded-4">
+          <div class="d-flex align-items-center gap-3">
+            <div
+              class="icon d-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle"
+              style="width: 48px; height: 48px; min-width: 48px">
+              <i class="bi bi-book-half fs-5"></i>
             </div>
 
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex flex-column">
-                <h1 class="mb-0">{{ data.From.name }} - {{ data.To.name }}</h1>
-                <p class="mb-0">Ayat {{ data.From.ayat.number }} - {{ data.To.ayat.number }}</p>
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h6 class="mb-0 fw-bold" style="font-family: 'Noto Kufi Arabic', sans-serif">{{ data.From.name }} - {{ data.To.name }}</h6>
+                <small class="text-muted">{{ data.SK.slice(11, 16) }}</small>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-secondary" style="font-size: 0.85rem">Ayat {{ data.From.ayat.number }} - {{ data.To.ayat.number }}</span>
+                <span class="badge bg-light text-dark rounded-pill border">{{ data.Page }} Halaman</span>
               </div>
             </div>
+          </div>
+          <hr class="my-2 text-muted" style="opacity: 0.1" />
+          <div class="text-end">
+            <small class="text-muted">{{ changeDate(data.SK.split(" ")[0]) }}</small>
           </div>
         </div>
-        <!-- <div class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat 1</p>
-                <p class="mb-0">Halaman 293</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">الكهف - الكهف</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat 1</p>
-                <p class="mb-0">Halaman 293</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">الكهف - الكهف</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat 1</p>
-                <p class="mb-0">Halaman 293</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">الكهف - الكهف</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat 1</p>
-                <p class="mb-0">Halaman 293</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">الكهف - الكهف</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat 1</p>
-                <p class="mb-0">Halaman 293</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">الكهف - الكهف</h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-2 bg-light p-2 border-0 rounded-4">
-          <div class="list-history p-1 d-flex justify-content-between">
-            <div class="info d-flex gap-2">
-              <div class="icon py-1 px-2 bg-primary-subtle rounded-circle">
-                <i class="bi bi-info"></i>
-              </div>
-              <div class="d-flex flex-column">
-                <p class="mb-0">Ayat 1</p>
-                <p class="mb-0">Halaman 293</p>
-              </div>
-            </div>
-            <div class="from d-flex gap-1 align-items-center">
-              <div class="d-flex align-items-center">
-                <h1 class="mb-0">الكهف - الكهف</h1>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -189,31 +96,68 @@
 <script>
   import moment from "moment";
   import "moment/locale/id";
-  import { mapState } from "vuex";
+  import { mapState, mapActions } from "vuex";
+
   export default {
+    // Add data to hold our label mappings
+    data() {
+      return {
+        subjectOptions: [
+          { value: "ziyadah", label: "Hafalan Baru" },
+          { value: "tilawah", label: "Tilawah" },
+          { value: "murojaah", label: "Murojaah" },
+          { value: "tahsin", label: "Tahsin" },
+        ],
+      };
+    },
     computed: {
-      ...mapState("mutabaah", ["datas"]),
+      ...mapState("mutabaah", ["datas", "selectedSubject"]),
+    },
+    mounted() {
+      this.fetchMutabaah();
     },
     methods: {
+      ...mapActions("mutabaah", ["fetchMutabaah", "changeSubject"]),
+
+      updateSubject(type) {
+        if (this.selectedSubject !== type) {
+          this.changeSubject(type);
+        }
+      },
+
+      // New helper method to get the correct UI label
+      getSubjectLabel(value) {
+        const option = this.subjectOptions.find((opt) => opt.value === value);
+        return option ? option.label : "";
+      },
+
       formatDate(dateString) {
-        // Set the locale and format the date
         moment.locale("id");
         return moment(dateString).format("DD MMMM YYYY");
       },
+
       changeDate(dateString) {
         if (dateString) {
           const date = new Date(dateString);
-
           const options = { day: "numeric", month: "long", year: "numeric" };
-          const formattedDate = new Intl.DateTimeFormat("id-ID", options).format(date);
-
-          return formattedDate;
-        } else {
-          return "-";
+          return new Intl.DateTimeFormat("id-ID", options).format(date);
         }
+        return "-";
       },
     },
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  /* Hide scrollbar for the horizontal tab menu but keep it scrollable */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .transition-all {
+    transition: all 0.2s ease-in-out;
+  }
+</style>

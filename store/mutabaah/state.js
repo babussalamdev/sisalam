@@ -1,3 +1,4 @@
 export default () => ({
-  datas: ''
-})
+  datas: "",
+  selectedSubject: "ziyadah", // Default selected subject
+});
