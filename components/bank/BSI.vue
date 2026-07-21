@@ -18,6 +18,15 @@
         <li class="nav-item flex-shrink-0">
           <a
             class="nav-link rounded-pill fw-bold"
+            :class="type === 'byond' ? 'active shadow-sm' : 'text-muted'"
+            href="javascript:;"
+            @click="setType('byond')">
+            Byond by BSI
+          </a>
+        </li>
+        <li class="nav-item flex-shrink-0">
+          <a
+            class="nav-link rounded-pill fw-bold"
             :class="type === 'mobile' ? 'active shadow-sm' : 'text-muted'"
             href="javascript:;"
             @click="setType('mobile')">
@@ -65,6 +74,44 @@
 
     <div class="instructions-container px-2 mx-auto" style="max-width: 600px">
       <h6 class="fw-bold text-dark mb-3">Cara Pembayaran</h6>
+
+      <ol v-if="type === 'byond'" class="custom-list">
+        <li>
+          Buka aplikasi dan login ke akun
+          <strong>Byond by BSI</strong>
+          Anda.
+        </li>
+        <li>
+          Pilih menu
+          <strong>"Pay & Buy"</strong>
+          .
+        </li>
+        <li>
+          Pilih
+          <strong>"Virtual Account"</strong>
+          .
+        </li>
+        <li>
+          Masukkan Nomor Virtual Account Anda dengan awalan
+          <strong>6059</strong>
+          :
+          <CopyButton :type="type" />
+          .
+          <br />
+          <small class="text-muted">(Contoh format: 6059xxxxxxxxxxxx)</small>
+        </li>
+        <li>
+          Pastikan informasi yang muncul di layar sudah benar, lalu klik
+          <strong>"Confirm"</strong>
+          .
+        </li>
+        <li>
+          Masukkan
+          <strong>PIN</strong>
+          Anda.
+        </li>
+        <li>Transaksi berhasil diselesaikan. Simpan bukti pembayaran.</li>
+      </ol>
 
       <ol v-if="type === 'mobile'" class="custom-list">
         <li>
@@ -262,7 +309,9 @@
     },
     data() {
       return {
-        type: "mobile",
+        // Changed default to 'byond' since it's placed as the first tab.
+        // Change it back to 'mobile' if you want BSI Mobile as the default.
+        type: "byond",
       };
     },
     methods: {
