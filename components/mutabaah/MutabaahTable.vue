@@ -1,6 +1,7 @@
 <template>
   <div class="pb-5">
     <div class="container mt-3">
+      <!-- Subject Options -->
       <div class="d-flex overflow-auto gap-2 mb-4 hide-scrollbar">
         <button
           v-for="item in subjectOptions"
@@ -13,6 +14,25 @@
         </button>
       </div>
 
+      <!-- NEW: Informasi Halaqah & Pengampu -->
+      <div class="card mb-4 bg-white border-0 shadow-sm rounded-4 p-3" v-if="datas.halaqah || datas.pegawai">
+        <div class="d-flex align-items-center gap-3">
+          <div
+            class="icon d-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle"
+            style="width: 48px; height: 48px; min-width: 48px">
+            <i class="bi bi-people-fill fs-5"></i>
+          </div>
+          <div>
+            <h6 class="mb-1 fw-bold text-dark" style="font-size: 0.95rem">Nama halaqah : {{ datas.halaqah || "-" }}</h6>
+            <p class="mb-0 text-secondary" style="font-size: 0.85rem">
+              Pengampu:
+              <span class="text-dark fw-medium">Ustadz {{ datas.pegawai || "-" }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Wrapper -->
       <div
         class="total-wrapper mb-4 p-4 rounded-4 shadow-sm text-white text-center"
         style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
@@ -20,10 +40,21 @@
           <i class="bi bi-book me-1"></i>
           Total {{ getSubjectLabel(selectedSubject) }}
         </span>
-        <h1 class="fw-bold mb-1" style="font-size: 2.5rem">{{ datas.Juz || 0 }} Juz</h1>
+        <h1 class="fw-bold mb-1" style="font-size: 2.5rem">
+          <!-- If user has at least 1 Khatam -->
+          <template v-if="datas.khatam > 0">
+            {{ datas.khatam }}x Khatam
+            <br />
+            <span style="font-size: 1.5rem">dan {{ datas.remainingJuz }} Juz</span>
+          </template>
+
+          <!-- If user hasn't reached 1 Khatam yet -->
+          <template v-else>{{ datas.Juz || 0 }} Juz</template>
+        </h1>
         <h6 class="opacity-75 mb-0">{{ datas.totalPages || 0 }} halaman</h6>
       </div>
 
+      <!-- Awal & Terakhir -->
       <div class="row g-3 mb-4">
         <div class="col-6">
           <div class="card p-3 h-100 bg-white border-0 shadow-sm rounded-4">
@@ -53,6 +84,7 @@
         </div>
       </div>
 
+      <!-- History / Riwayat -->
       <div class="history mb-5 pb-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h6 class="mb-0 fw-bold">Riwayat {{ getSubjectLabel(selectedSubject) }}</h6>
