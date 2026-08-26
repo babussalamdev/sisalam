@@ -131,22 +131,34 @@
   import { mapState, mapActions } from "vuex";
 
   export default {
-    // Add data to hold our label mappings
     data() {
-      return {
-        subjectOptions: [
+      return {};
+    },
+    computed: {
+      ...mapState("mutabaah", ["datas", "selectedSubject"]),
+      // ASSUMPTION: Replace 'auth' with whatever module holds your user account data
+      ...mapState("auth", ["user"]),
+
+      // Moved to computed so it can react to the user's program
+      subjectOptions() {
+        const options = [
           { value: "ziyadah", label: "Hafalan Baru" },
           { value: "tilawah", label: "Tilawah" },
           { value: "murojaah", label: "Murojaah" },
           { value: "tahsin", label: "Tahsin" },
-        ],
-      };
-    },
-    computed: {
-      ...mapState("mutabaah", ["datas", "selectedSubject"]),
+        ];
+
+        // Safely check if the user's program is 'sma' (case insensitive)
+        if (this.user?.Program?.toLowerCase() === "sma") {
+          return options.filter((opt) => opt.value !== "tahsin" && opt.value !== "tilawah");
+        }
+
+        return options;
+      },
     },
     mounted() {
       this.fetchMutabaah();
+      // Ensure the account API is fetched before or during this step
     },
     methods: {
       ...mapActions("mutabaah", ["fetchMutabaah", "changeSubject"]),
@@ -157,7 +169,7 @@
         }
       },
 
-      // New helper method to get the correct UI label
+      // Uses the computed subjectOptions to get the correct label
       getSubjectLabel(value) {
         const option = this.subjectOptions.find((opt) => opt.value === value);
         return option ? option.label : "";

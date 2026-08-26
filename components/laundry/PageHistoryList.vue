@@ -13,10 +13,17 @@
           <h6 class="fw-bold text-dark mb-1">Laundry {{ formDate(data.SK) }}</h6>
 
           <div class="d-flex align-items-center mt-1">
+            <!-- Existing Status Badge -->
             <span class="badge rounded-pill me-2 fw-normal" :class="getBadgeClass(data.status)">
               {{ data.status }}
             </span>
 
+            <!-- NEW: Laundry Type Badge -->
+            <span v-if="data.tipe" class="badge rounded-pill bg-secondary-subtle text-secondary me-2 fw-normal" style="font-size: 0.75rem">
+              {{ formatTipe(data.tipe) }}
+            </span>
+
+            <!-- Existing Tooltip -->
             <div class="info-tooltip-wrapper">
               <i class="bi bi-info-circle-fill text-muted small-icon opacity-50"></i>
               <div class="tooltip-content shadow-lg">
@@ -118,6 +125,14 @@
       },
       nominal(a) {
         return new Intl.NumberFormat("id-ID", { minimumFractionDigits: 0 }).format(a);
+      },
+      // NEW METHOD: Formats "sprei_bedcover" to "Sprei Bedcover"
+      formatTipe(typeString) {
+        if (!typeString) return "";
+        return typeString
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
       },
     },
   };
