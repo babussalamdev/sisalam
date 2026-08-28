@@ -9,7 +9,7 @@
         <p class="text-secondary small">Pilih modul layanan di bawah ini</p>
       </div>
 
-      <!-- Laundry Widget (bg-info applied to icon circle) -->
+      <!-- Laundry Widget -->
       <nuxt-link to="/laundry" class="text-decoration-none">
         <div class="card border-0 shadow-sm rounded-4 mb-3 p-3 d-flex flex-row align-items-center menu-card">
           <div class="bg-info text-white d-flex justify-content-center align-items-center rounded-circle me-3" style="width: 50px; height: 50px">
@@ -23,7 +23,7 @@
         </div>
       </nuxt-link>
 
-      <!-- Mutabaah Widget (bg-warning applied to icon circle) -->
+      <!-- Mutabaah Widget -->
       <nuxt-link to="/mutabaah" class="text-decoration-none">
         <div class="card border-0 shadow-sm rounded-4 mb-3 p-3 d-flex flex-row align-items-center menu-card">
           <div class="bg-warning text-white d-flex justify-content-center align-items-center rounded-circle me-3" style="width: 50px; height: 50px">
@@ -37,8 +37,8 @@
         </div>
       </nuxt-link>
 
-      <!-- Laporan Widget -->
-      <nuxt-link to="/laporan" class="text-decoration-none">
+      <!-- Laporan Widget (Only visible if isLaporanActive is true) -->
+      <nuxt-link v-if="isLaporanActive" to="/laporan" class="text-decoration-none">
         <div class="card border-0 shadow-sm rounded-4 mb-3 p-3 d-flex flex-row align-items-center menu-card">
           <div class="bg-primary text-white d-flex justify-content-center align-items-center rounded-circle me-3" style="width: 50px; height: 50px">
             <i class="bi bi-file-earmark-bar-graph-fill h5 mb-0"></i>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+  import { mapState } from "vuex";
+
   export default {
     layout: "utama",
     data() {
@@ -64,6 +66,20 @@
     },
     created() {
       this.version = process.env.version;
+    },
+    async asyncData({ store }) {
+      await store.dispatch("layanan/changeUnit");
+    },
+    computed: {
+      ...mapState("layanan", ["datas"]),
+
+      // Check if the "laporan" service status is NOT "off"
+      isLaporanActive() {
+        if (!Array.isArray(this.datas)) return true;
+
+        const laporan = this.datas.find((item) => item.PK === "laporan");
+        return laporan ? laporan.Status !== "off" : true;
+      },
     },
   };
 </script>
