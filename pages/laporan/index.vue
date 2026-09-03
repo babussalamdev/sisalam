@@ -24,14 +24,14 @@
           </svg>
         </div>
         <div class="d-flex flex-column">
-          <h2 class="h6 fw-bold text-dark mb-1">Nama: {{ santri.nama }}</h2>
+          <h2 class="h6 fw-bold text-dark mb-1 text-capitalize">Nama: {{ studentData ? studentData.Nama : "Memuat..." }}</h2>
           <p class="mb-0 text-muted" style="font-size: 0.75rem">
             Kelas:
-            <span class="fw-semibold text-dark">{{ santri.kelas }}</span>
+            <span class="fw-semibold text-dark">{{ this.datas[0].Kelas }}</span>
           </p>
           <p class="mb-0 text-muted" style="font-size: 0.75rem">
             Wali Kelas:
-            <span class="fw-semibold text-dark">{{ santri.waliKelas }}</span>
+            <span class="fw-semibold text-dark text-capitalize">{{ this.datas[0].WaliKelas }}</span>
           </p>
         </div>
       </div>
@@ -95,67 +95,53 @@
       <!-- 3. Grades Section -->
       <div>
         <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-          <h3 class="h6 fw-bold text-dark mb-0">Riwayat Nilai</h3>
+          <h3 class="h6 fw-bold text-dark mb-0">Riwayat Nilai Tengah Semester</h3>
           <span class="badge bg-secondary bg-opacity-10 text-secondary border rounded-pill py-2 px-3" style="font-size: 0.65rem">
-            {{ nilaiPelajaran.length }} Mata Pelajaran
+            {{ processedGrades.length }} Mata Pelajaran
           </span>
         </div>
 
         <div class="d-flex flex-column gap-2">
-          <!-- Grade Cards Loop -->
           <div
-            v-for="(pelajaran, index) in nilaiPelajaran"
+            v-for="(pelajaran, index) in processedGrades"
             :key="index"
             class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center justify-content-between">
+            <!-- Subject Name & Icon -->
             <div class="d-flex align-items-center gap-3">
-              <div
-                class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center flex-shrink-0"
-                style="width: 40px; height: 40px">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-                </svg>
-              </div>
+              <!-- (Keep your existing SVG icon here) -->
               <div class="d-flex flex-column">
-                <span class="fw-bold text-dark" style="font-size: 0.85rem">{{ pelajaran.namaPelajaran }}</span>
-                <span class="text-muted" style="font-size: 0.65rem; margin-top: 2px">Pengampu: {{ pelajaran.guru }}</span>
+                <span class="fw-bold text-dark" style="font-size: 0.85rem; text-transform: capitalize">
+                  {{ pelajaran.namaPelajaran }}
+                </span>
+                <!-- Hide Guru if not provided by backend, or map it if available later -->
+                <!-- <span class="text-muted" style="font-size: 0.65rem; margin-top: 2px">KKM: {{ pelajaran.kkm }}</span> -->
               </div>
             </div>
 
+            <!-- Grade Output with Dynamic Color -->
             <div class="d-flex flex-column align-items-end">
-              <span class="text-muted mb-1" style="font-size: 0.65rem">Nilai PTS</span>
-              <span class="fs-5 fw-bold" :class="pelajaran.nilai >= 75 ? 'text-dark' : 'text-danger'">
+              <span class="text-muted mb-1" style="font-size: 0.65rem">Nilai PTS/UTS</span>
+              <span class="fs-5 fw-bold" :class="pelajaran.nilai >= pelajaran.kkm ? 'text-dark' : 'text-danger'">
                 {{ pelajaran.nilai }}
               </span>
             </div>
           </div>
         </div>
+        <div style="height: 90px"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import { mapState } from "vuex";
+
   export default {
     layout: "utama",
     data() {
       return {
         version: 0,
-
-        santri: {
-          nama: "Ahmad Fulan",
-          kelas: "10 MIPA 1",
-          waliKelas: "Ustadz Muqoddam Alam Al Hamdi",
-        },
-
+        // Hardcoded attendance until you integrate the absensi backend
         kehadiran: {
           totalHari: 85,
           sakit: 2,
@@ -163,18 +149,49 @@
           alpha: 0,
           terlambat: 3,
         },
-
-        nilaiPelajaran: [
-          { namaPelajaran: "Matematika", guru: "Ustadz Budi", nilai: 88 },
-          { namaPelajaran: "Bahasa Arab", guru: "Ustadz Hasan", nilai: 95 },
-          { namaPelajaran: "Fiqih", guru: "Ustadz Ali", nilai: 90 },
-          { namaPelajaran: "Sejarah Islam", guru: "Ustadz Umar", nilai: 72 },
-          { namaPelajaran: "Bahasa Inggris", guru: "Mr. Smith", nilai: 85 },
-        ],
       };
     },
     created() {
       this.version = process.env.version || "beta";
+    },
+    async asyncData({ store }) {
+      await store.dispatch("laporan/changeUnit");
+    },
+    computed: {
+      ...mapState("laporan", ["datas"]),
+
+      // 1. Get the first student from the backend array
+      studentData() {
+        if (!this.datas || !this.datas.length) return null;
+        return this.datas[0];
+      },
+
+      // 2. Parse the grades dynamically
+      processedGrades() {
+        if (!this.studentData) return [];
+
+        const ignoredKeys = ["Nama", "SK", "PK", "Status", "Kelas"];
+        const grades = [];
+
+        for (const [key, value] of Object.entries(this.studentData)) {
+          if (!ignoredKeys.includes(key) && typeof value === "string" && value.includes("/")) {
+            const [nilai, kkm] = value.split("/");
+            const numericNilai = Number(nilai) || 0;
+
+            // Optional: Skip subjects with 0 if they haven't been graded yet
+            if (numericNilai > 0) {
+              grades.push({
+                // Convert "Bahasa_Arab" to "Bahasa Arab"
+                namaPelajaran: key.replace(/_/g, " "),
+                nilai: numericNilai,
+                kkm: Number(kkm) || 75, // Fallback KKM
+              });
+            }
+          }
+        }
+
+        return grades.sort((a, b) => a.namaPelajaran.localeCompare(b.namaPelajaran));
+      },
     },
   };
 </script>
