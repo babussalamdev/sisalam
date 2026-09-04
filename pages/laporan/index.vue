@@ -27,7 +27,7 @@
           <h2 class="h6 fw-bold text-dark mb-1 text-capitalize">Nama: {{ studentData ? studentData.Nama : "Memuat..." }}</h2>
           <p class="mb-0 text-muted" style="font-size: 0.75rem">
             Kelas:
-            <span class="fw-semibold text-dark">{{ this.datas[0].Kelas }}</span>
+            <span class="fw-semibold text-dark text-uppercase">{{ this.datas[0].Kelas }}</span>
           </p>
           <p class="mb-0 text-muted" style="font-size: 0.75rem">
             Wali Kelas:
@@ -57,10 +57,10 @@
               <line x1="3" x2="21" y1="10" y2="10" />
               <path d="m9 16 2 2 4-4" />
             </svg>
-            <span class="text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 1px">Total Kehadiran</span>
+            <span class="text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 1px">Total Ketidak Hadiran</span>
           </div>
           <div class="display-6 fw-bold mb-1">{{ kehadiran.totalHari }} Hari</div>
-          <div class="text-white-50" style="font-size: 0.75rem">Semester Ganjil 2026</div>
+          <div class="text-white-50 text-capitalize" style="font-size: 0.75rem">Semester {{ this.datas[0].Semester }} {{ this.datas[0].Tahun }}</div>
         </div>
 
         <!-- Breakdown Grid -->
@@ -68,25 +68,33 @@
           <div class="col-3">
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Sakit</span>
-              <span class="fs-5 fw-bold text-primary">{{ kehadiran.sakit }}</span>
+              <span class="fs-5 fw-bold text-primary">
+                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.sakit || 0 }}
+              </span>
             </div>
           </div>
           <div class="col-3">
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Izin</span>
-              <span class="fs-5 fw-bold text-warning">{{ kehadiran.izin }}</span>
+              <span class="fs-5 fw-bold text-warning">
+                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.izin || 0 }}
+              </span>
             </div>
           </div>
           <div class="col-3">
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Alpha</span>
-              <span class="fs-5 fw-bold text-danger">{{ kehadiran.alpha }}</span>
+              <span class="fs-5 fw-bold text-danger">
+                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.absen || 0 }}
+              </span>
             </div>
           </div>
           <div class="col-3">
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Telat</span>
-              <span class="fs-5 fw-bold text-orange">{{ kehadiran.terlambat }}</span>
+              <span class="fs-5 fw-bold text-orange">
+                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.terlambat || 0 }}
+              </span>
             </div>
           </div>
         </div>
@@ -120,14 +128,14 @@
 
             <!-- Grade Output with Dynamic Color -->
             <div class="d-flex flex-column align-items-end">
-              <span class="text-muted mb-1" style="font-size: 0.65rem">Nilai PTS/UTS</span>
-              <span class="fs-5 fw-bold" :class="pelajaran.nilai >= pelajaran.kkm ? 'text-dark' : 'text-danger'">
+              <span class="text-muted mb-1" style="font-size: 0.65rem">Nilai Laporan Tengah Semester</span>
+              <span class="fs-5 fw-bold text-dark">
                 {{ pelajaran.nilai }}
               </span>
             </div>
           </div>
         </div>
-        <div style="height: 90px"></div>
+        <div style="height: 50px"></div>
       </div>
     </div>
   </div>
@@ -170,23 +178,21 @@
       processedGrades() {
         if (!this.studentData) return [];
 
-        const ignoredKeys = ["Nama", "SK", "PK", "Status", "Kelas"];
+        // 1. Explicitly ignore Tahun, Semester, and WaliKelas
+        const ignoredKeys = ["Nama", "SK", "PK", "Status", "Kelas", "WaliKelas", "Tahun", "Semester"];
         const grades = [];
 
         for (const [key, value] of Object.entries(this.studentData)) {
+          // 2. Filter out ignored keys, but keep looking for the "/" format
           if (!ignoredKeys.includes(key) && typeof value === "string" && value.includes("/")) {
             const [nilai, kkm] = value.split("/");
-            const numericNilai = Number(nilai) || 0;
 
-            // Optional: Skip subjects with 0 if they haven't been graded yet
-            if (numericNilai > 0) {
-              grades.push({
-                // Convert "Bahasa_Arab" to "Bahasa Arab"
-                namaPelajaran: key.replace(/_/g, " "),
-                nilai: numericNilai,
-                kkm: Number(kkm) || 75, // Fallback KKM
-              });
-            }
+            // 3. Push the grade unconditionally, even if it is 0
+            grades.push({
+              namaPelajaran: key.replace(/_/g, " "),
+              nilai: Number(nilai) || 0,
+              kkm: Number(kkm) || 0, // Falls back to 0 if KKM isn't set
+            });
           }
         }
 
