@@ -40,7 +40,7 @@
       <div class="mb-5">
         <!-- Main Total Banner -->
         <div class="card border-0 rounded-4 p-4 text-center text-white shadow-sm mb-3 custom-gradient">
-          <div class="d-flex align-items-center justify-content-center gap-2 mb-2 text-white-50">
+          <div class="d-flex align-items-center justify-content-center gap-2 mb-2 text-white-75">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -59,8 +59,10 @@
             </svg>
             <span class="text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 1px">Total Ketidak Hadiran</span>
           </div>
-          <div class="display-6 fw-bold mb-1">{{ kehadiran.totalHari }} Hari</div>
-          <div class="text-white-50 text-capitalize" style="font-size: 0.75rem">Semester {{ this.datas[0].Semester }} {{ this.datas[0].Tahun }}</div>
+          <div class="display-6 fw-bold mb-1">{{ totalKetidakHadiran }} Hari</div>
+          <div class="text-white-75 fw-semibold text-capitalize" style="font-size: 0.75rem">
+            Semester {{ this.datas[0].Semester }} {{ this.datas[0].Tahun }}
+          </div>
         </div>
 
         <!-- Breakdown Grid -->
@@ -103,7 +105,7 @@
       <!-- 3. Grades Section -->
       <div>
         <div class="d-flex justify-content-between align-items-center mb-3 px-1">
-          <h3 class="h6 fw-bold text-dark mb-0">Riwayat Nilai Tengah Semester</h3>
+          <h3 class="h6 fw-bold text-dark mb-0">Penilaian Tengah Semester</h3>
           <span class="badge bg-secondary bg-opacity-10 text-secondary border rounded-pill py-2 px-3" style="font-size: 0.65rem">
             {{ processedGrades.length }} Mata Pelajaran
           </span>
@@ -116,19 +118,20 @@
             class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center justify-content-between">
             <!-- Subject Name & Icon -->
             <div class="d-flex align-items-center gap-3">
-              <!-- (Keep your existing SVG icon here) -->
+              <!-- (Keep your SVG icon here) -->
               <div class="d-flex flex-column">
                 <span class="fw-bold text-dark" style="font-size: 0.85rem; text-transform: capitalize">
                   {{ pelajaran.namaPelajaran }}
                 </span>
-                <!-- Hide Guru if not provided by backend, or map it if available later -->
-                <!-- <span class="text-muted" style="font-size: 0.65rem; margin-top: 2px">KKM: {{ pelajaran.kkm }}</span> -->
+                <!-- Dynamically switch between Pengampu and Pengajar -->
+                <span class="text-muted text-capitalize" style="font-size: 0.65rem; margin-top: 2px">
+                  {{ pelajaran.namaPelajaran.toLowerCase() === "quran" ? "Pengampu" : "Pengajar" }}: Ustadz {{ pelajaran.pengajar }}
+                </span>
               </div>
             </div>
 
             <!-- Grade Output with Dynamic Color -->
             <div class="d-flex flex-column align-items-end">
-              <span class="text-muted mb-1" style="font-size: 0.65rem">Nilai Laporan Tengah Semester</span>
               <span class="fs-5 fw-bold text-dark">
                 {{ pelajaran.nilai }}
               </span>
@@ -149,14 +152,6 @@
     data() {
       return {
         version: 0,
-        // Hardcoded attendance until you integrate the absensi backend
-        kehadiran: {
-          totalHari: 85,
-          sakit: 2,
-          izin: 1,
-          alpha: 0,
-          terlambat: 3,
-        },
       };
     },
     created() {
@@ -174,24 +169,43 @@
         return this.datas[0];
       },
 
+      // Safely extract the current semester's attendance data to keep the template clean
+      currentAttendance() {
+        try {
+          const tahun = this.datas[0]?.Tahun.replace("/", "_");
+          const semester = this.datas[0]?.Semester;
+          return this.$auth?.user?.Absensi?.mapel[tahun][semester] || {};
+        } catch (error) {
+          return {};
+        }
+      },
+
+      // Dynamically calculate the total absences
+      totalKetidakHadiran() {
+        const sakit = Number(this.currentAttendance.sakit) || 0;
+        const izin = Number(this.currentAttendance.izin) || 0;
+        const alpha = Number(this.currentAttendance.absen) || 0;
+
+        return sakit + izin + alpha;
+      },
+
       // 2. Parse the grades dynamically
       processedGrades() {
         if (!this.studentData) return [];
 
-        // 1. Explicitly ignore Tahun, Semester, and WaliKelas
         const ignoredKeys = ["Nama", "SK", "PK", "Status", "Kelas", "WaliKelas", "Tahun", "Semester"];
         const grades = [];
 
         for (const [key, value] of Object.entries(this.studentData)) {
-          // 2. Filter out ignored keys, but keep looking for the "/" format
           if (!ignoredKeys.includes(key) && typeof value === "string" && value.includes("/")) {
-            const [nilai, kkm] = value.split("/");
+            // Destructure the 3 parts from the backend string
+            const [nilai, kkm, pengajar] = value.split("/");
 
-            // 3. Push the grade unconditionally, even if it is 0
             grades.push({
               namaPelajaran: key.replace(/_/g, " "),
               nilai: Number(nilai) || 0,
-              kkm: Number(kkm) || 0, // Falls back to 0 if KKM isn't set
+              kkm: Number(kkm) || 0,
+              pengajar: pengajar || "-", // Assign it to the object
             });
           }
         }

@@ -44,7 +44,7 @@
             <i class="bi bi-file-earmark-bar-graph-fill h5 mb-0"></i>
           </div>
           <div>
-            <h6 class="fw-bold text-dark mb-0">Laporan</h6>
+            <h6 class="fw-bold text-dark mb-0">Laporan PTS</h6>
             <span class="text-secondary" style="font-size: 0.8rem">Rekapitulasi data nilai santri</span>
           </div>
           <i class="bi bi-chevron-right ms-auto text-secondary"></i>
