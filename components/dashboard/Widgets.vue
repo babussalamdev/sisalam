@@ -22,7 +22,7 @@
         <h6 class="text-secondary mb-3">Ayat {{ ziyadah?.number }}</h6>
         <p class="mb-0">{{ ziyadah.time !== "-" ? changeDate(ziyadah?.time?.split(" ")[0]) : "-" }}</p>
       </div>
-      <div class="card p-3 bg-danger-subtle border-0 shadow-sm rounded-4">
+      <!-- <div class="card p-3 bg-danger-subtle border-0 shadow-sm rounded-4">
         <p class="mb-2">
           <i class="bi bi-exclamation-triangle me-1"></i>
           Riwayat Pelanggaran
@@ -30,7 +30,7 @@
         <h1 class="mb-1">{{ pelanggaran?.Poin ? pelanggaran?.Poin : 0 }} Poin</h1>
         <h6 class="text-secondary mb-3">Total {{ pelanggaran?.Pelanggaran ? pelanggaran?.Pelanggaran : 0 }} Pelanggaran</h6>
         <p class="mb-0">{{ pelanggaran.time !== "-" ? changeDate(pelanggaran?.time?.split(" ")[0]) : "-" }}</p>
-      </div>
+      </div> -->
       <div class="card p-3 bg-warning-subtle border-0 shadow-sm rounded-4">
         <p class="mb-2">
           <i class="bi bi-droplet-fill me-1"></i>
