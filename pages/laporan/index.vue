@@ -111,6 +111,29 @@
           </span>
         </div>
 
+        <!-- Remedial Informational Note -->
+        <div class="card border-0 bg-warning bg-opacity-10 rounded-4 p-3 mb-3 d-flex flex-row align-items-start gap-2 shadow-sm">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-warning flex-shrink-0 mt-1">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="text-dark" style="font-size: 0.75rem; line-height: 1.4">
+            <strong>Info:</strong>
+            Remedial perbaikan berlaku bagi santri yang nilainya masih di bawah Kriteria Ketuntasan Minimal (KKM).
+          </span>
+        </div>
+
         <div class="d-flex flex-column gap-2">
           <div
             v-for="(pelajaran, index) in processedGrades"
@@ -118,20 +141,19 @@
             class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center justify-content-between">
             <!-- Subject Name & Icon -->
             <div class="d-flex align-items-center gap-3">
-              <!-- (Keep your SVG icon here) -->
               <div class="d-flex flex-column">
                 <span class="fw-bold text-dark" style="font-size: 0.85rem; text-transform: capitalize">
                   {{ pelajaran.namaPelajaran }}
                 </span>
-                <!-- Dynamically switch between Pengampu and Pengajar -->
                 <span class="text-muted text-capitalize" style="font-size: 0.65rem; margin-top: 2px">
                   {{ pelajaran.namaPelajaran.toLowerCase() === "quran" ? "Pengampu" : "Pengajar" }}: Ustadz {{ pelajaran.pengajar }}
                 </span>
               </div>
             </div>
 
-            <!-- Grade Output with Dynamic Color -->
+            <!-- Grade Output with Dynamic Color & KKM -->
             <div class="d-flex flex-column align-items-end">
+              <!-- Dynamically color red if below KKM -->
               <span class="fs-5 fw-bold text-dark">
                 {{ pelajaran.nilai }}
               </span>
