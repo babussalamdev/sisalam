@@ -59,7 +59,7 @@
             </svg>
             <span class="text-uppercase fw-semibold" style="font-size: 0.7rem; letter-spacing: 1px">Total Ketidak Hadiran</span>
           </div>
-          <div class="display-6 fw-bold mb-1">{{ totalKetidakHadiran }} Hari</div>
+          <div class="display-6 fw-bold mb-1">{{ totalKetidakHadiran }} Jam Pelajaran</div>
           <div class="text-white-75 fw-semibold text-capitalize" style="font-size: 0.75rem">
             Semester {{ this.datas[0].Semester }} {{ this.datas[0].Tahun }}
           </div>
@@ -71,7 +71,7 @@
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Sakit</span>
               <span class="fs-5 fw-bold text-primary">
-                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.sakit || 0 }}
+                {{ currentAttendance.sakit || 0 }}
               </span>
             </div>
           </div>
@@ -79,7 +79,7 @@
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Izin</span>
               <span class="fs-5 fw-bold text-warning">
-                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.izin || 0 }}
+                {{ currentAttendance.izin || 0 }}
               </span>
             </div>
           </div>
@@ -87,7 +87,7 @@
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Alpha</span>
               <span class="fs-5 fw-bold text-danger">
-                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.absen || 0 }}
+                {{ currentAttendance.absen || 0 }}
               </span>
             </div>
           </div>
@@ -95,7 +95,7 @@
             <div class="card border-0 text-center p-2 rounded-3 shadow-sm h-100">
               <span class="text-muted fw-medium mb-1" style="font-size: 0.65rem">Telat</span>
               <span class="fs-5 fw-bold text-orange">
-                {{ this?.$auth?.user?.Absensi?.mapel[this?.datas[0]?.Tahun.replace("/", "_")][this?.datas[0]?.Semester]?.terlambat || 0 }}
+                {{ currentAttendance.terlambat || 0 }}
               </span>
             </div>
           </div>
@@ -196,7 +196,8 @@
         try {
           const tahun = this.datas[0]?.Tahun.replace("/", "_");
           const semester = this.datas[0]?.Semester;
-          return this.$auth?.user?.Absensi?.mapel[tahun][semester] || {};
+          // Notice the "?." before [tahun] and [semester]
+          return this.$auth?.user?.Absensi?.mapel?.[tahun]?.[semester] || {};
         } catch (error) {
           return {};
         }
