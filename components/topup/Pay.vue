@@ -25,8 +25,9 @@
             <h6 class="text-muted small fw-bold text-uppercase ls-1 mb-3">Metode Pembayaran</h6>
 
             <div class="bank-list">
+              <!-- Use filteredBanks instead of arrayBank -->
               <label
-                v-for="(data, i) in arrayBank"
+                v-for="(data, i) in filteredBanks"
                 :key="i"
                 class="bank-item d-flex align-items-center justify-content-between p-3 mb-2 rounded-4 border transition-all cursor-pointer"
                 :class="selectedBank === data ? 'border-primary bg-primary-subtle shadow-md' : 'border-light bg-white shadow-sm'">
@@ -233,6 +234,14 @@
         "slip",
       ]),
       ...mapGetters("topup", ["getCode"]),
+
+      // NEW: Filter out specific banks
+      filteredBanks() {
+        if (!this.arrayBank) return [];
+        const banksToRemove = ["qris", "mandiri", "bsm"];
+        return this.arrayBank.filter((bank) => !banksToRemove.includes(bank.toLowerCase()));
+      },
+
       code: {
         get() {
           return this.getCode;
