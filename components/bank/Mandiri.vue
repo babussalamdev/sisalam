@@ -61,15 +61,18 @@
         </li>
         <li>
           Ketik
-          <strong>“DOKU VA Aggregator”</strong>
+          <strong>“DOKU FIX AMOUNT”</strong>
           atau
-          <strong>“88899”</strong>
-          pada bagian pencarian.
-        </li>
-        <li>
-          Masukkan Nomor Virtual Account
+          <strong>“86188”</strong>
+          pada bagian pencarian, atau Anda bisa langsung menempelkan (
+          <em>paste</em>
+          ) Nomor Virtual Account
           <CopyButton :type="type" />
-          secara keseluruhan, lalu masukkan nominal pembayaran, kemudian tekan
+          di kolom pencarian tersebut.
+        </li>
+        <li>Pilih penyedia jasa yang sesuai, lalu pastikan Nomor Virtual Account sudah terisi dengan benar.</li>
+        <li>
+          Masukkan nominal pembayaran (jika diminta), kemudian tekan
           <strong>Lanjutkan</strong>
           .
         </li>
@@ -105,7 +108,7 @@
         </li>
         <li>
           Masukkan Kode Perusahaan / Institusi
-          <strong>“88899”</strong>
+          <strong>“86188”</strong>
           , kemudian tekan
           <strong>BENAR</strong>
           .
