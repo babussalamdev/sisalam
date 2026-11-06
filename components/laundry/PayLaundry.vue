@@ -2,92 +2,120 @@
   <div class="payment-summary pb-5">
     <div class="row justify-content-center">
       <div class="col-12 col-md-10 col-lg-12 col-xl-12">
-        <!-- <div v-if="!user.Diskon" class="card border-0 rounded-4 shadow-sm mb-3">
-          <div class="card-body p-3">
-            <label class="small text-muted fw-bold mb-2 text-uppercase ls-1">Kode Promo / Voucher</label>
-            <div class="input-group">
-              <span class="input-group-text bg-white border-end-0 rounded-start-4 ps-3">
-                <i class="bi bi-ticket-perforated-fill text-primary-theme"></i>
-              </span>
-              <input type="text" class="form-control border-start-0 shadow-none" placeholder="Masukkan kode disini" />
-              <button v-if="!load" @click="matchVoucher" class="btn btn-dark rounded-end-4 px-4 fw-semibold" type="button">Apply</button>
-              <button v-else class="btn btn-dark rounded-end-4 px-4" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-              </button>
-            </div>
-          </div>
-        </div> -->
-
+        <!-- Payment Details Card -->
         <div class="card border-0 rounded-4 shadow-lg overflow-hidden mb-3">
           <div class="bg-light p-3 border-bottom border-light">
             <h6 class="mb-0 fw-bold text-dark">Rincian Pembayaran</h6>
           </div>
-
           <div class="card-body p-4 bg-white">
             <div class="d-flex justify-content-between mb-3">
               <span class="text-muted">Nominal Laundry</span>
               <span class="fw-semibold">Rp {{ nominal(this.$auth.user.DendaLaundry || 0) }}</span>
             </div>
-
-            <!-- <div class="d-flex justify-content-between mb-3">
-              <span class="text-muted">Biaya Admin</span>
-              <span class="fw-semibold">Rp {{ nominal(5000) }}</span>
-            </div> -->
-
-            <!-- <div v-if="user.Diskon" class="d-flex justify-content-between mb-3 text-success">
-              <span>Diskon Voucher</span>
-              <span class="fw-bold">- Rp {{ nominal(user.Diskon) }}</span>
-            </div> -->
-
             <hr class="dashed my-3" />
-
             <div class="d-flex justify-content-between align-items-center">
               <span class="h6 mb-0 text-uppercase fw-bold text-muted">Total Bayar</span>
-              <!-- <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(bill?.DendaLaundry + 5000 - (user.Diskon || 0)) }}</span> -->
               <span class="h4 mb-0 fw-bold text-danger-theme">Rp {{ nominal(this.$auth.user.DendaLaundry || 0) }}</span>
             </div>
           </div>
         </div>
 
-        <div class="card border-0 rounded-4 shadow-sm mb-4 bg-gradient-wallet text-white overflow-hidden position-relative">
-          <div class="decorative-circle"></div>
+        <!-- Payment Method Selection -->
+        <div class="mb-3">
+          <label class="small text-muted fw-bold mb-2 text-uppercase ls-1">Metode Pembayaran</label>
+          <select v-model="paymentMethod" class="form-select rounded-4 shadow-none form-control" style="height: 50px">
+            <option value="card">Kartu Santri (Otomatis)</option>
+            <option value="transfer">Transfer Bank (Manual)</option>
+          </select>
+        </div>
 
-          <div class="card-body p-3 d-flex align-items-center justify-content-between position-relative z-2">
-            <div class="d-flex align-items-center">
-              <div class="icon-box-white me-3 text-primary-theme shadow-sm">
-                <i class="bi bi-wallet2 h5 mb-0"></i>
+        <!-- KARTU SANTRI SECTION -->
+        <div v-if="paymentMethod === 'card'">
+          <div class="card border-0 rounded-4 shadow-sm mb-4 bg-gradient-wallet text-white overflow-hidden position-relative">
+            <div class="decorative-circle"></div>
+            <div class="card-body p-3 d-flex align-items-center justify-content-between position-relative z-2">
+              <div class="d-flex align-items-center">
+                <div class="icon-box-white me-3 text-primary-theme shadow-sm">
+                  <i class="bi bi-wallet2 h5 mb-0"></i>
+                </div>
+                <div>
+                  <span class="d-block small opacity-75 text-uppercase ls-1">Saldo Saat Ini</span>
+                  <h5 class="fw-bold mb-0">Rp {{ nominal(bill?.Balance) }}</h5>
+                </div>
               </div>
-              <div>
-                <span class="d-block small opacity-75 text-uppercase ls-1">Saldo Saat Ini</span>
-                <h5 class="fw-bold mb-0">Rp {{ nominal(bill?.Balance) }}</h5>
+              <div v-if="bill?.Balance >= this.$auth.user.DendaLaundry || 0">
+                <span class="badge bg-white text-success fw-bold rounded-pill px-3 py-2 shadow-sm">
+                  <i class="bi bi-check-circle-fill me-1"></i>
+                  Cukup
+                </span>
+              </div>
+              <div v-else>
+                <span class="badge bg-white text-danger fw-bold rounded-pill px-3 py-2 shadow-sm">
+                  <i class="bi bi-exclamation-circle-fill me-1"></i>
+                  Kurang
+                </span>
               </div>
             </div>
+          </div>
+          <div class="alert alert-soft-warning border-0 rounded-4 d-flex align-items-start mb-4">
+            <i class="bi bi-info-circle-fill me-3 mt-1 h5"></i>
+            <div class="small lh-sm text-dark opacity-75">Pembayaran ini akan memotong saldo kartu santri secara otomatis.</div>
+          </div>
+        </div>
 
-            <!-- <div v-if="bill?.Balance >= 55000 - (user.Diskon || 0)"> -->
-            <div v-if="bill?.Balance >= this.$auth.user.DendaLaundry || 0">
-              <span class="badge bg-white text-success fw-bold rounded-pill px-3 py-2 shadow-sm">
-                <i class="bi bi-check-circle-fill me-1"></i>
-                Cukup
-              </span>
+        <!-- TRANSFER BANK SECTION -->
+        <div v-if="paymentMethod === 'transfer'">
+          <div class="card border-0 rounded-4 shadow-sm mb-4 p-3 bg-light">
+            <h6 class="fw-bold mb-3">Instruksi Pembayaran Mandiri Virtual Account</h6>
+            <div class="alert alert-info border-0 rounded-3 mb-3 small">
+              <strong>Biller Name:</strong>
+              DOKU FIX AMOUNT
+              <br />
+              <strong>Code:</strong>
+              86188
+              <br />
+              <em>*Silakan cari "DOKU FIX AMOUNT" langsung di kolom pencarian (search bar) aplikasi Mandiri Anda.</em>
             </div>
-            <div v-else>
-              <span class="badge bg-white text-danger fw-bold rounded-pill px-3 py-2 shadow-sm">
-                <i class="bi bi-exclamation-circle-fill me-1"></i>
-                Kurang
-              </span>
+
+            <div class="mb-3">
+              <label class="small text-muted fw-bold mb-2">Upload Bukti Transfer</label>
+              <!-- Disable upload if status is unconfirmed/pending -->
+              <input type="file" class="form-control" accept="image/*" @change="handleFileUpload" :disabled="isTransferPending" />
+            </div>
+
+            <!-- Status Alerts -->
+            <div v-if="isTransferPending" class="alert alert-warning border-0 rounded-3 small mb-0">
+              <i class="bi bi-hourglass-split me-2"></i>
+              Bukti transfer Anda sedang menunggu konfirmasi admin. Anda tidak dapat mengupload ulang saat ini.
+            </div>
+            <div v-if="bill?.TransferStatus === 'failed'" class="alert alert-danger border-0 rounded-3 small mb-0">
+              <i class="bi bi-x-circle me-2"></i>
+              Pembayaran sebelumnya ditolak. Silakan upload ulang bukti transfer yang valid.
             </div>
           </div>
         </div>
 
-        <div class="alert alert-soft-warning border-0 rounded-4 d-flex align-items-start mb-4">
-          <i class="bi bi-info-circle-fill me-3 mt-1 h5"></i>
-          <div class="small lh-sm text-dark opacity-75">Pembayaran ini akan memotong saldo kartu santri secara otomatis.</div>
-        </div>
-
+        <!-- ACTION BUTTONS -->
         <div class="d-grid gap-2">
-          <button v-if="!load" @click="requestPay" class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3">Bayar Sekarang</button>
+          <!-- Card Button -->
+          <button
+            v-if="paymentMethod === 'card' && !load"
+            @click="requestPay"
+            class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3">
+            Bayar Sekarang
+          </button>
 
-          <button v-else class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3" type="button" disabled>
+          <!-- Transfer Button -->
+          <button
+            v-if="paymentMethod === 'transfer' && !load"
+            @click="requestPayTransfer"
+            class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3"
+            :disabled="isTransferPending || (!transferFile && bill?.TransferStatus !== 'failed')">
+            Upload & Bayar
+          </button>
+
+          <!-- Loading State -->
+          <button v-if="load" class="btn btn-gradient btn-lg rounded-4 shadow fw-bold text-white py-3" type="button" disabled>
             <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
             Memproses...
           </button>
@@ -100,25 +128,64 @@
 </template>
 
 <script>
-  import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+  import { mapState, mapActions } from "vuex";
   import formatSet from "~/mixins/formatSet";
+  import Swal from "sweetalert2";
 
   export default {
     mixins: [formatSet],
-    computed: {
-      // FIXED VUEX MAPPING
-      // You cannot combine two modules in one mapState string. They must be separate.
-      ...mapState("laundry", ["load"]),
-      ...mapState("laundry", ["bill"]), // This fetches the Balance correctly
+    data() {
+      return {
+        paymentMethod: "card",
+        transferFile: null,
+      };
     },
+    computed: {
+      ...mapState("laundry", ["load", "bill"]),
 
+      // Checks if there is an ongoing transfer awaiting confirmation
+      isTransferPending() {
+        return this.bill?.TransferStatus === "unconfirmed" || this.bill?.TransferStatus === "pending";
+      },
+    },
     methods: {
-      ...mapActions("laundry", ["matchVoucher", "requestPay"]),
+      ...mapActions("laundry", ["requestPay", "submitTransferPay"]),
+
       nominal(a) {
         return new Intl.NumberFormat("id-ID", {
           currency: "IDR",
           minimumFractionDigits: 0,
-        }).format(a);
+        }).format(a || 0);
+      },
+
+      handleFileUpload(event) {
+        this.transferFile = event.target.files[0];
+      },
+
+      async requestPayTransfer() {
+        const Amount = this.$auth.user.DendaLaundry || 0;
+
+        if (!Amount || Amount <= 0) {
+          return Swal.fire({
+            icon: "info",
+            title: "Tidak Ada Tagihan",
+            text: "Jumlah tagihan Anda adalah Rp 0. Tidak ada pembayaran yang diperlukan.",
+          });
+        }
+
+        if (!this.transferFile) {
+          return Swal.fire({
+            icon: "warning",
+            title: "Bukti Transfer Kosong",
+            text: "Silakan upload bukti transfer terlebih dahulu.",
+          });
+        }
+
+        // Dispatch action to Vuex store passing the file
+        await this.submitTransferPay({
+          file: this.transferFile,
+          amount: Amount,
+        });
       },
     },
   };

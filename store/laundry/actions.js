@@ -108,4 +108,57 @@ export default {
       console.error("Payment Error:", error);
     }
   },
+  async submitTransferPay({ commit, state }, payload) {
+    commit("changeLoad");
+
+    try {
+      const { file, amount } = payload;
+      const Name = this.$auth.user.Nama;
+      const CNC = this.$auth.user.cnc;
+      const Email = this.$auth.user.email;
+      const SK = this.$auth.user.SK;
+
+      // 1. Prepare FormData for file upload (Assuming your API handles multipart/form-data)
+      const formData = new FormData();
+      formData.append("Amount", amount);
+      formData.append("Name", Name);
+      formData.append("CNC", CNC);
+      formData.append("Email", Email);
+      formData.append("SK", SK);
+      formData.append("Evidence", file); // The image file
+
+      // 2. Send the request to the new transfer endpoint
+      // Note: Make sure the headers for multipart/form-data are properly handled by $apiBase
+      const value = await this.$apiBase.$post("/input-santri-laundry?type=bill-laundry-transfer", formData);
+
+      commit("changeLoad");
+
+      await Swal.fire({
+        icon: "success",
+        title: "Bukti Terkirim",
+        text: "Bukti transfer berhasil diupload dan sedang menunggu konfirmasi admin.",
+        timer: 2500,
+        showConfirmButton: false,
+      });
+
+      // Update local auth state to reflect pending status if needed
+      // Do NOT reset DendaLaundry yet, as the admin needs to confirm it first
+
+      this.$router.push("/laundry");
+    } catch (error) {
+      commit("changeLoad");
+
+      let errorMessage = "Terjadi kesalahan saat mengupload bukti transfer.";
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Upload",
+        text: errorMessage,
+      });
+      console.error("Transfer Upload Error:", error);
+    }
+  },
 };
