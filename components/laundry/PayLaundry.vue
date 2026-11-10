@@ -66,20 +66,28 @@
         <!-- TRANSFER BANK SECTION -->
         <div v-if="paymentMethod === 'transfer'">
           <div class="card border-0 rounded-4 shadow-sm mb-4 p-3 bg-light">
-            <h6 class="fw-bold mb-3">Instruksi Pembayaran Mandiri Virtual Account</h6>
-            <div class="alert alert-info border-0 rounded-3 mb-3 small">
-              <strong>Biller Name:</strong>
-              DOKU FIX AMOUNT
+            <h6 class="fw-bold mb-3">Instruksi Pembayaran Transfer Bank</h6>
+
+            <div class="alert alert-info border-0 rounded-3 mb-3 small position-relative">
+              <h6 class="fw-bold mb-3">Instruksi Pembayaran Transfer Bank</h6>
+              <strong>Bank:</strong>
+              CIMB Niaga
               <br />
-              <strong>Code:</strong>
-              86188
+              <strong>Nama Penerima:</strong>
+              LAUNDRY BABUSSALAM
               <br />
-              <em>*Silakan cari "DOKU FIX AMOUNT" langsung di kolom pencarian (search bar) aplikasi Mandiri Anda.</em>
+              <strong>Nomor Rekening:</strong>
+              <span id="rekText" class="fw-bold">20051422333</span>
+              <button @click="copyRekening" class="btn btn-sm btn-outline-primary py-0 px-2 ms-2 rounded-pill" title="Salin Rekening">
+                <i class="bi bi-clipboard"></i>
+                Salin
+              </button>
+              <br />
+              <em class="d-block mt-2 text-muted">*Silakan lakukan transfer ke nomor rekening CIMB di atas dan pastikan nama penerima sesuai.</em>
             </div>
 
             <div class="mb-3">
               <label class="small text-muted fw-bold mb-2">Upload Bukti Transfer</label>
-              <!-- Disable upload if status is unconfirmed/pending -->
               <input type="file" class="form-control" accept="image/*" @change="handleFileUpload" :disabled="isTransferPending" />
             </div>
 
@@ -186,6 +194,23 @@
           file: this.transferFile,
           amount: Amount,
         });
+      },
+      copyRekening() {
+        const rek = "20051422333";
+        navigator.clipboard
+          .writeText(rek)
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "Tersalin!",
+              text: "Nomor rekening CIMB Niaga berhasil disalin.",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to copy: ", err);
+          });
       },
     },
   };

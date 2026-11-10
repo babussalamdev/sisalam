@@ -1,5 +1,14 @@
 import Swal from "sweetalert2";
 
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export default {
   async renderPage({ commit, dispatch }, data) {
     dispatch("load/submitLoad", null, { root: true });
@@ -108,7 +117,7 @@ export default {
       console.error("Payment Error:", error);
     }
   },
-  async submitTransferPay({ commit, state }, payload) {
+  async submitTransferPay({ commit }, payload) {
     commit("changeLoad");
 
     try {
@@ -117,39 +126,86 @@ export default {
       const CNC = this.$auth.user.cnc;
       const Email = this.$auth.user.email;
       const SK = this.$auth.user.SK;
+      const Asrama = this.$auth.user.Asrama || "-";
 
-      // 1. Prepare FormData for file upload (Assuming your API handles multipart/form-data)
-      const formData = new FormData();
-      formData.append("Amount", amount);
-      formData.append("Name", Name);
-      formData.append("CNC", CNC);
-      formData.append("Email", Email);
-      formData.append("SK", SK);
-      formData.append("Evidence", file); // The image file
+      // 1. Convert Image to Base64
+      const base64Evidence = await fileToBase64(file);
+      const cleanBase64 = base64Evidence.replace(/^data:image\/\w+;base64,/, "");
 
-      // 2. Send the request to the new transfer endpoint
-      // Note: Make sure the headers for multipart/form-data are properly handled by $apiBase
-      const value = await this.$apiBase.$post("/input-santri-laundry?type=bill-laundry-transfer", formData);
+      // 2. Kirim ke Google Apps Script
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8-q43epHLdUS7glqMMaMG3vdA9SxRLcOku5Jx4SFVarDp5j4hDw4BGYkWFB4CJ4fmzA/exec";
+      const gasPayload = {
+        action: "upload_bukti_bayar",
+        shortKey: SK,
+        namaSantri: Name,
+        asrama: Asrama,
+        nominal: amount,
+        fileName: file.name,
+        fileBase64: cleanBase64,
+      };
+
+      const gasResponse = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(gasPayload),
+      });
+
+      const gasResult = await gasResponse.json();
+
+      // GANTI BAGIAN INI:
+      // if (!gasResult.success) {
+      if (gasResult.status !== "success") {
+        throw new Error(gasResult.message || "Gagal upload ke Google Drive");
+      }
+
+      // 3. Kirim ke Backend AWS DynamoDB
+      const awsBody = {
+        Amount: amount,
+        Name: Name,
+        CNC: CNC,
+        Email: Email,
+        SK: SK,
+        // Ini akan otomatis mengambil gasResult.url karena idKonfirmasi tidak ada di JSON
+        EvidenceUrl: gasResult.idKonfirmasi || gasResult.url || "Uploaded via App Script",
+      };
+      await this.$apiBase.$post("/input-santri-laundry?type=bill-laundry-transfer", awsBody);
+      // 4. Kirim Notifikasi WhatsApp via Fonnte API
+      const formatRupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(amount);
+      const pesanWa = `Assalamu'alaikum Admin, saya sudah transfer manual untuk tagihan laundry ananda *${Name}* (Asrama: ${Asrama}) sebesar *${formatRupiah}*.\n\nBukti transfer sudah diupload via web (ID: ${
+        gasResult.idKonfirmasi || "-"
+      }). Mohon diverifikasi. Terima kasih.`;
+
+      const fonnteData = new FormData();
+      fonnteData.append("target", "6285156575710");
+      fonnteData.append("message", pesanWa);
+
+      await fetch("https://api.fonnte.com/send", {
+        method: "POST",
+        headers: {
+          Authorization: "JM3pexhRKQu9h5DHQ7Cg", // Ganti dengan Token Fonnte aktif Anda
+        },
+        body: fonnteData,
+      }).catch((err) => console.warn("Fonnte WA notification failed:", err)); // Prevent WA failure from crashing the app
 
       commit("changeLoad");
 
+      // 5. Sukses Alert
       await Swal.fire({
         icon: "success",
         title: "Bukti Terkirim",
-        text: "Bukti transfer berhasil diupload dan sedang menunggu konfirmasi admin.",
+        text: "Bukti transfer berhasil diupload dan notifikasi WhatsApp telah dikirim ke Admin.",
         timer: 2500,
         showConfirmButton: false,
       });
-
-      // Update local auth state to reflect pending status if needed
-      // Do NOT reset DendaLaundry yet, as the admin needs to confirm it first
 
       this.$router.push("/laundry");
     } catch (error) {
       commit("changeLoad");
 
       let errorMessage = "Terjadi kesalahan saat mengupload bukti transfer.";
-      if (error.response?.data?.message) {
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.response?.data?.message) {
         errorMessage = error.response.data.message;
       }
 
