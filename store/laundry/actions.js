@@ -1,11 +1,33 @@
 import Swal from "sweetalert2";
 
-const fileToBase64 = (file) => {
+const compressImageToBase64 = (file, maxDim = 1200, quality = 0.8) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
   });
 };
 
@@ -128,19 +150,21 @@ export default {
       const SK = this.$auth.user.SK;
       const Asrama = this.$auth.user.Asrama || "-";
 
-      // 1. Convert Image to Base64
-      const base64Evidence = await fileToBase64(file);
+      // 1. Kompres dan Convert Image ke Base64 (Otomatis ringan ~200KB)
+      const base64Evidence = await compressImageToBase64(file);
       const cleanBase64 = base64Evidence.replace(/^data:image\/\w+;base64,/, "");
 
-      // 2. Kirim ke Google Apps Script
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8-q43epHLdUS7glqMMaMG3vdA9SxRLcOku5Jx4SFVarDp5j4hDw4BGYkWFB4CJ4fmzA/exec";
+      // 2. Kirim ke Google Apps Script Laundry
+      // Ganti URL di bawah dengan URL Deployment Apps Script aktif Anda
+      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfuLykTYx4tqhjQ_rTZjf8TDnvo81aJuxB_H3aXkkp0acZBpCwekYRmGZpht2fYjtYuw/exec";
+
       const gasPayload = {
         action: "upload_bukti_bayar",
         shortKey: SK,
         namaSantri: Name,
         asrama: Asrama,
         nominal: amount,
-        fileName: file.name,
+        fileName: (file.name || "struk.jpg").replace(/\.[^/.]+$/, "") + ".jpg",
         fileBase64: cleanBase64,
       };
 
@@ -152,49 +176,31 @@ export default {
 
       const gasResult = await gasResponse.json();
 
-      // GANTI BAGIAN INI:
-      // if (!gasResult.success) {
-      if (gasResult.status !== "success") {
-        throw new Error(gasResult.message || "Gagal upload ke Google Drive");
+      // Validasi fleksibel (lolos jika success: true atau status: 'success')
+      if (!gasResult.success && gasResult.status !== "success") {
+        throw new Error(gasResult.message || "Gagal mengupload bukti transfer ke server.");
       }
 
-      // 3. Kirim ke Backend AWS DynamoDB
+      // 3. Simpan ke Backend AWS DynamoDB
       const awsBody = {
         Amount: amount,
         Name: Name,
         CNC: CNC,
         Email: Email,
         SK: SK,
-        // Ini akan otomatis mengambil gasResult.url karena idKonfirmasi tidak ada di JSON
-        EvidenceUrl: gasResult.idKonfirmasi || gasResult.url || "Uploaded via App Script",
+        // Otomatis mengambil link foto Google Drive asli yang dikembalikan oleh Apps Script
+        EvidenceUrl: gasResult.url || gasResult.idKonfirmasi || "Uploaded via App Script",
       };
       await this.$apiBase.$post("/input-santri-laundry?type=bill-laundry-transfer", awsBody);
-      // 4. Kirim Notifikasi WhatsApp via Fonnte API
-      const formatRupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(amount);
-      const pesanWa = `Assalamu'alaikum Admin, saya sudah transfer manual untuk tagihan laundry ananda *${Name}* (Asrama: ${Asrama}) sebesar *${formatRupiah}*.\n\nBukti transfer sudah diupload via web (ID: ${
-        gasResult.idKonfirmasi || "-"
-      }). Mohon diverifikasi. Terima kasih.`;
-
-      const fonnteData = new FormData();
-      fonnteData.append("target", "6285156575710");
-      fonnteData.append("message", pesanWa);
-
-      await fetch("https://api.fonnte.com/send", {
-        method: "POST",
-        headers: {
-          Authorization: "JM3pexhRKQu9h5DHQ7Cg", // Ganti dengan Token Fonnte aktif Anda
-        },
-        body: fonnteData,
-      }).catch((err) => console.warn("Fonnte WA notification failed:", err)); // Prevent WA failure from crashing the app
 
       commit("changeLoad");
 
-      // 5. Sukses Alert
+      // 4. Alert Sukses
       await Swal.fire({
         icon: "success",
-        title: "Bukti Terkirim",
-        text: "Bukti transfer berhasil diupload dan notifikasi WhatsApp telah dikirim ke Admin.",
-        timer: 2500,
+        title: "Bukti Terkirim!",
+        text: `Bukti transfer berhasil diupload (ID: ${gasResult.idKonfirmasi || "-"}). Menunggu verifikasi admin.`,
+        timer: 3000,
         showConfirmButton: false,
       });
 

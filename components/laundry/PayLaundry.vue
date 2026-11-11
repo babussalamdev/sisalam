@@ -84,6 +84,7 @@
               </button>
               <br />
               <em class="d-block mt-2 text-muted">*Silakan lakukan transfer ke nomor rekening CIMB di atas dan pastikan nama penerima sesuai.</em>
+              <em class="d-block mt-2 text-muted">*Bila ada pertanyaan mohon hubungi admin laundry babussalam : +62 851-8318-3208</em>
             </div>
 
             <div class="mb-3">

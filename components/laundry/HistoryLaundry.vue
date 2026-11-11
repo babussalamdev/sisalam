@@ -2,47 +2,68 @@
   <div class="history-list pb-5">
     <h6 class="text-uppercase text-muted small fw-bold mb-3 px-1 ls-1">Transaction History</h6>
 
-    <div
-      v-for="(data, i) in filterData"
-      :key="i"
-      class="transaction-card d-flex justify-content-between align-items-center p-3 mb-3 bg-white rounded-4 shadow-sm border-0">
-      <div class="d-flex align-items-center">
-        <div class="icon-box me-3 shadow-sm" :class="getGradientClass(data.status)">
-          <i :class="getIconClass(data.status)"></i>
-        </div>
+    <div v-for="(data, i) in filterData" :key="i" class="transaction-card d-flex flex-column p-3 mb-3 bg-white rounded-4 shadow-sm border-0">
+      <!-- ROW UTAMA: Icon, Info, Nominal -->
+      <div class="d-flex justify-content-between align-items-center w-100">
+        <div class="d-flex align-items-center">
+          <div class="icon-box me-3 shadow-sm" :class="getGradientClass(data.status)">
+            <i :class="getIconClass(data.status)"></i>
+          </div>
 
-        <div class="d-flex flex-column">
-          <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem">Laundry {{ formDate(data.SK) }}</h6>
-          <div class="d-flex align-items-center">
-            <!-- Existing Status Badge -->
-            <span class="badge rounded-pill me-2 fw-normal" :class="getBadgeClass(data.status)">
-              {{ data.status }}
-            </span>
+          <div class="d-flex flex-column">
+            <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem">Laundry {{ formDate(data.SK) }}</h6>
+            <div class="d-flex align-items-center">
+              <!-- Status Badge -->
+              <span class="badge rounded-pill me-2 fw-normal" :class="getBadgeClass(data.status)">
+                {{ data.status }}
+              </span>
 
-            <!-- NEW: Laundry Type Badge -->
-            <span v-if="data.tipe" class="badge rounded-pill bg-secondary-subtle text-secondary me-2 fw-normal" style="font-size: 0.75rem">
-              {{ formatTipe(data.tipe) }}
-            </span>
+              <!-- Laundry Type Badge -->
+              <span v-if="data.tipe" class="badge rounded-pill bg-secondary-subtle text-secondary me-2 fw-normal" style="font-size: 0.75rem">
+                {{ formatTipe(data.tipe) }}
+              </span>
 
-            <div class="info-tooltip-wrapper">
-              <i class="bi bi-info-circle-fill text-muted small-icon opacity-50"></i>
-              <div class="tooltip-content shadow-lg">
-                <div class="d-flex justify-content-between mb-1">
-                  <span>Items:</span>
-                  <span class="fw-bold">{{ data.jumlah_laundry }} pcs</span>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <span>Over limit:</span>
-                  <span class="fw-bold text-warning">{{ data.jumlah_kelebihan }} pcs</span>
+              <!-- Tooltip Detail -->
+              <div class="info-tooltip-wrapper">
+                <i class="bi bi-info-circle-fill text-muted small-icon opacity-50"></i>
+                <div class="tooltip-content shadow-lg">
+                  <div class="d-flex justify-content-between mb-1">
+                    <span>Items:</span>
+                    <span class="fw-bold">{{ data.jumlah_laundry }} pcs</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Over limit:</span>
+                    <span class="fw-bold text-warning">{{ data.jumlah_kelebihan }} pcs</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="text-end">
+          <h6 class="fw-bold mb-0" :class="getTextColor(data.status)">{{ getAmountPrefix(data.status) }} Rp {{ nominal(data.total_denda) }}</h6>
+        </div>
       </div>
 
-      <div class="text-end">
-        <h6 class="fw-bold mb-0" :class="getTextColor(data.status)">{{ getAmountPrefix(data.status) }} Rp {{ nominal(data.total_denda) }}</h6>
+      <!-- ROW KEDUA: Peringatan jika status unverify / unverified -->
+      <div
+        v-if="data.status === 'unverify' || data.status === 'unverified'"
+        class="alert alert-danger mt-3 mb-0 p-2 small border-0 d-flex align-items-start w-100 rounded-3">
+        <i class="bi bi-exclamation-octagon-fill text-danger me-2 mt-1"></i>
+        <div style="font-size: 0.8rem; line-height: 1.4">
+          Bukti bayar salah / buram. Silahkan hubungi admin Laundry Babussalam:
+          <br />
+          <a href="https://wa.me/6285183183208" target="_blank" class="fw-bold text-danger text-decoration-none">
+            <i class="bi bi-whatsapp"></i>
+            +62 851-8318-3208
+          </a>
+          <!-- Jika ada catatan spesifik dari backend (misal: "alasan" atau "notes") -->
+          <div v-if="data.notes || data.alasan" class="mt-1 p-1 bg-white rounded border border-danger-subtle text-muted">
+            <span class="fw-bold text-dark">Catatan Admin:</span>
+            {{ data.notes || data.alasan }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -55,10 +76,7 @@
     computed: {
       ...mapState("laundry", ["laundryLog"]),
       filterData() {
-        // Safe guard and sort logic if needed
-        const data = this.laundryLog || [];
-        // If simply listing all, just return data
-        return data;
+        return this.laundryLog || [];
       },
     },
     methods: {
@@ -70,11 +88,13 @@
             return "bg-gradient-danger";
           case "covered":
             return "bg-gradient-warning";
+          case "unverify":
+          case "unverified":
+            return "bg-gradient-danger"; // Icon box merah untuk alert
           default:
             return "bg-gradient-primary";
         }
       },
-      // NEW: Badge styling to match modern UI
       getBadgeClass(status) {
         switch (status) {
           case "paid":
@@ -83,6 +103,9 @@
             return "bg-danger-subtle text-danger";
           case "covered":
             return "bg-warning-subtle text-warning";
+          case "unverify":
+          case "unverified":
+            return "bg-danger-subtle text-danger border border-danger"; // Badge merah agak tegas
           default:
             return "bg-light text-dark";
         }
@@ -95,6 +118,9 @@
             return "bi bi-exclamation-lg text-white h5 mb-0";
           case "covered":
             return "bi bi-shield-check text-white h5 mb-0";
+          case "unverify":
+          case "unverified":
+            return "bi bi-x-octagon text-white h5 mb-0"; // Icon X (Gagal)
           default:
             return "bi bi-arrow-repeat text-white h5 mb-0";
         }
@@ -104,6 +130,8 @@
           case "paid":
             return "text-success-theme";
           case "unpaid":
+          case "unverify":
+          case "unverified":
             return "text-danger-theme";
           default:
             return "text-dark";
@@ -111,20 +139,18 @@
       },
       getAmountPrefix(status) {
         if (status === "paid") return "-";
-        if (status === "unpaid") return "+";
+        if (status === "unpaid" || status === "unverify" || status === "unverified") return "+";
         return "";
       },
       formDate(daTe) {
         if (!daTe) return "-";
         const dateObject = new Date(daTe);
-        // Short month looks cleaner in lists (e.g., 10 Feb 2026)
         const options = { day: "numeric", month: "short", year: "numeric" };
         return dateObject.toLocaleDateString("id-ID", options);
       },
       nominal(a) {
         return new Intl.NumberFormat("id-ID", { minimumFractionDigits: 0 }).format(a || 0);
       },
-      // NEW: Formats the raw "tipe" string into Title Case and removes underscores
       formatTipe(typeString) {
         if (!typeString) return "";
         return typeString
@@ -137,17 +163,17 @@
 </script>
 
 <style scoped>
-  /* CARD STYLE LIST ITEMS */
+  /* Pertahankan gaya CSS lama Anda, dan tambahkan sedikit utilitas ini jika belum ada */
   .transaction-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-
   .transaction-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
   }
 
-  /* Badge Colors (Bootstrap 5.3 mimic) */
+  /* Sisa style Anda dari atas (bg-gradient, tooltip, dll) biarkan sama... */
+
   .bg-success-subtle {
     background-color: #d1e7dd;
     color: #0f5132;
@@ -160,8 +186,11 @@
     background-color: #fff3cd;
     color: #664d03;
   }
+  .bg-secondary-subtle {
+    background-color: #e2e3e5;
+    color: #41464b;
+  }
 
-  /* Icons */
   .icon-box {
     width: 48px;
     height: 48px;
@@ -172,7 +201,6 @@
     flex-shrink: 0;
   }
 
-  /* Gradient Backgrounds */
   .bg-gradient-success {
     background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
   }
@@ -186,7 +214,6 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
 
-  /* Text Colors */
   .text-success-theme {
     color: #00b09b;
   }
@@ -198,13 +225,11 @@
     letter-spacing: 1px;
   }
 
-  /* Tooltip Improvements */
   .info-tooltip-wrapper {
     position: relative;
     cursor: pointer;
     margin-top: 2px;
   }
-
   .tooltip-content {
     visibility: hidden;
     width: 150px;
@@ -222,7 +247,6 @@
     font-size: 11px;
     pointer-events: none;
   }
-
   .tooltip-content::after {
     content: "";
     position: absolute;
@@ -233,7 +257,6 @@
     border-style: solid;
     border-color: #2d3436 transparent transparent transparent;
   }
-
   .info-tooltip-wrapper:hover .tooltip-content {
     visibility: visible;
     opacity: 1;
