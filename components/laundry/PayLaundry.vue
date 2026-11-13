@@ -20,15 +20,13 @@
           </div>
         </div>
 
-        <!-- Payment Method Selection -->
         <div class="mb-3">
           <label class="small text-muted fw-bold mb-2 text-uppercase ls-1">Metode Pembayaran</label>
           <select v-model="paymentMethod" class="form-select rounded-4 shadow-none form-control" style="height: 50px">
             <option value="card">Kartu Santri (Otomatis)</option>
-            <option value="transfer">Transfer Bank (Manual)</option>
+            <option value="transfer" disabled>Transfer Bank (Manual) - Segera Hadir</option>
           </select>
         </div>
-
         <!-- KARTU SANTRI SECTION -->
         <div v-if="paymentMethod === 'card'">
           <div class="card border-0 rounded-4 shadow-sm mb-4 bg-gradient-wallet text-white overflow-hidden position-relative">

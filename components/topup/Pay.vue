@@ -238,7 +238,7 @@
       // NEW: Filter out specific banks
       filteredBanks() {
         if (!this.arrayBank) return [];
-        const banksToRemove = ["qris", "bsm"];
+        const banksToRemove = ["qris"];
         return this.arrayBank.filter((bank) => !banksToRemove.includes(bank.toLowerCase()));
       },
 
