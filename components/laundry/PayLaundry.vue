@@ -24,7 +24,7 @@
           <label class="small text-muted fw-bold mb-2 text-uppercase ls-1">Metode Pembayaran</label>
           <select v-model="paymentMethod" class="form-select rounded-4 shadow-none form-control" style="height: 50px">
             <option value="card">Kartu Santri (Otomatis)</option>
-            <option value="transfer" disabled>Transfer Bank (Manual) - Segera Hadir</option>
+            <option value="transfer">Transfer Bank (Manual)</option>
           </select>
         </div>
         <!-- KARTU SANTRI SECTION -->
